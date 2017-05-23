@@ -12,6 +12,9 @@
 # typescript compile
 /src/*.js
 /src/*.js.map
+/src/*/*.js
+/src/*/*.js.map
+
 
 # misc
 .DS_Store
