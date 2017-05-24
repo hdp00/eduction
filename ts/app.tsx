@@ -109,38 +109,7 @@ ReactDOM.render(<div >
 </div>,
     document.getElementById('root'));*/
 
-class BasicExample extends React.Component<any, any>{
-    render() {
-        return <Router>
-            <div>
-                <Link to="/">Home</Link>
-                <ul>
-                    
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/topics">Topics</Link></li>
-                    <a rel="friend" href="/about">w3c</a>
-                </ul>
 
-                <hr />
-
-                <Route exact path="/" component={Home} />
-                <Route path="/about" component={About} />
-            </div>
-        </Router>
-    }
-}
-
-const Home = () => (
-    <div>
-        <h2>Home</h2>
-    </div>
-)
-
-const About = () => (
-    <div>
-        <h2>About</h2>
-    </div>
-)
 
 
 
@@ -153,7 +122,6 @@ export class App {
     run() {
         ReactDOM.render(<div>
             <label>long long ago </label>
-            <BasicExample />
         </div>,
             document.getElementById('root'));
     }
