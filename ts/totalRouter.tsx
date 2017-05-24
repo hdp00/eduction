@@ -9,18 +9,16 @@ const Login = () => (
     <div>Login</div>
 )
 
-const Title = () => (
-    <div>
-        <h2>Title</h2>
-    </div>
+const Header = () => (
+    <div>Header</div>
 )
 
-class TotalRouter extends React.Component<any, any>{
+export class TotalRouter extends React.Component<any, any>{
     render() {
         return <Router>
                 <hr />
                 <Route exact path="/" component={Login} />
-                <Route path="/about" component={Title} />
+                <Route path="/about" component={Header} />
         </Router>
     }
 }

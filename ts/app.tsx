@@ -4,11 +4,8 @@ import * as $ from 'jquery';
 import { Button } from 'antd';
 import './css/antd.css';
 import { imageFalse } from './image';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom'
+
+import {TotalRouter} from './totalRouter'
 
 // import { Modal, Button, Table, Icon } from 'antd';
 
@@ -122,6 +119,7 @@ export class App {
     run() {
         ReactDOM.render(<div>
             <label>long long ago </label>
+            <TotalRouter />
         </div>,
             document.getElementById('root'));
     }
