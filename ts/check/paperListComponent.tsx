@@ -116,11 +116,11 @@ export class PaperComponent extends React.Component<any, any>{
             }, {
                 id: '1',
                 text: 'b',
-                state: PaperState.HasCorrected,
+                state: PaperState.HasChecked,
             }, {
                 id: '2',
                 text: 'c',
-                state: PaperState.ReCorrect,
+                state: PaperState.ReCheck,
             }],
             onChange: (id) => { console.log(id); }
         };

@@ -142,6 +142,13 @@ const About = () => (
     </div>
 )
 
+
+
+
+
+
+
+
 export class App {
     run() {
         ReactDOM.render(<div>
@@ -151,9 +158,3 @@ export class App {
             document.getElementById('root'));
     }
 }
-
-
-
-
-
-

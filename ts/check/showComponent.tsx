@@ -2,7 +2,7 @@
 //试卷显示组件
 
 import * as React from 'react';
-import { PaperState, IPaper, ICorrectData, ICorrectItem } from '../define';
+import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
 
 //批改管理
 class CorrectManager {
@@ -59,18 +59,18 @@ class CorrectManager {
     }
 }
 
-interface CanvasComponentProps {
+interface ShowComponentProps {
     paper: IPaper;
-    currentCorrectItem: () => ICorrectItem;
+    currentCorrectItem: () => ICheckItem;
     onCorrect: (data: IPaper) => void;
 }
 
-export class CanvasComponent extends React.Component<CanvasComponentProps, any>{
+export class ShowComponent extends React.Component<ShowComponentProps, any>{
     private ctx: CanvasRenderingContext2D;
     private managers: CorrectManager[] = [];
     private imagePaper: HTMLImageElement = new Image();
 
-    constructor(props: CanvasComponentProps) {
+    constructor(props: ShowComponentProps) {
         super(props);
 
         for (let correct of this.props.paper.corrects) {
@@ -115,7 +115,7 @@ export class CanvasComponent extends React.Component<CanvasComponentProps, any>{
         if (index > -1)
             return;
 
-        const item:ICorrectItem = this.props.currentCorrectItem();
+        const item:ICheckItem = this.props.currentCorrectItem();
         const correctData = {
             page: 0,
             x: x,

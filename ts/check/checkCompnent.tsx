@@ -3,18 +3,18 @@
 
 import * as React from 'react';
 import { Table } from 'antd';
-import { ICorrectItem } from '../define';
+import { ICheckItem } from '../define';
 
-interface ICorrectComponentProps {
-    items: ICorrectItem[];
+interface ICheckComponentProps {
+    items: ICheckItem[];
     onChange: (index: number) => void;
 }
-interface ICorrectComponentState {
+interface ICheckComponentState {
     select: string[];
 }
 
-export class CorrectComponent extends React.Component<ICorrectComponentProps, ICorrectComponentState>{
-    public state: ICorrectComponentState = {
+export class CheckComponent extends React.Component<ICheckComponentProps, ICheckComponentState>{
+    public state: ICheckComponentState = {
         select: ['0']
     };
 
@@ -32,7 +32,7 @@ export class CorrectComponent extends React.Component<ICorrectComponentProps, IC
 
         let datas = [];
         for (let i = 0; i < this.props.items.length; i++) {
-            let item: ICorrectItem = this.props.items[i];
+            let item: ICheckItem = this.props.items[i];
             datas.push({
                 key: i.toString(),
                 image: item.image,
