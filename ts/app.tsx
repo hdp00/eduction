@@ -5,7 +5,8 @@ import { Button } from 'antd';
 import './css/antd.css';
 import { imageFalse } from './image';
 
-import {TotalRouter} from './totalRouter'
+import { TotalRouter } from './totalRouter';
+import { LoginForm } from './login/login'
 
 // import { Modal, Button, Table, Icon } from 'antd';
 
@@ -118,8 +119,10 @@ ReactDOM.render(<div >
 export class App {
     run() {
         ReactDOM.render(<div>
-            <label>long long ago </label>
-            <TotalRouter />
+            {/*<label>long long ago </label>*/}
+            <LoginForm />
+            {/*<TotalRouter />*/}
+
         </div>,
             document.getElementById('root'));
     }
