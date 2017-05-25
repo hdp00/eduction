@@ -5,16 +5,16 @@ import * as React from 'react';
 import { Table } from 'antd';
 import { ICheckItem } from '../define';
 
-interface ICheckListProps {
+interface CheckListProps {
     items: ICheckItem[];
     onChange: (index: number) => void;
 }
-interface ICheckListState {
+interface CheckListState {
     select: string[];
 }
 
-export class CheckList extends React.Component<ICheckListProps, ICheckListState>{
-    public state: ICheckListState = {
+export class CheckList extends React.Component<CheckListProps, CheckListState>{
+    public state: CheckListState = {
         select: ['0']
     };
 
