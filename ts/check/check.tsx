@@ -10,9 +10,7 @@ class Check extends React.Component<any, any>{
 
     render(){
         return <div>
-            <Show />
-            <CheckList />
-            <PaperList /> 
+
         </div>;
     }
 }
