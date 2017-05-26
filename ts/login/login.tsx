@@ -7,10 +7,12 @@ import '../css/loginForm.css';
 const FormItem = Form.Item;
 
 class Login extends React.Component<any, any> {
+    private comment: string = 'abc';
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref='form' onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('userName', {
                         rules: [{ required: true, message: '请输入用户名' }],
@@ -26,8 +28,12 @@ class Login extends React.Component<any, any> {
                         )}
                 </FormItem>
                 <FormItem>
+                    <label>{this.comment}</label>
+                </FormItem>
+
+                <FormItem>
                     <Button type="primary" htmlType="submit" className="login-form-button">
-                        Log in
+                        登录
                     </Button>
                 </FormItem>
             </Form>
@@ -36,11 +42,21 @@ class Login extends React.Component<any, any> {
 
     private handleSubmit = (e) => {
         e.preventDefault();
+        this.comment = '';
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this.onError({comment:'error'});
             }
         });
+    }
+
+    private onSuccess(){
+        this.props.form.resetFields();
+        //this.props.history.replace('/select');
+    }
+    private onError(response){
+        this.comment = response.comment;
+        this.forceUpdate();  
     }
 }
 

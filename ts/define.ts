@@ -1,6 +1,19 @@
 //by hdp 2017.05.16
 //接口定义
 
+//试卷批改状态
+export enum PaperState {
+    New,          //新建
+    HasChecked,   //已批改
+    ReCheck,      //需要重新批改
+}
+//用户类型
+export enum UserType{
+    Checker,    //批改
+    Teacher,    //老师
+    Manager     //管理
+}
+
 //批改项
 export interface ICheckItem {
     image: string;
@@ -16,18 +29,11 @@ export interface ICorrectData {
     type: ICheckItem;
 }
 
-//试卷批改状态
-export enum PaperState {
-    New,          //新建
-    HasChecked,   //已批改
-    ReCheck,      //需要重新批改
-}
-
 //试卷信息
 export interface IPaper {
     id: string;
     corrects?: ICorrectData[];
-    image?: string | string[];
+    image?: string[];
     text?: string;
     state: PaperState;
 }

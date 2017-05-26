@@ -119,8 +119,6 @@ ReactDOM.render(<div >
 export class App {
     run() {
         ReactDOM.render(<div>
-            {/*<label>long long ago </label>*/}
-            <LoginForm />
             {/*<TotalRouter />*/}
 
         </div>,

@@ -1,5 +1,5 @@
 //by hdp 2017.05.18
-//试卷显示组件
+//试卷显示
 
 import * as React from 'react';
 import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
@@ -102,7 +102,7 @@ export class Show extends React.Component<ShowProps, any>{
         for (let m of this.managers)
             m.calculateSize(ctx);
 
-        this.imagePaper.src = this.props.paper.image as string;
+        this.imagePaper.src = this.props.paper.image[0];
         this.imagePaper.onload = this.draw;
     }
 
