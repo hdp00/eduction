@@ -59,18 +59,18 @@ class CorrectManager {
     }
 }
 
-interface ShowProps {
+interface PaperProps {
     paper: IPaper;
     currentCorrectItem: () => ICheckItem;
     onCorrect: (data: IPaper) => void;
 }
 
-export class Show extends React.Component<ShowProps, any>{
+export class Paper extends React.Component<PaperProps, any>{
     private ctx: CanvasRenderingContext2D;
     private managers: CorrectManager[] = [];
     private imagePaper: HTMLImageElement = new Image();
 
-    constructor(props: ShowProps) {
+    constructor(props: PaperProps) {
         super(props);
 
         for (let correct of this.props.paper.corrects) {

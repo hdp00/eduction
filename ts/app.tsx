@@ -3,9 +3,8 @@ import * as  ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import { Button } from 'antd';
 import './css/antd.css';
-import { imageFalse } from './image';
 
-import { TotalRouter } from './totalRouter';
+import { EducationRouter } from './educationRouter';
 import { LoginForm } from './login/login'
 
 // import { Modal, Button, Table, Icon } from 'antd';
@@ -112,14 +111,20 @@ ReactDOM.render(<div >
 
 
 
-
+import { Tool } from './tool';
 
 
 
 export class App {
     run() {
+
+
+
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}
+
+
+            <label>{Tool.aaa}</label>
 
         </div>,
             document.getElementById('root'));

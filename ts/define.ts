@@ -7,6 +7,7 @@ export enum PaperState {
     HasChecked,   //已批改
     ReCheck,      //需要重新批改
 }
+
 //用户类型
 export enum UserType{
     Checker,    //批改

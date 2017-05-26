@@ -102,7 +102,7 @@ const Check = () => (
     <div>check</div>
 )
 
-export class TotalRouter extends React.Component<any, any>{
+export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>

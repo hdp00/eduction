@@ -2,7 +2,7 @@
 //批改页面
 
 import * as React from 'react';
-import {Show} from './show';
+import {Paper} from './paper';
 import {PaperList} from './paperList';
 import {CheckList} from './checkList';
 
