@@ -3,34 +3,23 @@
 
 import * as React from 'react';
 import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
+import { Tool } from '../tool'
 
 //批改管理
 class CorrectManager {
     //图标大小
     private static imageWidth: number = 48;
     private static imageHeight: number = 48;
-    public static imageMap: object = {};
 
     private width: number;
     private height: number;
     //图标和文本之间间隔
     private interval: number = 10;
-    private get image(): HTMLImageElement {
-        return CorrectManager.imageMap[this.data.type.image];
-    }
 
-    data: ICorrectData;
+    public data: ICorrectData;
 
-    constructor(data: ICorrectData, onImageLoad?: () => void) {
+    constructor(data: ICorrectData) {
         this.data = data;
-        const imageSrc: string = this.data.type.image;
-        if (CorrectManager.imageMap[imageSrc] == undefined) {
-            const image: HTMLImageElement = new Image();
-            if(onImageLoad != undefined)
-                image.onload = onImageLoad;
-            image.src = imageSrc;
-            CorrectManager.imageMap[imageSrc] = image;
-        }
     }
 
     public calculateSize(ctx: CanvasRenderingContext2D) {
@@ -53,31 +42,31 @@ class CorrectManager {
         const x = this.data.x;
         const y = this.data.y;
         const textX = x + CorrectManager.imageWidth + this.interval;
+        const image = Tool.imageCheckItem[this.data.type.image];
 
-        ctx.drawImage(this.image, x, y);
+        ctx.drawImage(image, x, y);
         ctx.fillText(this.data.type.text, textX, y + CorrectManager.imageHeight / 2);
     }
 }
 
-interface PaperProps {
-    paper: IPaper;
+interface PaperViewProps {
     currentCorrectItem: () => ICheckItem;
-    onCorrect: (data: IPaper) => void;
 }
 
-export class Paper extends React.Component<PaperProps, any>{
+export class PaperView extends React.Component<PaperViewProps, any>{
     private ctx: CanvasRenderingContext2D;
     private managers: CorrectManager[] = [];
-    private imagePaper: HTMLImageElement = new Image();
+    private imagePaper: HTMLImageElement[] = [];
+    private page: number = 0;
+    private paper: IPaper;
 
-    constructor(props: PaperProps) {
+    constructor(props: PaperViewProps) {
         super(props);
-
-        for (let correct of this.props.paper.corrects) {
-            this.managers.push(new CorrectManager(correct));
-        }
     }
     render() {
+        const sum = this.imagePaper.length;
+        const index = this.page;
+
         const canvasProps = {
             width: 800,
             height: 1000,
@@ -90,7 +79,14 @@ export class Paper extends React.Component<PaperProps, any>{
         }
 
         return <div>
-            <canvas {...canvasProps} />
+            <div>
+                <button onClick={this.prev}>上一页</button>
+                <label>{(index + 1) + '/' + sum}</label>
+                <button onClick={this.next}>下一页</button>
+            </div>
+            <div>
+                <canvas {...canvasProps} />
+            </div>
         </div>;
     }
     componentDidMount() {
@@ -98,12 +94,6 @@ export class Paper extends React.Component<PaperProps, any>{
         this.ctx = canvas.getContext('2d');
         const ctx: CanvasRenderingContext2D = this.ctx;
         ctx.textBaseline = 'middle';
-
-        for (let m of this.managers)
-            m.calculateSize(ctx);
-
-        this.imagePaper.src = this.props.paper.image[0];
-        this.imagePaper.onload = this.draw;
     }
 
     private addCorrect = (event) => {
@@ -115,25 +105,18 @@ export class Paper extends React.Component<PaperProps, any>{
         if (index > -1)
             return;
 
-        const item:ICheckItem = this.props.currentCorrectItem();
+        const item: ICheckItem = this.props.currentCorrectItem();
         const correctData = {
-            page: 0,
+            page: this.page,
             x: x,
             y: y,
-            type: item,
+            type: item
         };
 
-        const needLoad = (CorrectManager.imageMap[item.image] == undefined);
-        let manager:CorrectManager;
-        if(needLoad)
-            manager = new CorrectManager(correctData, () => {this.draw();})
-        else
-            manager = new CorrectManager(correctData);
+        let manager: CorrectManager = new CorrectManager(correctData);
         manager.calculateSize(this.ctx);
         this.managers.push(manager);
-
-        if(!needLoad)
-            this.draw();
+        this.draw();
     }
     private deleteCorrect = (event) => {
         const x: number = event.pageX - event.target.offsetLeft;
@@ -144,25 +127,86 @@ export class Paper extends React.Component<PaperProps, any>{
             return;
 
         this.managers.splice(index, 1);
-
         this.draw();
     }
     private draw = () => {
+        if(this.ctx == undefined)
+            return;
+
         const ctx: CanvasRenderingContext2D = this.ctx;
         ctx.clearRect(0, 0, 1920, 1080);
 
-        ctx.drawImage(this.imagePaper, 0, 0);
-        for (let manager of this.managers)
-            manager.draw(ctx);
+        ctx.drawImage(this.imagePaper[this.page], 0, 0);
+        for (let m of this.managers) {
+            if (m.data.page == this.page)
+                m.draw(ctx);
+        }
     }
     private findCheckIndex(x: number, y: number): number {
         const count = this.managers.length;
+
         for (let i = 0; i < count; i++) {
             const index = count - i - 1;
-            if (this.managers[index].isVisible(x, y))
+            const m = this.managers[index];
+            if ((m.data.page == this.page) && m.isVisible(x, y))
                 return index;
         }
 
         return -1;
+    }
+    private prev = () => {
+        if (this.page < 0)
+            return;
+
+        this.page--;
+        this.draw();
+    }
+    private next = () => {
+        if (this.page >= this.imagePaper.length)
+            return;
+
+        this.page++;
+        this.draw();
+    }
+
+    //需要在componentDidMount之后调用
+    public updatePaper = (data: IPaper) => {
+        this.save();
+        this.clear();
+
+        this.paper = data;
+        if (this.paper != undefined && this.paper.images.length > 0) {
+            for (let c of data.corrects) {
+                const m = new CorrectManager(c);
+                m.calculateSize(this.ctx);
+                this.managers.push(m);
+            }
+
+            for(let src of this.paper.images){
+                let image:HTMLImageElement = new Image();
+                if(this.imagePaper.length == 0)
+                    image.onload = this.draw;
+                image.src = src;
+                this.imagePaper.push(image);
+            }
+        }
+        else {
+            this.draw();
+        }
+
+        this.forceUpdate();
+    }
+    private clear() {
+        this.managers = [];
+        this.imagePaper = [];
+        this.page = 0;
+    }
+    private save() {
+        if (this.paper == undefined)
+            return;
+
+        this.paper.corrects = [];
+        for (let m of this.managers)
+            this.paper.corrects.push(m.data);
     }
 }

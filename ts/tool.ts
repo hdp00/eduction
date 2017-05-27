@@ -1,12 +1,13 @@
 //by hdp 2017.05.26
-//全局工具类，哪里都能用
+//全局工具类
 
 import { imageTrue, imageFalse } from './image'
 
 class EducationTool {
-    public image: {
-        'true': imageTrue,
-        'false': imageFalse,
+    //错误项图标
+    public imageCheckItem: {
+        0: imageTrue,
+        1: imageFalse,
     }
     public user:{
         

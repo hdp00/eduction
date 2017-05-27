@@ -124,7 +124,7 @@ export class App {
             {/*<TotalRouter />*/}
 
 
-            <label>{Tool.aaa}</label>
+            <label>{}</label>
 
         </div>,
             document.getElementById('root'));

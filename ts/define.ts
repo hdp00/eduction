@@ -17,7 +17,7 @@ export enum UserType{
 
 //批改项
 export interface ICheckItem {
-    image: string;
+    image: number;
     text: string;
     score: number;
 }
@@ -34,7 +34,7 @@ export interface ICorrectData {
 export interface IPaper {
     id: string;
     corrects?: ICorrectData[];
-    image?: string[];
+    images?: string[];
     text?: string;
     state: PaperState;
 }
