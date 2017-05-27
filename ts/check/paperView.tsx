@@ -43,7 +43,7 @@ class CorrectManager {
         const x = this.data.x;
         const y = this.data.y;
         const textX = x + CorrectManager.imageWidth + this.interval;
-        const image = Tool.imageCheckItem[this.data.type.image];
+        const image = Tool.check.imageItem[this.data.type.image];
 
         ctx.drawImage(image, x, y);
         ctx.fillText(this.data.type.text, textX, y + CorrectManager.imageHeight / 2);
@@ -51,7 +51,7 @@ class CorrectManager {
 }
 
 interface PaperViewProps {
-    currentCorrectItem: () => ICheckItem;
+    currentCheckItem: () => ICheckItem;
 }
 
 export class PaperView extends React.Component<PaperViewProps, any>{
@@ -106,7 +106,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         if (index > -1)
             return;
 
-        const item: ICheckItem = this.props.currentCorrectItem();
+        const item: ICheckItem = this.props.currentCheckItem();
         const correctData = {
             page: this.page,
             x: x,
@@ -136,8 +136,6 @@ export class PaperView extends React.Component<PaperViewProps, any>{
 
         const ctx: CanvasRenderingContext2D = this.ctx;
         ctx.clearRect(0, 0, 1920, 1080);
-
-        let aaa = Tool;
 
         ctx.drawImage(this.imagePaper[this.page], 0, 0);
         for (let m of this.managers) {

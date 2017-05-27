@@ -8,7 +8,6 @@ import {Tool} from '../tool';
 
 interface CheckItemListProps {
     items: ICheckItem[];
-    onChange: (index: number) => void;
 }
 interface CheckItemListState {
     select: string[];
@@ -63,7 +62,7 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
 
     private imageRender = (text: string): JSX.Element => {
         const index:number = parseInt(text);
-        return <img src={Tool.imageCheckItem[index].src} />;
+        return <img src={Tool.check.imageItem[index].src} />;
     }
     private onRowClick = (record, index) => {
         this.onRadioChange(index);
@@ -75,7 +74,7 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
     }
     private onRadioChange = (index: number) => {
         this.setState({ select: [index.toString()]});
-        this.props.onChange(index);
+        Tool.check.currentIndex = index;
     }
 }
 

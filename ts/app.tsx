@@ -10,9 +10,6 @@ import { LoginForm } from './login/login'
 // import { Modal, Button, Table, Icon } from 'antd';
 
 // import { IPaper, PaperState } from './define'
-// import { CorrectComponent } from './paper/correctCompnent';
-// import { CanvasComponent } from './paper/canvasComponent';
-// import * as test from './test'
 import {Check} from './check/check';
 
 

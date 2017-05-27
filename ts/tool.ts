@@ -4,28 +4,32 @@
 import { imageTrue, imageFalse } from './image'
 
 class EducationTool {
-    imageTrue:HTMLImageElement = new Image();
-    imageFalse:HTMLImageElement = new Image();
+    imageTrue: HTMLImageElement = new Image();
+    imageFalse: HTMLImageElement = new Image();
 
-    constructor(){
+    constructor() {
         this.imageTrue.src = imageTrue;
         this.imageFalse.src = imageFalse;
     }
 
-    //错误项图标
-    public imageCheckItem = {
-        0: this.imageTrue,
-        1: this.imageFalse,
-    }
-    public checkItemIndex:number = 0;
+    //批改页数据
+    public check = {
+         //错误项图标
+        imageItem: {
+            0: this.imageTrue,
+            1: this.imageFalse,
+        },
+        currentIndex: 0,
+    };
+
     public user = {
-        
+
     }
     public value = 'test';
 
 
-    private save(){
-        
+    private save() {
+
     }
 
 }
