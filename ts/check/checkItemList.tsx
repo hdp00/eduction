@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { Table } from 'antd';
 import { ICheckItem } from '../define';
+import {Tool} from '../tool';
 
 interface CheckItemListProps {
     items: ICheckItem[];
@@ -61,7 +62,8 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
     }
 
     private imageRender = (text: string): JSX.Element => {
-        return <img src={text} />;
+        const index:number = parseInt(text);
+        return <img src={Tool.imageCheckItem[index].src} />;
     }
     private onRowClick = (record, index) => {
         this.onRadioChange(index);

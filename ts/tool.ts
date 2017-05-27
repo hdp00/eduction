@@ -4,16 +4,30 @@
 import { imageTrue, imageFalse } from './image'
 
 class EducationTool {
-    //错误项图标
-    public imageCheckItem: {
-        0: imageTrue,
-        1: imageFalse,
+    imageTrue:HTMLImageElement = new Image();
+    imageFalse:HTMLImageElement = new Image();
+
+    constructor(){
+        this.imageTrue.src = imageTrue;
+        this.imageFalse.src = imageFalse;
     }
-    public user:{
+
+    //错误项图标
+    public imageCheckItem = {
+        0: this.imageTrue,
+        1: this.imageFalse,
+    }
+    public checkItemIndex:number = 0;
+    public user = {
+        
+    }
+    public value = 'test';
+
+
+    private save(){
         
     }
 
 }
 
-const Tool: EducationTool = new EducationTool();
-export { Tool }
+export const Tool = new EducationTool();

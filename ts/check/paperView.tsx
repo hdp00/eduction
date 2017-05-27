@@ -5,6 +5,7 @@ import * as React from 'react';
 import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
 import { Tool } from '../tool'
 
+
 //批改管理
 class CorrectManager {
     //图标大小
@@ -69,7 +70,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
 
         const canvasProps = {
             width: 800,
-            height: 1000,
+            height: 800,
             style: {
                 border: '1px solid black'
             },
@@ -123,22 +124,24 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         const y: number = event.pageY - event.target.offsetTop;
 
         const index: number = this.findCheckIndex(x, y);
-        if (index == -1)
+        if (index === -1)
             return;
 
         this.managers.splice(index, 1);
         this.draw();
     }
     private draw = () => {
-        if(this.ctx == undefined)
+        if (this.ctx === undefined)
             return;
 
         const ctx: CanvasRenderingContext2D = this.ctx;
         ctx.clearRect(0, 0, 1920, 1080);
 
+        let aaa = Tool;
+
         ctx.drawImage(this.imagePaper[this.page], 0, 0);
         for (let m of this.managers) {
-            if (m.data.page == this.page)
+            if (m.data.page === this.page)
                 m.draw(ctx);
         }
     }
@@ -148,25 +151,27 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         for (let i = 0; i < count; i++) {
             const index = count - i - 1;
             const m = this.managers[index];
-            if ((m.data.page == this.page) && m.isVisible(x, y))
+            if ((m.data.page === this.page) && m.isVisible(x, y))
                 return index;
         }
 
         return -1;
     }
     private prev = () => {
-        if (this.page < 0)
+        if (this.page <= 0)
             return;
 
         this.page--;
         this.draw();
+        this.forceUpdate();
     }
     private next = () => {
-        if (this.page >= this.imagePaper.length)
+        if (this.page >= (this.imagePaper.length - 1))
             return;
 
         this.page++;
         this.draw();
+        this.forceUpdate();
     }
 
     //需要在componentDidMount之后调用
@@ -175,16 +180,18 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         this.clear();
 
         this.paper = data;
-        if (this.paper != undefined && this.paper.images.length > 0) {
-            for (let c of data.corrects) {
-                const m = new CorrectManager(c);
-                m.calculateSize(this.ctx);
-                this.managers.push(m);
+        if (this.paper !== undefined && this.paper.images.length > 0) {
+            if (this.paper.corrects !== undefined) {
+                for (let c of this.paper.corrects) {
+                    const m = new CorrectManager(c);
+                    m.calculateSize(this.ctx);
+                    this.managers.push(m);
+                }
             }
 
-            for(let src of this.paper.images){
-                let image:HTMLImageElement = new Image();
-                if(this.imagePaper.length == 0)
+            for (let src of this.paper.images) {
+                let image: HTMLImageElement = new Image();
+                if (this.imagePaper.length === 0)
                     image.onload = this.draw;
                 image.src = src;
                 this.imagePaper.push(image);
@@ -202,7 +209,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         this.page = 0;
     }
     private save() {
-        if (this.paper == undefined)
+        if (this.paper === undefined)
             return;
 
         this.paper.corrects = [];
