@@ -51,10 +51,7 @@ export class PaperList extends React.Component<PaperListProps, any>{
             scroll:{
                 y:600,
             },
-            style: {
-                width: '400px',
-                height:'600px',
-            },
+            className:'check-paper-list',
             onRowClick: this.onRowClick,
         }
 
@@ -103,54 +100,4 @@ export class PaperList extends React.Component<PaperListProps, any>{
     private onRowClick = (record, index) => {
         this.props.onChange(record.key);
     }
-}
-
-
-export class Paper extends React.Component<any, any>{
-    render() {
-        const paperProps = {
-            items: [{
-                id: '0',
-                text: 'a',
-                state: PaperState.New,
-            }, {
-                id: '1',
-                text: 'b',
-                state: PaperState.HasChecked,
-            }, {
-                id: '2',
-                text: 'c',
-                state: PaperState.ReCheck,
-            }],
-            onChange: (id) => { console.log(id); }
-        };
-
-        const buttonProps = {
-            onClick: this.onClick,
-            style: {
-                width: '100px',
-                height: '100px',
-            }
-        };
-
-
-        return <div>
-            <button {...buttonProps} />
-            <PaperList ref='paper' {...paperProps} />
-        </div>;
-    }
-
-    index: number = 3;
-    private onClick = () => {
-        let c: PaperList = this.refs['paper'] as PaperList;
-        let items = [{
-            id: this.index.toString(),
-            text: 'aaa',
-            state: PaperState.New,
-        }];
-
-        c.updateItem(items);
-        this.index++;
-    }
-
 }

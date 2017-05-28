@@ -2,9 +2,9 @@
 //试卷显示
 
 import * as React from 'react';
+import { Button, Icon } from 'antd';
 import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
-import { Tool } from '../tool'
-
+import { Tool } from '../tool';
 
 //批改管理
 class CorrectManager {
@@ -68,22 +68,38 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         const sum = this.imagePaper.length;
         const index = this.page;
 
+        const prevProps = {
+            onClick: this.prev,
+        };
+        const nextProps = {
+            onClick: this.next,
+        };
+        const titleProps = {
+            style: {
+                margin: '5px auto',
+                textAlign: 'center',
+            }
+        };
+        const totalProps = {
+            className: 'check-paper-view',
+        }
+
         const canvasProps = {
             width: 800,
             height: 800,
-            style: {
-                border: '1px solid black'
-            },
+            className: 'check-canvas',
+
             ref: 'canvas',
             onClick: this.addCorrect,
             onDoubleClick: this.deleteCorrect,
-        }
+        };
 
-        return <div>
-            <div>
-                <button onClick={this.prev}>上一页</button>
-                <label>{(index + 1) + '/' + sum}</label>
-                <button onClick={this.next}>下一页</button>
+
+        return <div {...totalProps}>
+            <div {...titleProps}>
+                <Button type='primary'{...prevProps}><Icon type="left" />上一页</Button>
+                <label className='check-label'>{(index + 1) + '/' + sum}</label>
+                <Button type='primary' {...nextProps}>下一页<Icon type="right" /></Button>
             </div>
             <div>
                 <canvas {...canvasProps} />

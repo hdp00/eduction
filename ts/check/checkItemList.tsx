@@ -7,6 +7,7 @@ import { ICheckItem } from '../define';
 import {Tool} from '../tool';
 
 interface CheckItemListProps {
+    className?:string;
     items: ICheckItem[];
 }
 interface CheckItemListState {
@@ -41,9 +42,11 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
         }
 
         const type:'checkbox' | 'radio' = 'radio';
+        const size:'default' | 'middle' | 'small' = 'small';
         const props = {
             pagination: false,
             showHeader: false,
+            size:size,
             rowSelection: {
                 type: type,
                 selectedRowKeys: this.state.select,
@@ -52,7 +55,7 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
             columns: columns,
             dataSource: datas,
             style: {
-                width: '400px',
+                width:'100%',
             },
             onRowClick: this.onRowClick,
         }

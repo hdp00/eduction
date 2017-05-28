@@ -1,0 +1,16 @@
+.check-total-div{
+    display: table;
+    margin: auto;
+}
+.check-paper-view,.check-check-item-list,.check-paper-list{
+    display: table-cell;
+    width: 200px;
+    height: 800px;
+    padding: 5px;
+}
+.check-label{
+    font-size: 25px;
+}
+.check-canvas{
+    border: 1px solid black;
+}

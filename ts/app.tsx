@@ -10,7 +10,7 @@ import { LoginForm } from './login/login'
 // import { Modal, Button, Table, Icon } from 'antd';
 
 // import { IPaper, PaperState } from './define'
-import {Check} from './check/check';
+import { Check } from './check/check';
 
 
 
@@ -55,6 +55,10 @@ import { Tool } from './tool';
 
 
 
+
+
+
+
 export class App {
     run() {
 
@@ -63,7 +67,6 @@ export class App {
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}
             <Check />
-
 
 
         </div>,
