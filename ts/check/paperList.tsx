@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import * as $ from 'jquery';
-import { Table } from 'antd';
+import { Table, Badge } from 'antd';
 import { PaperState, IPaper } from '../define';
 
 interface PaperListProps {
@@ -48,14 +48,26 @@ export class PaperList extends React.Component<PaperListProps, any>{
             showHeader: false,
             columns: columns,
             dataSource: datas,
-            scroll:{
-                y:600,
+            scroll: {
+                y: 600,
             },
-            className:'check-paper-list',
+            className: 'check-paper-list',
             onRowClick: this.onRowClick,
         }
+        const badgeProps = {
+            style: {
+                margin: '5p'
+            }
+        }
 
-        return <Table {...props} />;
+        return <div>
+            <div style={{ textAlign: 'right' }}>
+                <Badge count={25} style={{ backgroundColor: 'blue', margin: '5px' }} />
+                <Badge count={25} style={{ backgroundColor: 'green', margin: '5px' }} />
+                <Badge count={25} style={{ margin: '5px' }} />
+            </div>
+            <Table {...props} />
+        </div>;
     }
 
     //数据更新

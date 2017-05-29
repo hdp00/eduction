@@ -60,9 +60,14 @@ import { Tool } from './tool';
 
 
 export class App {
+
+
+
     run() {
 
-
+        let a = {a:1, b:2};
+        let b = {c:3, ...a};
+        console.log(b);
 
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}

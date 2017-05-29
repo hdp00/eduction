@@ -7,7 +7,6 @@ import { ICheckItem } from '../define';
 import {Tool} from '../tool';
 
 interface CheckItemListProps {
-    className?:string;
     items: ICheckItem[];
 }
 interface CheckItemListState {
