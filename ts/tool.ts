@@ -102,11 +102,19 @@ class EducationTool {
             //return JSON.parse(response);
             return response;
         },
+        //sse连接
+        addEventSource: (url: string, callback: (event: any) => void) => {
+            // let e:EventSource = new EventSource(url);
+            // e.onmessage = callback;
 
+            this.back.filldata(url, callback);
+        },
 
+        //temp 填充数据
         filldata: (url: string, callback?: (response: string) => void) => {
             callback(data[url]);
         },
+
     }
 
     public value = 'test';

@@ -54,7 +54,11 @@ import { Check } from './check/check';
 import { Tool } from './tool';
 
 
-
+let a = {a:1,b:[1,3]};
+let b = {b:[2,4]};
+let c:object = a;
+$.extend(c, b);
+console.log(a);
 
 
 
@@ -64,10 +68,6 @@ export class App {
 
 
     run() {
-        //temp
-        let a = {a:1, b:2};
-        let b = {c:3, ...a};
-        console.log(b);
 
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}

@@ -1,6 +1,7 @@
 //by hdp 2017.05.26
 //批改页面
 
+import * as $ from 'jquery'
 import * as React from 'react'
 import { Button } from 'antd'
 import { PaperState, IPaper, ICheckItem } from '../define'
@@ -8,7 +9,7 @@ import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
 import { Tool } from '../tool'
-import '../css/check.css';
+import '../css/check.css'
 
 export class Check extends React.Component<any, any>{
     //试卷列表
@@ -47,7 +48,7 @@ export class Check extends React.Component<any, any>{
     }
     componentDidMount() {
         Tool.back.post('/check/checkItemList', undefined, this.updateItems);
-        Tool.back.post('/check/paperList', undefined, this.updatePapers);
+        Tool.back.addEventSource('/check/paperList', this.updatePapers);
     }
 
     private updateItems = (response: string) => {
@@ -55,9 +56,10 @@ export class Check extends React.Component<any, any>{
         (this.refs['items'] as CheckItemList).update(this.items);
     }
     private updatePapers = (response: string) => {
-        this.papers = Tool.back.analyzeResponse(response);
-        (this.refs['papers'] as PaperList).update(this.papers);
+        const data:IPaper[] = Tool.back.analyzeResponse(response);
+        this.mixPapersData(data);
 
+        (this.refs['papers'] as PaperList).update(this.papers);
         if(this.paperIndex === -1)
             this.nextPaper();
     }
@@ -88,6 +90,26 @@ export class Check extends React.Component<any, any>{
     private onPaperChange = (index:number) => {
         this.paperIndex = index;
         (this.refs['view'] as PaperView).update(this.papers[index]);
+    }
+    //数据不断更新，需要混合
+    private paperMap = {};
+    private mixPapersData(data:IPaper[]){
+        if(this.papers.length === 0){
+            this.papers = data;
+            for(let p of this.papers)
+                this.paperMap[p.id] = p;
+            return;
+        }
+
+        for(let d of data){
+            if(this.paperMap[d.id] === undefined){
+                this.papers.push(d);
+                this.paperMap[d.id] = d;
+            }else{
+                let p:IPaper = this.paperMap[d.id];
+                $.extend(p, d);
+            }
+        }
     }
 }
 
