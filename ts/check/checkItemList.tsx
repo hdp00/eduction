@@ -6,14 +6,14 @@ import { Table } from 'antd';
 import { ICheckItem } from '../define';
 import {Tool} from '../tool';
 
-interface CheckItemListProps {
-    items: ICheckItem[];
-}
+
 interface CheckItemListState {
     select: string[];
 }
 
-export class CheckItemList extends React.Component<CheckItemListProps, CheckItemListState>{
+export class CheckItemList extends React.Component<any, CheckItemListState>{
+    items:ICheckItem[] = [];
+
     public state: CheckItemListState = {
         select: ['0']
     };
@@ -31,8 +31,8 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
         }];
 
         let datas = [];
-        for (let i = 0; i < this.props.items.length; i++) {
-            let item: ICheckItem = this.props.items[i];
+        for (let i = 0; i < this.items.length; i++) {
+            let item: ICheckItem = this.items[i];
             datas.push({
                 key: i.toString(),
                 image: item.image,
@@ -62,6 +62,11 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
         return <Table {...props} />;
     }
 
+    public update = (data:ICheckItem[]) =>{
+        this.items = data;
+        this.forceUpdate();
+    }
+
     private imageRender = (text: string): JSX.Element => {
         const index:number = parseInt(text);
         return <img src={Tool.check.imageItem[index].src} />;
@@ -70,7 +75,7 @@ export class CheckItemList extends React.Component<CheckItemListProps, CheckItem
         this.onRadioChange(index);
     }
     private onRadioClick = (selectedRowKeys, selectedRows) => {
-        if(selectedRowKeys.length == 0)
+        if(selectedRowKeys.length === 0)
             return;
         this.onRadioChange(parseInt(selectedRowKeys[0]));
     }

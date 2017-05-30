@@ -64,7 +64,7 @@ export class App {
 
 
     run() {
-
+        //temp
         let a = {a:1, b:2};
         let b = {c:3, ...a};
         console.log(b);

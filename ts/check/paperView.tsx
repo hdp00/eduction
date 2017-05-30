@@ -9,8 +9,8 @@ import { Tool } from '../tool';
 //批改管理
 class CorrectManager {
     //图标大小
-    private static imageWidth: number = 48;
-    private static imageHeight: number = 48;
+    private static imageWidth: number = 24;
+    private static imageHeight: number = 24;
 
     private width: number;
     private height: number;
@@ -61,18 +61,16 @@ export class PaperView extends React.Component<PaperViewProps, any>{
     private page: number = 0;
     private paper: IPaper;
 
-    constructor(props: PaperViewProps) {
-        super(props);
-    }
     render() {
+        const exist = (this.paper !== undefined);
         const sum = this.imagePaper.length;
         const index = this.page;
 
         const prevProps = {
-            onClick: this.prev,
+            onClick: exist ? this.prev : undefined,
         };
         const nextProps = {
-            onClick: this.next,
+            onClick: exist ? this.next : undefined,
         };
         const titleProps = {
             style: {
@@ -86,12 +84,12 @@ export class PaperView extends React.Component<PaperViewProps, any>{
 
         const canvasProps = {
             width: 800,
-            height: 800,
+            height: 600,
             className: 'check-canvas',
 
             ref: 'canvas',
-            onClick: this.addCorrect,
-            onDoubleClick: this.deleteCorrect,
+            onClick: exist ? this.addCorrect : undefined,
+            onDoubleClick: exist ? this.deleteCorrect : undefined,
         };
 
 
@@ -189,7 +187,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
     }
 
     //需要在componentDidMount之后调用
-    public updatePaper = (data: IPaper) => {
+    public update = (data: IPaper) => {
         this.save();
         this.clear();
 
@@ -229,5 +227,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         this.paper.corrects = [];
         for (let m of this.managers)
             this.paper.corrects.push(m.data);
+
+        Tool.back.post('/check/sendCorrect', this.paper.corrects);
     }
 }

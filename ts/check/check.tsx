@@ -3,86 +3,42 @@
 
 import * as React from 'react'
 import { Button } from 'antd'
-import { PaperState } from '../define'
+import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
 import { Tool } from '../tool'
-import { image0, image2, image3 } from '../image'
 import '../css/check.css';
 
 export class Check extends React.Component<any, any>{
-    papers = [{
-        id: '0',
-        images: [
-            image0,
-            image2,
-            image3
-        ],
-        text: 'aaa',
-        state: PaperState.New,
-    },
-    {
-        id: '1',
-        images: [
-            image3,
-            image2,
-            image0
-        ],
-        text: 'bbb',
-        state: PaperState.New,
-    }];
-
-    items = [{
-        image: 0,
-        text: 'a',
-        score: 1,
-    },
-    {
-        image: 0,
-        text: 'b',
-        score: 1,
-    },
-    {
-        image: 0,
-        text: 'c',
-        score: 1,
-    },
-    {
-        image: 1,
-        text: 'd',
-        score: 1,
-    },
-    {
-        image: 1,
-        text: 'e',
-        score: 1,
-    }];
+    //试卷列表
+    papers: IPaper[] = [];
+    paperIndex:number = -1;
+    //错误项列表
+    items: ICheckItem[] = [];
 
     render() {
         const paperViewProps = {
             currentCheckItem: this.getCurrentCheckItem,
             ref: 'view',
         };
-
         const checkItemListProps = {
-            items: this.items,
+            ref: 'items',
         };
-
         const paperProps = {
-            items: this.papers,
-            onChange: (id) => { console.log(id); },
+            ref: 'papers',
+            onChange: this.onPaperChange,
         };
         const buttonProps = {
-            onClick:this.nextPaper,
-            style:{
-                margin:'5px',
+            onClick: this.nextPaper,
+            style: {
+                margin: '5px',
             }
         };
 
         return <div className='check-total-div'>
             <PaperView {...paperViewProps} />
-            <div className = 'check-check-item-list' >
+            <div className='check-check-item-list' >
                 <Button type='primary' {...buttonProps}>下一份试卷</Button>
                 <CheckItemList {...checkItemListProps} />
             </div>
@@ -90,15 +46,48 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
-        (this.refs['view'] as PaperView).updatePaper(this.papers[0]);
+        Tool.back.post('/check/checkItemList', undefined, this.updateItems);
+        Tool.back.post('/check/paperList', undefined, this.updatePapers);
     }
 
+    private updateItems = (response: string) => {
+        this.items = Tool.back.analyzeResponse(response);
+        (this.refs['items'] as CheckItemList).update(this.items);
+    }
+    private updatePapers = (response: string) => {
+        this.papers = Tool.back.analyzeResponse(response);
+        (this.refs['papers'] as PaperList).update(this.papers);
+
+        if(this.paperIndex === -1)
+            this.nextPaper();
+    }
+    //获取当前错误项
     private getCurrentCheckItem = () => {
         return this.items[Tool.check.currentIndex];
     }
-
+    //下一张未批改试卷
     private nextPaper = () => {
+        let count = this.papers.length;
+        let index = this.paperIndex + 1;
+        if(count === 0)
+            return;
 
+        for(let i = 0; i < (count - 1); i++){
+            let j = index + i;
+            j = (j >= count) ? j - count : j;
+            if(this.papers[j].state !== PaperState.HasChecked){
+                this.onPaperChange(j);
+                (this.refs['papers'] as PaperList).updateSelect(this.paperIndex);
+                return;
+            }               
+        }
+
+        this.onPaperChange(-1);
+    }
+    //试卷切换
+    private onPaperChange = (index:number) => {
+        this.paperIndex = index;
+        (this.refs['view'] as PaperView).update(this.papers[index]);
     }
 }
 
