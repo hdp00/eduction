@@ -1,7 +1,7 @@
 import * as  React from 'react';
 import * as  ReactDOM from 'react-dom';
 import * as $ from 'jquery';
-import { Button } from 'antd';
+import { Button, Alert } from 'antd';
 import './css/antd.css';
 
 import { EducationRouter } from './educationRouter';
@@ -72,7 +72,7 @@ export class App {
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}
             <Check />
-
+            <Alert message={''} type="warning" showIcon />
 
         </div>,
             document.getElementById('root'));

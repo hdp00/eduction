@@ -3,7 +3,7 @@
 
 import * as $ from 'jquery'
 import { PaperState } from './define'
-import { imageTrue, imageFalse, image0, image2, image3 } from './image'
+import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from './image'
 
 class virtualData {
     '/check/checkItemList' = [{
@@ -59,16 +59,18 @@ class EducationTool {
     constructor() {
         this.imageTrue.src = imageTrue;
         this.imageFalse.src = imageFalse;
+        this.imageQuestion.src = imageQuestion;
     }
 
     imageTrue: HTMLImageElement = new Image();
     imageFalse: HTMLImageElement = new Image();
+    imageQuestion:HTMLImageElement = new Image();
     //批改页数据
     public check = {
         //错误项图标
         imageItem: {
-            0: this.imageTrue,
-            1: this.imageFalse,
+            0: this.imageFalse,
+            1: this.imageQuestion,
         },
         currentIndex: 0,
     };
