@@ -14,3 +14,8 @@
 .check-canvas{
     border: 1px solid black;
 }
+.chekc-canvas-div{
+    width: 800px;
+    height: 600px;
+    overflow: auto;
+}

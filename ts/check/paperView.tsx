@@ -60,11 +60,13 @@ export class PaperView extends React.Component<PaperViewProps, any>{
     private imagePaper: HTMLImageElement[] = [];
     private page: number = 0;
     private paper: IPaper;
+    private canvasScale: number = 1;
 
     render() {
         const exist = (this.paper !== undefined);
         const sum = this.imagePaper.length;
         const index = this.page;
+        const scale = this.canvasScale;
 
         const prevProps = {
             onClick: exist ? this.prev : undefined,
@@ -83,15 +85,15 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         }
 
         const canvasProps = {
-            width: 800,
-            height: 600,
+            width: 640 * scale,
+            height: 480 * scale,
             className: 'check-canvas',
 
             ref: 'canvas',
             onClick: exist ? this.addCorrect : undefined,
             onDoubleClick: exist ? this.deleteCorrect : undefined,
+            onWheel: exist ? this.scaleCanvas : undefined,
         };
-
 
         return <div {...totalProps}>
             <div {...titleProps}>
@@ -99,8 +101,8 @@ export class PaperView extends React.Component<PaperViewProps, any>{
                 <label className='check-label'>{(index + 1) + '/' + sum}</label>
                 <Button type='primary' {...nextProps}>下一页<Icon type="right" /></Button>
             </div>
-            <div>
-                <canvas {...canvasProps} />
+            <div className='chekc-canvas-div'>
+                <canvas {...canvasProps}/>
             </div>
         </div>;
     }
@@ -110,10 +112,14 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         const ctx: CanvasRenderingContext2D = this.ctx;
         ctx.textBaseline = 'middle';
     }
+    componentDidUpdate(prevProps: any, prevState: any, prevContext: any){
+        this.draw();
+    }
 
     private addCorrect = (event) => {
-        const x: number = event.pageX - event.target.offsetLeft;
-        const y: number = event.pageY - event.target.offsetTop;
+        const scale = this.canvasScale;
+        const x: number = (event.pageX - event.target.offsetLeft) / scale;
+        const y: number = (event.pageY - event.target.offsetTop) / scale;
         const ctx: CanvasRenderingContext2D = this.ctx;
 
         const index: number = this.findCheckIndex(x, y);
@@ -134,8 +140,9 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         this.draw();
     }
     private deleteCorrect = (event) => {
-        const x: number = event.pageX - event.target.offsetLeft;
-        const y: number = event.pageY - event.target.offsetTop;
+        const scale = this.canvasScale;
+        const x: number = (event.pageX - event.target.offsetLeft) / scale;
+        const y: number = (event.pageY - event.target.offsetTop) / scale;
 
         const index: number = this.findCheckIndex(x, y);
         if (index === -1)
@@ -144,11 +151,15 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         this.managers.splice(index, 1);
         this.draw();
     }
+    aaa:number = 0;
     private draw = () => {
         if (this.ctx === undefined)
             return;
 
         const ctx: CanvasRenderingContext2D = this.ctx;
+        const scale = this.canvasScale;
+        ctx.save();
+        ctx.scale(scale, scale);
         ctx.clearRect(0, 0, 1920, 1080);
 
         ctx.drawImage(this.imagePaper[this.page], 0, 0);
@@ -156,6 +167,8 @@ export class PaperView extends React.Component<PaperViewProps, any>{
             if (m.data.page === this.page)
                 m.draw(ctx);
         }
+
+        ctx.restore();
     }
     private findCheckIndex(x: number, y: number): number {
         const count = this.managers.length;
@@ -174,7 +187,6 @@ export class PaperView extends React.Component<PaperViewProps, any>{
             return;
 
         this.page--;
-        this.draw();
         this.forceUpdate();
     }
     private next = () => {
@@ -182,8 +194,38 @@ export class PaperView extends React.Component<PaperViewProps, any>{
             return;
 
         this.page++;
-        this.draw();
         this.forceUpdate();
+    }
+    private scaleCanvas = (event) => {
+        const e: WheelEvent = event as WheelEvent;
+        if (!e.altKey)
+            return;
+        e.preventDefault();
+
+        const scales: number[] = [1, 1.1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4];
+        const len: number = scales.length;
+        let index: number = 0;
+        let scale: number = this.canvasScale;
+        for (let i = 0; i < len; i++) {
+            if (scale === scales[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        if (event.deltaY > 0) {
+            index--;
+            index = (index < 0) ? 0 : index;
+        } else {
+            index++;
+            index = (index >= len) ? (len - 1) : index;
+        }
+
+        let newScale = scales[index];
+        if (scale !== newScale) {
+            this.canvasScale = newScale;
+            this.forceUpdate();
+        }     
     }
 
     //需要在componentDidMount之后调用
@@ -208,9 +250,6 @@ export class PaperView extends React.Component<PaperViewProps, any>{
                 image.src = src;
                 this.imagePaper.push(image);
             }
-        }
-        else {
-            this.draw();
         }
 
         this.forceUpdate();
