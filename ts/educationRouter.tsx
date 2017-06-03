@@ -7,6 +7,9 @@ import {
     Route, RouteProps, Link, Redirect,
 
 } from 'react-router-dom'
+import {Tool} from './tool'
+
+const Tr = Tool.router;
 
 class LoginSign {
     private _isLogin: boolean = false;
@@ -106,14 +109,6 @@ export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>
-                <button onClick={this.clickHandle}>aaa</button>
-                <ul>
-                    <li><Link to='/classroom'>classroom</Link></li>
-                    <li><Link to='/classroom/student'>student</Link></li>
-                    <li><Link to='/classroom/homework'>homework</Link></li>
-                    <li><Link to='/check'>check</Link></li>
-                </ul>
-                <hr />
                 <Route component={Navigation} />
 
                 <Route exact path='/' render={
@@ -130,9 +125,6 @@ export class EducationRouter extends React.Component<any, any>{
                 <PrivateRoute path='/check' component={Check} />
             </div>
         </Router>
-    }
-
-    private clickHandle = () => {
     }
 }
 

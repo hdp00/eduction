@@ -2,7 +2,7 @@
 //全局工具类
 
 import * as $ from 'jquery'
-import { PaperState } from './define'
+import { PaperState, UserType } from './define'
 import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from './image'
 
 class virtualData {
@@ -64,7 +64,7 @@ class EducationTool {
 
     imageTrue: HTMLImageElement = new Image();
     imageFalse: HTMLImageElement = new Image();
-    imageQuestion:HTMLImageElement = new Image();
+    imageQuestion: HTMLImageElement = new Image();
     //批改页数据
     public check = {
         //错误项图标
@@ -77,15 +77,34 @@ class EducationTool {
 
     //用户
     public user = {
-        userId: '',
-        token: '',
+        id: {
+            userId: '',
+            token: '',
+        },
+        role: UserType.Teacher,
     }
+
+    public router = {
+        root: '/',
+
+        select: '/select',
+        login: '/login',
+        logout: '/logout',
+        password: '/password',
+
+        check: '/check',
+
+        classroom: '/classroom',
+        seat: '/classroom/seat',
+        statistics: '/classroom/statistics',
+        homework: '/classroom/homework',
+    };
 
     //后台数据
     public back = {
         post: (url: string, request?: object, callback?: (response: string) => void) => {
             // let data:object = {
-            //     ...this.user,
+            //     ...this.user.id,
             //     ...request
             // }
             // if (request === undefined)

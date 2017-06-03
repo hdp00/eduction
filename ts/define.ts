@@ -9,10 +9,11 @@ export enum PaperState {
 }
 
 //用户类型
-export enum UserType{
-    Checker,    //批改
-    Teacher,    //老师
-    Manager     //管理
+export enum UserType {
+    None,           //无
+    Checker,        //批改
+    Teacher,        //老师
+    Manager,        //管理
 }
 
 //批改项
