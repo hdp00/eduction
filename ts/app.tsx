@@ -52,28 +52,18 @@ import { Check } from './check/check';
 
 
 import { Tool } from './tool';
-
-
-let a = {a:1,b:[1,3]};
-let b = {b:[2,4]};
-let c:object = a;
-$.extend(c, b);
-console.log(a);
+import {Title} from './title/title'
 
 
 
 
 export class App {
-
-
-
     run() {
 
         ReactDOM.render(<div>
             {/*<TotalRouter />*/}
+            <Title />
             <Check />
-            <Alert message={''} type="warning" showIcon />
-
         </div>,
             document.getElementById('root'));
     }
