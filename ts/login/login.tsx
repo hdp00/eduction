@@ -3,11 +3,11 @@
 
 import * as  React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import '../css/loginForm.css';
+import '../css/login.css';
 const FormItem = Form.Item;
 
-class Login extends React.Component<any, any> {
-    private comment: string = 'abc';
+class LoginForm extends React.Component<any, any> {
+    private comment: string = '';
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -60,6 +60,5 @@ class Login extends React.Component<any, any> {
     }
 }
 
-const LoginForm = Form.create()(Login);
-export { LoginForm }
+export const Login = Form.create()(LoginForm);
 

@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Table } from 'antd';
 import { ICheckItem } from '../define';
-import {Tool} from '../tool';
+import {Tool} from '../tool/tool';
 
 
 interface CheckItemListState {

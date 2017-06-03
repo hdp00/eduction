@@ -7,56 +7,42 @@ import {
     Route, RouteProps, Link, Redirect,
 
 } from 'react-router-dom'
-import {Tool} from './tool'
+import { Tool } from './tool/tool'
+import { Title } from './title/title'
+import { Check } from './check/check'
+import { Login } from './login/login'
+import { Select } from './login/select'
 
 const Tr = Tool.router;
 
-class LoginSign {
-    private _isLogin: boolean = false;
+/*class Navigation extends React.Component<any, any>{
 
-    get isLogin() {
-        return this._isLogin;
-    }
-
-    login = () => {
-        this._isLogin = true;
-    }
-    logout = () => {
-        this._isLogin = false;
-    }
-}
-const loginSign = new LoginSign();
-
-
-class Navigation extends React.Component<any, any>{
-
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
 
         this.props.history.listen(this.onListen);
     }
 
 
-    render(){
+    render() {
         return <div>navigation
             <button onClick={this.onStudent} >student</button>
             <button>homework</button>
         </div>;
     }
 
-    private onStudent = () =>{
+    private onStudent = () => {
         console.log(this.props.history.push('/classroom/student'));
     }
-    private onListen(location: Location){
+    private onListen(location: Location) {
         console.log(location.pathname);
     }
-}
+}*/
 
 
-class Login extends React.Component<any, any>{
+/*class Login extends React.Component<any, any>{
     render() {
-        if (loginSign.isLogin)
-        {
+        if (loginSign.isLogin) {
             return (
                 <Redirect to='/select' />
             )
@@ -71,58 +57,48 @@ class Login extends React.Component<any, any>{
         loginSign.login();
         this.forceUpdate();
     }
-}
+}*/
 
 //登录路由
 class PrivateRoute extends Route {
     render() {
         const { component, ...rest } = this.props;
 
-        if (loginSign.isLogin)
+        if (Tool.user.loggedin)
             return <Route {...this.props} />;
         return <Route {...rest} render={
-            () => <Redirect to='/login' />} />;
-    }
-}
-
-class Select extends React.Component<any, any>{
-    render() {
-        return <div>select</div>;
+            () => <Redirect to={Tr.login} />} />;
     }
 }
 
 const Seat = () => (
     <div>seat</div>
 )
-const Student = () => (
-    <div>student</div>
+const Statistics = () => (
+    <div>statistics</div>
 )
 const Homework = () => (
     <div>homework</div>
-)
-
-const Check = () => (
-    <div>check</div>
 )
 
 export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>
-                <Route component={Navigation} />
+                <Route component={Title} />
 
-                <Route exact path='/' render={
-                    () => <Redirect to='/select' />} />
-                <Route path='/login' component={Login} />
-                <PrivateRoute path='/select' component={Select} />
+                <Route exact path={Tr.root} render={
+                    () => <Redirect to={Tr.select} />} />
+                <Route path={Tr.login} component={Login} />
+                <PrivateRoute path={Tr.select} component={Select} />
 
-                <PrivateRoute exact path='/classroom' render={
-                    () => <Redirect to='/classroom/seat' />} />
-                <PrivateRoute path='/classroom/seat' component={Seat} />
-                <PrivateRoute path='/classroom/student' component={Student} />
-                <PrivateRoute path='/classroom/homework' component={Homework} />
+                <PrivateRoute exact path={Tr.classroom} render={
+                    () => <Redirect to={Tr.seat} />} />
+                <PrivateRoute path={Tr.seat} component={Seat} />
+                <PrivateRoute path={Tr.statistics} component={Statistics} />
+                <PrivateRoute path={Tr.homework} component={Homework} />
 
-                <PrivateRoute path='/check' component={Check} />
+                <PrivateRoute path={Tr.check} component={Check} />
             </div>
         </Router>
     }

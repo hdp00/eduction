@@ -5,7 +5,6 @@ import { Button, Alert } from 'antd';
 import './css/antd.css';
 
 import { EducationRouter } from './educationRouter';
-import { LoginForm } from './login/login'
 
 // import { Modal, Button, Table, Icon } from 'antd';
 
@@ -51,7 +50,7 @@ import { Check } from './check/check';
 
 
 
-import { Tool } from './tool';
+import { Tool } from './tool/tool';
 import {Title} from './title/title'
 
 
@@ -61,9 +60,7 @@ export class App {
     run() {
 
         ReactDOM.render(<div>
-            {/*<TotalRouter />*/}
-            <Title />
-            <Check />
+            <EducationRouter />
         </div>,
             document.getElementById('root'));
     }

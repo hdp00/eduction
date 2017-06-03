@@ -8,7 +8,7 @@ import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool } from '../tool'
+import { Tool } from '../tool/tool'
 import '../css/check.css'
 
 export class Check extends React.Component<any, any>{

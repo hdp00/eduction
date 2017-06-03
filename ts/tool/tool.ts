@@ -2,58 +2,64 @@
 //全局工具类
 
 import * as $ from 'jquery'
-import { PaperState, UserType } from './define'
-import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from './image'
+import { PaperState, UserType } from '../define'
+import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
-class virtualData {
-    '/check/checkItemList' = [{
-        image: 0,
-        text: 'a',
-        score: 1,
-    },
-    {
-        image: 0,
-        text: 'b',
-        score: 1,
-    },
-    {
-        image: 0,
-        text: 'c',
-        score: 1,
-    },
-    {
-        image: 1,
-        text: 'd',
-        score: 1,
-    },
-    {
-        image: 1,
-        text: 'e',
-        score: 1,
-    }];
 
-    '/check/paperList' = [{
-        id: '0',
-        images: [
-            image0,
-            image2,
-            image3
-        ],
-        text: 'aaa',
-        state: PaperState.New,
-    },
-    {
-        id: '1',
-        images: [
-            image3,
-            image2,
-            image0
-        ],
-        text: 'bbb',
-        state: PaperState.New,
-    }];
+export const DataUrl = {
+    checkItemList: '/check/checkItemList',
+    paperList: '/check/paperList',
+
+    login:'/login',
+    logout:'/logout',
 }
-const data = new virtualData();
+
+let data = {};
+data[DataUrl.checkItemList] = [{
+    image: 0,
+    text: 'a',
+    score: 1,
+},
+{
+    image: 0,
+    text: 'b',
+    score: 1,
+},
+{
+    image: 0,
+    text: 'c',
+    score: 1,
+},
+{
+    image: 1,
+    text: 'd',
+    score: 1,
+},
+{
+    image: 1,
+    text: 'e',
+    score: 1,
+}];
+data[DataUrl.paperList] = [{
+    id: '0',
+    images: [
+        image0,
+        image2,
+        image3
+    ],
+    text: 'aaa',
+    state: PaperState.New,
+},
+{
+    id: '1',
+    images: [
+        image3,
+        image2,
+        image0
+    ],
+    text: 'bbb',
+    state: PaperState.New,
+}];
 
 class EducationTool {
     constructor() {
@@ -81,7 +87,10 @@ class EducationTool {
             userId: '',
             token: '',
         },
-        role: UserType.Teacher,
+        loggedin: true,
+        currentRole: UserType.None,
+        roles: [UserType.Teacher, UserType.Checker],
+        onUserChaned:() =>{},
     }
 
     public router = {

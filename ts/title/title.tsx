@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool } from '../tool'
+import { Tool } from '../tool/tool'
 import { UserType } from '../define'
 
 const SubMenu = Menu.SubMenu;
@@ -17,15 +17,19 @@ const Tr = Tool.router;
 
 export class Title extends React.Component<any, any>{
 
+    constructor(props: any) {
+        super(props);
+    }
+
     render() {
-        const user = <SubMenu title={<span><Icon type='user' />用户</span>}>
-            <Item><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
-            <Item><Link to={Tr.logout}><Icon type='poweroff' />退出</Link></Item>
+        const user = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
+            <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
+            <Item key='logout'><Link to={Tr.logout}><Icon type='poweroff' />退出</Link></Item>
         </SubMenu>;
 
         let defaultSelectedKeys = [];
         let items = [];
-        switch (Tool.user.role) {
+        switch (Tool.user.currentRole) {
             case UserType.Teacher:
                 items.push(<Item key='seat'>
                     <Link to={Tr.seat}><Icon type='team' />座位表</Link>
@@ -41,7 +45,7 @@ export class Title extends React.Component<any, any>{
                 break;
             case UserType.Checker:
                 items.push(<Item key='check'>
-                    <Link to={Tr.check}><Icon type='question-circle-o' />批改</Link>
+                    <Link to={Tr.check}><Icon type='check-square-o' />批改</Link>
                 </Item>);
                 items.push(user);
                 defaultSelectedKeys = ['check'];
