@@ -2,41 +2,47 @@
 //登录页面
 
 import * as  React from 'react';
+import { Redirect } from 'react-router-dom'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Tool } from '../tool/tool'
 import '../css/login.css';
+
 const FormItem = Form.Item;
+const Tr = Tool.router;
 
 class LoginForm extends React.Component<any, any> {
     private comment: string = '';
 
     render() {
-        const { getFieldDecorator } = this.props.form;
-        return (
-            <Form ref='form' onSubmit={this.handleSubmit} className="login-form">
-                <FormItem>
-                    {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: '请输入用户名' }],
-                    })(
-                        <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />
-                        )}
-                </FormItem>
-                <FormItem>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: '请输入密码' }],
-                    })(
-                        <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
-                        )}
-                </FormItem>
-                <FormItem>
-                    <label>{this.comment}</label>
-                </FormItem>
+        // if (Tool.user.loggedin)
+        //     return <Redirect to={Tr.select} />;
 
-                <FormItem>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        登录
+        const { getFieldDecorator } = this.props.form;
+        return (<Form onSubmit={this.handleSubmit} className="login-form">
+            <FormItem>
+                {getFieldDecorator('username', {
+                    rules: [{ required: true, message: '请输入用户名' }],
+                })(
+                    <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />
+                    )}
+            </FormItem>
+            <FormItem>
+                {getFieldDecorator('password', {
+                    rules: [{ required: true, message: '请输入密码' }],
+                })(
+                    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
+                    )}
+            </FormItem>
+            <FormItem>
+                <label>{this.comment}</label>
+            </FormItem>
+
+            <FormItem>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                    登录
                     </Button>
-                </FormItem>
-            </Form>
+            </FormItem>
+        </Form>
         );
     }
 
@@ -45,18 +51,20 @@ class LoginForm extends React.Component<any, any> {
         this.comment = '';
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.onError({comment:'error'});
+                Tool.back.postLogin(Tr.login, values, this.onLogin);
             }
         });
     }
 
-    private onSuccess(){
-        this.props.form.resetFields();
-        //this.props.history.replace('/select');
-    }
-    private onError(response){
-        this.comment = response.comment;
-        this.forceUpdate();  
+    private onLogin = (data: any) => {
+        if (data.code === 0) {
+            this.props.form.resetFields();
+            Tool.user.login(data.data);
+            this.props.history.replace(Tr.select);
+        } else {
+            this.comment = data.comment;
+            this.forceUpdate();
+        }
     }
 }
 

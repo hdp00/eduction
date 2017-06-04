@@ -8,8 +8,9 @@ import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool } from '../tool/tool'
+import { Tool, DataUrl } from '../tool/tool'
 import '../css/check.css'
+
 
 export class Check extends React.Component<any, any>{
     //试卷列表
@@ -47,16 +48,16 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.post('/check/checkItemList', undefined, this.updateItems);
-        Tool.back.addEventSource('/check/paperList', this.updatePapers);
+        Tool.back.post(DataUrl.checkItemList, undefined, this.updateItems);
+        Tool.back.addEventSource(DataUrl.paperList, this.updatePapers);
     }
 
-    private updateItems = (response: string) => {
-        this.items = Tool.back.analyzeResponse(response);
+    private updateItems = (response: any) => {
+        this.items = response;
         (this.refs['items'] as CheckItemList).update(this.items);
     }
-    private updatePapers = (response: string) => {
-        const data:IPaper[] = Tool.back.analyzeResponse(response);
+    private updatePapers = (response: any) => {
+        const data:IPaper[] = response;
         this.mixPapersData(data);
 
         (this.refs['papers'] as PaperList).update(this.papers);

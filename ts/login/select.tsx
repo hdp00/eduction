@@ -23,22 +23,22 @@ export class Select extends React.Component<any, any>{
             default:
                 //需要和Usertype同步
                 const texts = ['', '试卷批改', '教师', '后台管理'];
-                const props ={
-                    style:{
-                        width:'200px', 
-                        height:'50px',
-                        margin:'20px auto',
+                const props = {
+                    style: {
+                        width: '200px',
+                        height: '50px',
+                        margin: '20px auto',
                     },
-                    onClick:this.onClick,
+                    onClick: this.onClick,
                 };
                 let items = [];
 
                 for (let r of roles) {
                     items.push(<Button key={texts[r]} type='primary' data-role={r} {...props}>{texts[r]}</Button>);
-                    items.push(<br />);
+                    items.push(<br key={texts[r] + 'br'} />);
                 }
 
-                return <div style= {{textAlign:'center'}}>{items}</div>;
+                return <div style={{ textAlign: 'center' }}>{items}</div>;
         }
     }
 

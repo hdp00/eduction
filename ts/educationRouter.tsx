@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 
 } from 'react-router-dom'
-import { Tool } from './tool/tool'
+import { Tool, DataUrl } from './tool/tool'
 import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
@@ -82,14 +82,18 @@ const Homework = () => (
 )
 
 export class EducationRouter extends React.Component<any, any>{
+    constructor(props: any) {
+        super(props);
+    }
+
     render() {
         return <Router>
             <div>
-                <Route component={Title} />
+                <Route ref='title' component={Title} />
 
                 <Route exact path={Tr.root} render={
-                    () => <Redirect to={Tr.select} />} />
-                <Route path={Tr.login} component={Login} />
+                    () => <Redirect to={Tr.login} />} />
+                <Route ref='login' path={Tr.login} component={Login} />
                 <PrivateRoute path={Tr.select} component={Select} />
 
                 <PrivateRoute exact path={Tr.classroom} render={
@@ -102,5 +106,9 @@ export class EducationRouter extends React.Component<any, any>{
             </div>
         </Router>
     }
+    componentDidMount() {
+        (Tool.component.title as Title).checkLogin();
+    }
+
 }
 

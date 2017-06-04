@@ -5,13 +5,38 @@ import * as $ from 'jquery'
 import { PaperState, UserType } from '../define'
 import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
+//回调函数处理类
+class CallbackContainer {
+    constructor(callback: (response: string) => void) {
+        this.callback = callback;
+    }
 
+    private callback: (response: string) => void;
+
+    public run = (response: string) => {
+        let data = this.convertData(response);
+        this.showMessage(data);
+        this.callback(data);
+    }
+
+    private convertData = (response: any) => {
+        //return JSON.parse(response);
+        return response;
+    }
+    private showMessage(data: any) {
+        if (data.code !== 0)
+            console.log(data.comment);
+    }
+}
+
+//后台url列表
 export const DataUrl = {
     checkItemList: '/check/checkItemList',
     paperList: '/check/paperList',
 
-    login:'/login',
-    logout:'/logout',
+    login: '/login',
+    logout: '/logout',
+    checkLogin: '/checkLogin',
 }
 
 let data = {};
@@ -60,12 +85,73 @@ data[DataUrl.paperList] = [{
     text: 'bbb',
     state: PaperState.New,
 }];
+data[DataUrl.login] = {
+    code: 0,
+    comment: '',
+    data: {
+        userId: 'aaa',
+        token: 'bbb',
+        roles: [UserType.Teacher, UserType.Checker],
+    },
+};
+data[DataUrl.logout] = {
+    code: 0,
+    comment: '',
+}
+data[DataUrl.checkLogin] = {
+    code: 0,
+    comment: '',
+};
+
+class User {
+    constructor() {
+        this.userId = localStorage.userId;
+        this.token = localStorage.token;
+        this._currentRole = localStorage.currentRole;
+        if (this._currentRole === undefined)
+            this._currentRole = UserType.None;
+    }
+
+    public userId: string = '';
+    public token: string = '';
+    public loggedin: boolean = false;
+    private _currentRole: UserType = UserType.None;
+    set currentRole(value: UserType) {
+        if (this._currentRole !== value) {
+            this._currentRole = value;
+        }
+    }
+    get currentRole() { return this._currentRole; }
+    public roles: UserType[] = [];
+
+    public login = (data: any) => {
+        this.loggedin = true;
+        if (data !== undefined) {
+            localStorage.userId = this.userId = data.userId;
+            localStorage.token = this.token = data.token;
+            localStorage.currentRole = this.currentRole = data.currentRole;
+            this.roles = data.roles;
+        }
+    }
+    public logout = () => {
+        this.loggedin = false;
+        this.userId = '';
+        this.token = '';
+        this.roles = [];
+        this.currentRole = UserType.None;
+        localStorage.clear();
+    }
+
+    public onUserChanged: () => void;
+}
 
 class EducationTool {
     constructor() {
         this.imageTrue.src = imageTrue;
         this.imageFalse.src = imageFalse;
         this.imageQuestion.src = imageQuestion;
+
+        //this.back.post(DataUrl.checkLogin, undefined, this.user.);
     }
 
     imageTrue: HTMLImageElement = new Image();
@@ -82,16 +168,7 @@ class EducationTool {
     };
 
     //用户
-    public user = {
-        id: {
-            userId: '',
-            token: '',
-        },
-        loggedin: true,
-        currentRole: UserType.None,
-        roles: [UserType.Teacher, UserType.Checker],
-        onUserChaned:() =>{},
-    }
+    public user: User = new User();
 
     public router = {
         root: '/',
@@ -111,6 +188,15 @@ class EducationTool {
 
     //后台数据
     public back = {
+        // get: (url: string, request?: object, callback?: (response: string) => void) => {
+
+        // },
+        postLogin(url: string, request: object, callback: (response: string) => void) {
+            let c = new CallbackContainer(callback);
+            //$.post(url, request, c.run);
+
+            c.run(data[url]);
+        },
         post: (url: string, request?: object, callback?: (response: string) => void) => {
             // let data:object = {
             //     ...this.user.id,
@@ -123,35 +209,27 @@ class EducationTool {
 
             if (callback === undefined)
                 return;
-            this.back.filldata(url, callback);
+            let c = new CallbackContainer(callback);
+            c.run(data[url]);
         },
-        postLogin: (url: string, request: object, callback: (response: string) => void) => {
-            // $.post(url, request, callback);
-        },
-        analyzeResponse: (response: any) => {
-            //return JSON.parse(response);
-            return response;
-        },
+
+
+
         //sse连接
         addEventSource: (url: string, callback: (event: any) => void) => {
             // let e:EventSource = new EventSource(url);
             // e.onmessage = callback;
 
-            this.back.filldata(url, callback);
+            let c = new CallbackContainer(callback);
+            c.run(data[url]);
         },
-
-        //temp 填充数据
-        filldata: (url: string, callback?: (response: string) => void) => {
-            callback(data[url]);
-        },
-
     }
 
-    public value = 'test';
-    private save() {
-
+    //需要访问的组件
+    public component = {
+        //标题页面
+        title:{},
     }
-
 }
 
 export const Tool = new EducationTool();

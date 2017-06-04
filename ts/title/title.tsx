@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool } from '../tool/tool'
+import { Tool, DataUrl } from '../tool/tool'
 import { UserType } from '../define'
 
 const SubMenu = Menu.SubMenu;
@@ -16,15 +16,16 @@ const Item = Menu.Item;
 const Tr = Tool.router;
 
 export class Title extends React.Component<any, any>{
-
-    constructor(props: any) {
+    constructor(props:any){
         super(props);
+
+        Tool.component.title = this;
     }
 
     render() {
         const user = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
             <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
-            <Item key='logout'><Link to={Tr.logout}><Icon type='poweroff' />退出</Link></Item>
+            <Item key='logout'><Icon type='poweroff' />退出</Item>
         </SubMenu>;
 
         let defaultSelectedKeys = [];
@@ -55,15 +56,37 @@ export class Title extends React.Component<any, any>{
                 break;
         }
 
-        return <div>
+        return <div ref='aaa'>
             <label style={{ float: 'left' }}>君德教育</label>
-            <Router>
-                <Menu mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
-                    {items}
-                </Menu>
-            </Router>
+            <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
+                {items}
+            </Menu>
             <div style={{ clear: 'both' }} />
         </div>;
+    }
+
+    //退出登录
+    public logout = () => {
+        Tool.back.post(Tr.logout, {}, this.onLogout);
+    }
+    private onLogout = (response: any) => {
+        Tool.user.logout();
+        this.props.history.push(Tr.login);
+    }
+    //
+    public checkLogin =() => {
+        Tool.back.post(DataUrl.checkLogin, {}, this.onCheckLogin);
+    }
+    private onCheckLogin = (data: any) => {
+        if(data.code === 0){
+            Tool.user.login(undefined);
+            this.props.history.push(Tr.select);
+        }
+    }
+
+    private onClick = ({ item, key, keyPath }) => {
+        if (key === 'logout')
+            this.logout();
     }
 }
 
