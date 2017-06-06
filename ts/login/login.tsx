@@ -14,8 +14,8 @@ class LoginForm extends React.Component<any, any> {
     private comment: string = '';
 
     render() {
-        // if (Tool.user.loggedin)
-        //     return <Redirect to={Tr.select} />;
+        if (Tool.user.loggedin)
+            return <Redirect to={Tr.select} />;
 
         const { getFieldDecorator } = this.props.form;
         return (<Form onSubmit={this.handleSubmit} className="login-form">

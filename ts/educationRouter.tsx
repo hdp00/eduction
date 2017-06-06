@@ -89,11 +89,11 @@ export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>
-                <Route ref='title' component={Title} />
+                <Route component={Title} />
 
                 <Route exact path={Tr.root} render={
                     () => <Redirect to={Tr.login} />} />
-                <Route ref='login' path={Tr.login} component={Login} />
+                <Route path={Tr.login} component={Login} />
                 <PrivateRoute path={Tr.select} component={Select} />
 
                 <PrivateRoute exact path={Tr.classroom} render={
@@ -105,9 +105,6 @@ export class EducationRouter extends React.Component<any, any>{
                 <PrivateRoute path={Tr.check} component={Check} />
             </div>
         </Router>
-    }
-    componentDidMount() {
-        (Tool.component.title as Title).checkLogin();
     }
 
 }

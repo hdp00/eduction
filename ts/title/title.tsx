@@ -16,10 +16,11 @@ const Item = Menu.Item;
 const Tr = Tool.router;
 
 export class Title extends React.Component<any, any>{
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
 
         Tool.component.title = this;
+        this.props.history.listen(this.onHistoryChanged);
     }
 
     render() {
@@ -56,13 +57,16 @@ export class Title extends React.Component<any, any>{
                 break;
         }
 
-        return <div ref='aaa'>
+        return <div>
             <label style={{ float: 'left' }}>君德教育</label>
             <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
                 {items}
             </Menu>
             <div style={{ clear: 'both' }} />
         </div>;
+    }
+    componentDidMount() {
+        this.checkLogin();
     }
 
     //退出登录
@@ -73,12 +77,12 @@ export class Title extends React.Component<any, any>{
         Tool.user.logout();
         this.props.history.push(Tr.login);
     }
-    //
-    public checkLogin =() => {
+    //检查是否已登录
+    private checkLogin = () => {
         Tool.back.post(DataUrl.checkLogin, {}, this.onCheckLogin);
     }
     private onCheckLogin = (data: any) => {
-        if(data.code === 0){
+        if (data.code === 0) {
             Tool.user.login(undefined);
             this.props.history.push(Tr.select);
         }
@@ -87,6 +91,9 @@ export class Title extends React.Component<any, any>{
     private onClick = ({ item, key, keyPath }) => {
         if (key === 'logout')
             this.logout();
+    }
+    private onHistoryChanged = (location, action) => {
+        this.forceUpdate();
     }
 }
 

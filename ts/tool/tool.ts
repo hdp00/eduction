@@ -107,30 +107,33 @@ class User {
     constructor() {
         this.userId = localStorage.userId;
         this.token = localStorage.token;
-        this._currentRole = localStorage.currentRole;
-        if (this._currentRole === undefined)
-            this._currentRole = UserType.None;
+        this.currentRole = parseInt(localStorage.currentRole);
+        if (isNaN(this.currentRole))
+            this.currentRole = UserType.None;
     }
 
     public userId: string = '';
     public token: string = '';
     public loggedin: boolean = false;
-    private _currentRole: UserType = UserType.None;
-    set currentRole(value: UserType) {
-        if (this._currentRole !== value) {
-            this._currentRole = value;
-        }
-    }
-    get currentRole() { return this._currentRole; }
+    public currentRole: UserType = UserType.None;
     public roles: UserType[] = [];
 
     public login = (data: any) => {
         this.loggedin = true;
         if (data !== undefined) {
+            if(data.currentRole === undefined)
+                data.currentRole = UserType.None;
+
             localStorage.userId = this.userId = data.userId;
             localStorage.token = this.token = data.token;
             localStorage.currentRole = this.currentRole = data.currentRole;
             this.roles = data.roles;
+        }
+
+        //没有用户组的情况下，用户不能为空
+        if(this.roles === undefined || this.roles.length === 0){
+            if(this.currentRole === UserType.None)
+                this.currentRole = UserType.Teacher;
         }
     }
     public logout = () => {
@@ -141,8 +144,6 @@ class User {
         this.currentRole = UserType.None;
         localStorage.clear();
     }
-
-    public onUserChanged: () => void;
 }
 
 class EducationTool {
@@ -150,8 +151,6 @@ class EducationTool {
         this.imageTrue.src = imageTrue;
         this.imageFalse.src = imageFalse;
         this.imageQuestion.src = imageQuestion;
-
-        //this.back.post(DataUrl.checkLogin, undefined, this.user.);
     }
 
     imageTrue: HTMLImageElement = new Image();

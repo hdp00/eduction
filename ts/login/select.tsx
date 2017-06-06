@@ -44,6 +44,7 @@ export class Select extends React.Component<any, any>{
 
     private onClick = (event) => {
         Tool.user.currentRole = parseInt(event.currentTarget.dataset.role);
+        localStorage.currentRole = Tool.user.currentRole;
         this.forceUpdate();
     }
 }
