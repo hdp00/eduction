@@ -107,23 +107,28 @@ class User {
     constructor() {
         this.userId = localStorage.userId;
         this.token = localStorage.token;
-        this.currentRole = parseInt(localStorage.currentRole);
-        if (isNaN(this.currentRole))
-            this.currentRole = UserType.None;
+        this.currentRole = localStorage.currentRole;
     }
 
     public userId: string = '';
     public token: string = '';
     public loggedin: boolean = false;
-    public currentRole: UserType = UserType.None;
+    private _currentRole: UserType = UserType.None;
+    public set currentRole(value: any) {
+        let v = parseInt(value);
+        if(isNaN(v))
+            this.currentRole = UserType.None;
+        this._currentRole = v;
+        localStorage.currentRole = this.currentRole;
+    }
+    public get currentRole() {
+        return this._currentRole;
+    }
     public roles: UserType[] = [];
 
     public login = (data: any) => {
         this.loggedin = true;
         if (data !== undefined) {
-            if(data.currentRole === undefined)
-                data.currentRole = UserType.None;
-
             localStorage.userId = this.userId = data.userId;
             localStorage.token = this.token = data.token;
             localStorage.currentRole = this.currentRole = data.currentRole;
@@ -131,8 +136,8 @@ class User {
         }
 
         //没有用户组的情况下，用户不能为空
-        if(this.roles === undefined || this.roles.length === 0){
-            if(this.currentRole === UserType.None)
+        if (this.roles === undefined || this.roles.length === 0) {
+            if (this.currentRole === UserType.None)
                 this.currentRole = UserType.Teacher;
         }
     }
@@ -227,7 +232,7 @@ class EducationTool {
     //需要访问的组件
     public component = {
         //标题页面
-        title:{},
+        title: {},
     }
 }
 

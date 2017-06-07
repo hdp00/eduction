@@ -4,7 +4,7 @@
 import * as  React from 'react'
 import { Button } from 'antd'
 import { UserType } from '../define'
-import { Tool } from '../tool/tool'
+import { Tool } from '../data/tool'
 import { Redirect } from 'react-router-dom'
 
 const Tr = Tool.router;
@@ -43,8 +43,7 @@ export class Select extends React.Component<any, any>{
     }
 
     private onClick = (event) => {
-        Tool.user.currentRole = parseInt(event.currentTarget.dataset.role);
-        localStorage.currentRole = Tool.user.currentRole;
+        Tool.user.currentRole = event.currentTarget.dataset.role;
         this.forceUpdate();
     }
 }

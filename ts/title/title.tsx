@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool, DataUrl } from '../tool/tool'
+import { Tool, DataUrl } from '../data/tool'
 import { UserType } from '../define'
 
 const SubMenu = Menu.SubMenu;

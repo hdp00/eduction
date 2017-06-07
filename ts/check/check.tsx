@@ -8,7 +8,7 @@ import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool, DataUrl } from '../tool/tool'
+import { Tool, DataUrl } from '../data/tool'
 import '../css/check.css'
 
 

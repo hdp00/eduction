@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 
 } from 'react-router-dom'
-import { Tool, DataUrl } from './tool/tool'
+import { Tool, DataUrl } from './data/tool'
 import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'

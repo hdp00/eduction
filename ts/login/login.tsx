@@ -4,7 +4,7 @@
 import * as  React from 'react';
 import { Redirect } from 'react-router-dom'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { Tool } from '../tool/tool'
+import { Tool } from '../data/tool'
 import '../css/login.css';
 
 const FormItem = Form.Item;
