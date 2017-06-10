@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Button, Icon } from 'antd';
 import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
-import { Tool } from '../tool/tool';
+import { Tool } from '../data/tool';
 
 //批改管理
 class CorrectManager {

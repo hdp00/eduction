@@ -10,5 +10,6 @@ export class StudentData {
     public grade: number = 3;
     public class: number = 1;
     public sex: string = '女';
+    public hasSigned:boolean = false;
     public homeworks: HomeworkData[] = [];
 }
