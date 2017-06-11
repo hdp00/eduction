@@ -38,12 +38,19 @@ const style = {
 let aaa = [];
 let visible = false;
 
+const props = {
+    style: {
+        width: '100px',
+        height: '100px',
+        border: '1px solid red',
+        float: 'left',
+    }
+}
+
 export class App {
     run() {
 
-        ReactDOM.render(<div>
-            <Button onClick={onClick}>aaa</Button>
-
+        ReactDOM.render(<div style={{border:'1px solid blue'}}>
             <Seat />
         </div>,
             document.getElementById('root'));

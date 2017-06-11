@@ -8,15 +8,18 @@ import { StudentData } from '../data/studentData'
 import { StudentSelector } from './studentSelector'
 
 interface StudentSeatProps {
-    students: StudentData[];
-    showSelector: (type: number, callback: (students: StudentData[]) => void) => void;
+    data: {
+        showSelector: (type: number, callback: (students: StudentData[]) => void) => void;
+        currentSeat: object;
+    }
 }
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
     private student: StudentData;
-    private isSelected: boolean = false;
 
     render() {
+        const isCurrent = (this === this.props.data.currentSeat);
+        const selectClass = isCurrent ? 'seat-student-seat-div-select' : '';
         const hasSigned = (this.student !== undefined);
 
         const name = hasSigned ? this.student.name : undefined;
@@ -28,12 +31,18 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         };
 
         const divProps = {
+            className: 'seat-student-seat-div' + ' ' + selectClass,
             onClick: this.onSelect,
+            style:{
+                float:'left'
+            }
         }
 
         return <div {...divProps}>
-            <span>{name}</span>
+            <label>{name}</label>
+            <br />
             <span>{homework}</span>
+            <br />
             <Button {...buttonProps}>{buttonLabel}</Button>
         </div>;
     }
@@ -46,7 +55,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     }
 
     private onSelect = () => {
-        this.isSelected = true;
+        this.props.data.currentSeat = this;
         this.forceUpdate();
     }
 
@@ -58,7 +67,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
             this.student = undefined;
             this.forceUpdate();
         } else {
-            this.props.showSelector(0, this.receiveStudent);
+            this.props.data.showSelector(0, this.receiveStudent);
         }
     }
 
@@ -67,7 +76,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         let count = homeworks.length;
         let finished = 0;
         for (let h of homeworks) {
-            if(h.status === PaperState.Finished)
+            if (h.status === PaperState.Finished)
                 finished++;
         }
 

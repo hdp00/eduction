@@ -4,6 +4,8 @@
 import * as React from 'react'
 import { StudentData } from '../data/studentData'
 import { StudentSelector } from './studentSelector'
+import { SeatContainer } from './seatContainer'
+import '../css/seat.css'
 
 let datas: StudentData[] = [];
 for (let i = 0; i < 30; i++) {
@@ -14,10 +16,22 @@ for (let i = 0; i < 30; i++) {
 datas[4].hasSigned = true;
 datas[5].hasSigned = true;
 datas[6].hasSigned = true;
+let row = 6;
+let col = 6;
 
 export class Seat extends React.Component<any, any>{
     render() {
+        const containerProps = {
+            data:{
+                students:datas,
+                row:row,
+                col:col,
+                showSelector:this.showSelector,
+            }
+        };
+
         return <div>
+            <SeatContainer {...containerProps} />
             <button onClick={this.onClick}>click</button>
             <StudentSelector {...this.selectorProps}></StudentSelector>
         </div>;
@@ -25,14 +39,9 @@ export class Seat extends React.Component<any, any>{
 
     private test = 0;
     private onClick = () => {
-        (this.refs['selector'] as StudentSelector).show(this.test);
-        this.test++;
-        if(this.test >2)
-            this.test = 0;
     }
     private onSelectStudent = (datas) => {
-        for (let d of datas)
-            console.log(d.name);
+        this.selectCallBack(datas);
     }
 
     private selectorProps = {
@@ -40,4 +49,10 @@ export class Seat extends React.Component<any, any>{
         onSelectStudent: this.onSelectStudent,
         ref: 'selector',
     };
+
+    private selectCallBack:(students: StudentData[]) => void;
+    private showSelector = (type: number, callback: (students: StudentData[]) => void) =>{
+        this.selectCallBack = callback;
+        (this.refs['selector'] as StudentSelector).show(type);
+    }
 }
