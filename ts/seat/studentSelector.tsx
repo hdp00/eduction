@@ -17,8 +17,7 @@ enum SelectType {
 
 interface StudentSelectorProps {
     students: StudentData[];
-    selectType: SelectType,
-    selectedStudents: (Array) => void;
+    onSelectStudent: (Array) => void;
 }
 
 export class StudentSelector extends React.Component<StudentSelectorProps, any>{
@@ -28,10 +27,11 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
     private enables: string[] = [];
     private disableCheckeds: string[] = [];
     private checks: string[] = [];
+    private selectType: SelectType = 0;
 
     render() {
         const students = this.props.students;
-        const selectType = this.props.selectType;
+        const selectType = this.selectType;
 
         let items = [];
         let index = 0;
@@ -45,6 +45,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
                 disabled: disabled,
                 checked: checked,
                 value: strIndex,
+                key:strIndex,
                 style: {
                     width: '100px',
                 },
@@ -79,11 +80,12 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         </Modal>;
     }
 
-    public show = () => {
+    public show = (type:SelectType) => {
+        this.selectType = type;
         this.visible = true;
         this.initData();
 
-        this.forceUpdate;
+        this.forceUpdate();
     }
 
     private onOk = () => {
@@ -117,7 +119,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
 
     private initData() {
         const students = this.props.students;
-        const selectType = this.props.selectType;
+        const selectType = this.selectType;
 
         this.enables = [];
         this.disableCheckeds = [];
@@ -150,7 +152,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
     }
     private sendData() {
         const students = this.props.students;
-        const selectType = this.props.selectType;
+        const selectType = this.selectType;
 
         this.checks.sort();
         let selects = [];
@@ -165,6 +167,6 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
             selects.push(s);
         }
 
-        this.props.selectedStudents(selects);
+        this.props.onSelectStudent(selects);
     }
 }

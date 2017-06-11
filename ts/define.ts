@@ -6,6 +6,7 @@ export enum PaperState {
     New,          //新建
     HasChecked,   //已批改
     ReCheck,      //需要重新批改
+    Finished,     //已完成
 }
 
 //用户类型

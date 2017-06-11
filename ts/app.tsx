@@ -21,6 +21,7 @@ import { EducationRouter } from './educationRouter';
 import { Title } from './title/title'
 import { Login } from './login/login'
 import { Radio, Checkbox, Button, Modal } from 'antd'
+import { Seat } from './seat/seat'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -43,12 +44,7 @@ export class App {
         ReactDOM.render(<div>
             <Button onClick={onClick}>aaa</Button>
 
-            <CheckboxGroup  onChange={onChange}>
-                <Checkbox className='longlongaog' style={style} disabled value='b1' >a1</Checkbox>
-                <Checkbox className='longlongaog' style={style} checked={true} value='b2' >a2333</Checkbox>
-                <Checkbox className='longlongaog' style={style} value={3} >a3</Checkbox>
-            </CheckboxGroup>
-
+            <Seat />
         </div>,
             document.getElementById('root'));
     }
