@@ -17,7 +17,6 @@ enum SelectType {
 
 interface StudentSelectorProps {
     students: StudentData[];
-    onSelectStudent: (Array) => void;
 }
 
 export class StudentSelector extends React.Component<StudentSelectorProps, any>{
@@ -28,6 +27,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
     private disableCheckeds: string[] = [];
     private checks: string[] = [];
     private selectType: SelectType = 0;
+    private onCallBack: (students: StudentData[]) => void = undefined;
 
     render() {
         const students = this.props.students;
@@ -80,10 +80,11 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         </Modal>;
     }
 
-    public show = (type:SelectType) => {
+    public show = (type:SelectType, callback?: (students: StudentData[]) => void) => {
         this.selectType = type;
         this.visible = true;
         this.initData();
+        this.onCallBack = callback;
 
         this.forceUpdate();
     }
@@ -167,6 +168,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
             selects.push(s);
         }
 
-        this.props.onSelectStudent(selects);
+        if(this.onCallBack !== undefined)
+            this.onCallBack(selects);
     }
 }

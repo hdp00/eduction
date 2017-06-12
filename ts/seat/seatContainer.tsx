@@ -17,10 +17,13 @@ interface SeatContainerProps {
 
 export class SeatContainer extends React.Component<SeatContainerProps, any>{
     private _currentSeat: object;
-    set currentSeat(value) {
+    private setCurrentSeat(value) {
+        let old = this._currentSeat;
         this._currentSeat = value;
+        if (old != undefined)
+            (old as StudentSeat).forceUpdate();
     }
-    get currentSeat() {
+    private getCurrentSeat() {
         return this._currentSeat;
     }
 
@@ -28,20 +31,21 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         const row = this.props.data.row;
         const col = this.props.data.col;
 
-        const data = {
+        const studentData = {
             showSelector: this.props.data.showSelector,
-            currentSeat: this.currentSeat,
+            setCurrentSeat: this.setCurrentSeat,
+            getCurrentSeat: this.getCurrentSeat,
         }
 
         let items = [];
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) {
                 const key = i + ' ' + j;
-                let item = <StudentSeat key={key} data={data} />;
+                let item = <StudentSeat key={key} data={studentData} />;
                 items.push(item);
             }
             const key = i + 'br';
-            items.push(<br key={key} style={{clear:'both'}} />);
+            items.push(<br key={key} style={{ clear: 'both' }} />);
         }
 
         return <div>

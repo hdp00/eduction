@@ -10,19 +10,23 @@ import { StudentSelector } from './studentSelector'
 interface StudentSeatProps {
     data: {
         showSelector: (type: number, callback: (students: StudentData[]) => void) => void;
-        currentSeat: object;
+        setCurrentSeat: (value: object) => void;
+        getCurrentSeat: () => object;
     }
 }
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
-    private student: StudentData;
+    private _student: StudentData;
+    get student() {
+        return this._student;
+    }
 
     render() {
-        const isCurrent = (this === this.props.data.currentSeat);
+        const isCurrent = (this === this.props.data.getCurrentSeat());
         const selectClass = isCurrent ? 'seat-student-seat-div-select' : '';
-        const hasSigned = (this.student !== undefined);
+        const hasSigned = (this._student !== undefined);
 
-        const name = hasSigned ? this.student.name : undefined;
+        const name = hasSigned ? this._student.name : undefined;
         const homework = hasSigned ? this.homeworkState() : undefined;
 
         const buttonLabel = hasSigned ? '签退' : '签到';
@@ -33,46 +37,49 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         const divProps = {
             className: 'seat-student-seat-div' + ' ' + selectClass,
             onClick: this.onSelect,
-            style:{
-                float:'left'
+            style: {
+                float: 'left'
             }
         }
+
+        if (name === '黄道婆0')
+            console.log(isCurrent);
 
         return <div {...divProps}>
             <label>{name}</label>
             <br />
-            <span>{homework}</span>
+            <label>{homework}</label>
             <br />
             <Button {...buttonProps}>{buttonLabel}</Button>
         </div>;
     }
 
     public receiveStudent = (students: StudentData[]) => {
-        this.student = students[0];
-        this.student.hasSigned = true;
-        this.student.seatComponent = this;
+        this._student = students[0];
+        this._student.hasSigned = true;
+        this._student.seatComponent = this;
         this.forceUpdate();
     }
 
     private onSelect = () => {
-        this.props.data.currentSeat = this;
+        this.props.data.setCurrentSeat(this);
         this.forceUpdate();
     }
 
     private onSign = () => {
-        const hasSigned = (this.student !== undefined);
+        const hasSigned = (this._student !== undefined);
         if (hasSigned) {
-            this.student.seatComponent = undefined;
-            this.student.hasSigned = false;
-            this.student = undefined;
+            this._student.seatComponent = undefined;
+            this._student.hasSigned = false;
+            this._student = undefined;
             this.forceUpdate();
         } else {
-            this.props.data.showSelector(0, this.receiveStudent);
+            this.props.data.showSelector(1, this.receiveStudent);
         }
     }
 
     private homeworkState() {
-        let homeworks = this.student.homeworks;
+        let homeworks = this._student.homeworks;
         let count = homeworks.length;
         let finished = 0;
         for (let h of homeworks) {
