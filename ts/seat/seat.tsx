@@ -5,6 +5,7 @@ import * as React from 'react'
 import { StudentData } from '../data/studentData'
 import { StudentSelector } from './studentSelector'
 import { SeatContainer } from './seatContainer'
+import { StudentDetail } from './studentDetail'
 import '../css/seat.css'
 //temp
 let datas: StudentData[] = [];
@@ -27,17 +28,30 @@ export class Seat extends React.Component<any, any>{
                 row: row,
                 col: col,
                 showSelector: this.showSelector,
-            }
+            },
+            ref: 'container',
         };
         const selectorProps = {
             students: datas,
             ref: 'selector',
         };
+        const detailProps = {
+            ref: 'detail',
+        }
 
         return <div>
             <SeatContainer {...containerProps} />
+            <div style={{ float: 'left' }}>
+                <StudentDetail {...detailProps} />
+            </div>
             <StudentSelector {...selectorProps}></StudentSelector>
         </div>;
+    }
+    componentDidMount() {
+        //绑定学生变化事件
+        let detail = (this.refs['detail'] as StudentDetail);
+        let container = (this.refs['container'] as SeatContainer);
+        container.addChangedNotify(detail.update);
     }
 
     private showSelector = (type: number, callback: (students: StudentData[]) => void) => {

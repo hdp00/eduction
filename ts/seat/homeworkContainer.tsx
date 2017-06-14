@@ -1,5 +1,5 @@
-//by hdp 2017.06.12
-//学生信息
+//by hdp 2017.06.14
+//学生信息管理
 
 import * as React from 'react'
 import { StudentData } from '../data/studentData'

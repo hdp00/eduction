@@ -12,6 +12,7 @@ interface StudentSeatProps {
         showSelector: (type: number, callback: (students: StudentData[]) => void) => void;
         setCurrentSeat: (value: object) => void;
         getCurrentSeat: () => object;
+        updateCurrentStudent: (data: StudentData) => void;
     }
 }
 
@@ -23,7 +24,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
     render() {
         const isCurrent = (this === this.props.data.getCurrentSeat());
-        const selectClass = isCurrent ? 'seat-student-seat-div-select' : '';
+        const selectClass = isCurrent ? 'seat-select' : '';
         const hasSigned = (this._student !== undefined);
 
         const name = hasSigned ? this._student.name : undefined;
@@ -42,9 +43,6 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
             }
         }
 
-        if (name === '黄道婆0')
-            console.log(isCurrent);
-
         return <div {...divProps}>
             <label>{name}</label>
             <br />
@@ -59,6 +57,10 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         this._student.hasSigned = true;
         this._student.seatComponent = this;
         this.forceUpdate();
+
+        const isCurrent = (this === this.props.data.getCurrentSeat());
+        if(isCurrent)
+            this.props.data.updateCurrentStudent(this._student);
     }
 
     private onSelect = () => {

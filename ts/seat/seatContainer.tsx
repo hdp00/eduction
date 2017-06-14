@@ -17,13 +17,14 @@ interface SeatContainerProps {
 
 export class SeatContainer extends React.Component<SeatContainerProps, any>{
     private _currentSeat: object;
-    private setCurrentSeat(value) {
+    private setCurrentSeat = (value) => {
         let old = this._currentSeat;
         this._currentSeat = value;
+        this.currentChanged(value.student);
         if (old != undefined)
             (old as StudentSeat).forceUpdate();
     }
-    private getCurrentSeat() {
+    private getCurrentSeat = () => {
         return this._currentSeat;
     }
 
@@ -35,6 +36,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             showSelector: this.props.data.showSelector,
             setCurrentSeat: this.setCurrentSeat,
             getCurrentSeat: this.getCurrentSeat,
+            updateCurrentStudent: this.currentChanged,
         }
 
         let items = [];
@@ -48,8 +50,26 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             items.push(<br key={key} style={{ clear: 'both' }} />);
         }
 
-        return <div>
+        const divProps = {
+            style:{
+                float:'left', 
+                border:'1px solid blue',
+            },
+        }
+
+        return <div {...divProps}>
             {items}
         </div>;
+    }
+
+
+    //选择学生发生改变事件
+    private studentChangedNotify: ((StudentData) => void)[] = [];
+    private currentChanged = (student: StudentData) => {
+        for (let f of this.studentChangedNotify)
+            f(student);
+    }
+    public addChangedNotify = (fun: (StudentData) => void) => {
+        this.studentChangedNotify.push(fun);
     }
 }
