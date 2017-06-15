@@ -13,8 +13,9 @@ export class StudentDetail extends React.Component<any, any>{
         const school = exist ? this.student.school : undefined;
 
         const divProps = {
-            style:{
-                border:'1px solid yellow',
+            style: {
+                border: '1px solid yellow',
+                height: '300px',
             },
         };
 

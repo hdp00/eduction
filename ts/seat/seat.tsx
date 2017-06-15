@@ -6,6 +6,7 @@ import { StudentData } from '../data/studentData'
 import { StudentSelector } from './studentSelector'
 import { SeatContainer } from './seatContainer'
 import { StudentDetail } from './studentDetail'
+import { HomeworkContainer } from './homeworkContainer'
 import '../css/seat.css'
 //temp
 let datas: StudentData[] = [];
@@ -35,23 +36,29 @@ export class Seat extends React.Component<any, any>{
             students: datas,
             ref: 'selector',
         };
-        const detailProps = {
-            ref: 'detail',
-        }
+        const studentProps = {
+            ref: 'student',
+        };
+        const homeworkProps = {
+            ref: 'homework',
+        };
 
         return <div>
             <SeatContainer {...containerProps} />
             <div style={{ float: 'left' }}>
-                <StudentDetail {...detailProps} />
+                <StudentDetail {...studentProps} />
+                <HomeworkContainer {...homeworkProps} />
             </div>
             <StudentSelector {...selectorProps}></StudentSelector>
         </div>;
     }
     componentDidMount() {
         //绑定学生变化事件
-        let detail = (this.refs['detail'] as StudentDetail);
-        let container = (this.refs['container'] as SeatContainer);
-        container.addChangedNotify(detail.update);
+        const student = (this.refs['student'] as StudentDetail);
+        const homework = (this.refs['homework'] as HomeworkContainer);
+        const container = (this.refs['container'] as SeatContainer);
+        container.addChangedNotify(student.update);
+        container.addChangedNotify(homework.update);
     }
 
     private showSelector = (type: number, callback: (students: StudentData[]) => void) => {

@@ -16,7 +16,6 @@ const PaperStateName = [
 
 interface HomeworkDetailProps {
     data: HomeworkData;
-    index: number;
     setSelectObject: (value: object) => void;
     getSelectObject: () => object;
 }
