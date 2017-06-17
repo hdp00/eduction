@@ -51,7 +51,7 @@ export class App {
     run() {
 
         ReactDOM.render(<div style={{border:'1px solid blue'}}>
-            <Seat />
+            <EducationRouter />
         </div>,
             document.getElementById('root'));
     }

@@ -22,7 +22,11 @@ let row = 6;
 let col = 6;
 
 export class Seat extends React.Component<any, any>{
+    private count = 0;
+
     render() {
+        
+
         const containerProps = {
             data: {
                 students: datas,
@@ -53,6 +57,7 @@ export class Seat extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
+        console.log(this.count++);
         //绑定学生变化事件
         const student = (this.refs['student'] as StudentDetail);
         const homework = (this.refs['homework'] as HomeworkContainer);

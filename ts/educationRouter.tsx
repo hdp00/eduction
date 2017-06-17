@@ -12,8 +12,12 @@ import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
 import { Select } from './login/select'
+import { Seat } from './seat/seat'
 
 const Tr = Tool.router;
+
+const seatComponent = <Seat />;
+
 
 /*class Navigation extends React.Component<any, any>{
 
@@ -71,9 +75,9 @@ class PrivateRoute extends Route {
     }
 }
 
-const Seat = () => (
-    <div>seat</div>
-)
+// const Seat = () => (
+//     <div>seat</div>
+// )
 const Statistics = () => (
     <div>statistics</div>
 )
@@ -98,7 +102,7 @@ export class EducationRouter extends React.Component<any, any>{
 
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />
-                <PrivateRoute path={Tr.seat} component={Seat} />
+                <PrivateRoute path={Tr.seat} render={() => seatComponent} />
                 <PrivateRoute path={Tr.statistics} component={Statistics} />
                 <PrivateRoute path={Tr.homework} component={Homework} />
 
