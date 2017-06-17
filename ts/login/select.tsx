@@ -38,13 +38,29 @@ export class Select extends React.Component<any, any>{
                     items.push(<br key={texts[r] + 'br'} />);
                 }
 
+                if (items.length === 0) {
+                    items.push(<Button key='logout' type='primary' data-role={''} {...props}>退出登录</Button>);
+                    items.push(<br key={'logout' + 'br'} />);
+                }
+
+
                 return <div style={{ textAlign: 'center' }}>{items}</div>;
         }
     }
 
     private onClick = (event) => {
-        Tool.user.currentRole = event.currentTarget.dataset.role;
+        let role = event.currentTarget.dataset.role;
+        if ((role as string).length === 0) {
+            Tool.user.logout();
+            this.props.history.push(Tr.login);
+            return;
+        }
+
+        Tool.user.currentRole = role;
         this.forceUpdate();
     }
 }
+
+
+
 
