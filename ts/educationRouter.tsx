@@ -12,11 +12,11 @@ import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
 import { Select } from './login/select'
-import { Seat } from './seat/seat'
+import { Seat, seatComponent } from './seat/seat'
 
 const Tr = Tool.router;
 
-const seatComponent = <Seat />;
+
 
 
 /*class Navigation extends React.Component<any, any>{

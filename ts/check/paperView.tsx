@@ -63,6 +63,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
     private canvasScale: number = 1;
 
     render() {
+        console.log('ccc');
         const exist = (this.paper !== undefined);
         const sum = this.imagePaper.length;
         const index = this.page;
@@ -107,6 +108,7 @@ export class PaperView extends React.Component<PaperViewProps, any>{
         </div>;
     }
     componentDidMount() {
+        console.log('ddd');
         let canvas: HTMLCanvasElement = this.refs['canvas'] as HTMLCanvasElement;
         this.ctx = canvas.getContext('2d');
         const ctx: CanvasRenderingContext2D = this.ctx;

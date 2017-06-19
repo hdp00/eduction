@@ -6,7 +6,7 @@ import { HomeworkData } from './homeworkData'
 
 export class StudentData {
     public id: string = 'student';
-    public name: string = '黄道婆';
+    public name: string = '测试';
     public school: string = '闵行区第一小学';
     public grade: number = 3;
     public class: number = 1;
@@ -37,4 +37,5 @@ export class StudentData {
     ];
 
     public seatComponent: object;
+    public seatIndex:number = 0;
 }

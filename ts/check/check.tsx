@@ -37,6 +37,7 @@ export class Check extends React.Component<any, any>{
                 margin: '5px',
             }
         };
+        console.log('aaa');
 
         return <div className='check-total-div'>
             <PaperView {...paperViewProps} />
@@ -48,6 +49,7 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
+        console.log('bbbb');
         Tool.back.post(DataUrl.checkItemList, undefined, this.updateItems);
         Tool.back.addEventSource(DataUrl.paperList, this.updatePapers);
     }

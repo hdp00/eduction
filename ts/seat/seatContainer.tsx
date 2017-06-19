@@ -42,8 +42,8 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         let items = [];
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) {
-                const key = i + ' ' + j;
-                let item = <StudentSeat key={key} data={studentData} />;
+                const key = i * row + j;
+                let item = <StudentSeat index={key} key={key} data={studentData} />;
                 items.push(item);
             }
             const key = i + 'br';
@@ -51,9 +51,9 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         }
 
         const divProps = {
-            style:{
-                float:'left', 
-                border:'1px solid blue',
+            style: {
+                float: 'left',
+                border: '1px solid blue',
             },
         }
 
@@ -63,7 +63,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
     }
 
 
-    //选择学生发生改变事件
+    //当前学生改变事件
     private studentChangedNotify: ((StudentData) => void)[] = [];
     private currentChanged = (student: StudentData) => {
         for (let f of this.studentChangedNotify)

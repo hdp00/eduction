@@ -13,7 +13,9 @@ interface StudentSeatProps {
         setCurrentSeat: (value: object) => void;
         getCurrentSeat: () => object;
         updateCurrentStudent: (data: StudentData) => void;
-    }
+    },
+    //座位号
+    index: number;
 }
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
@@ -56,11 +58,16 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         this._student = students[0];
         this._student.hasSigned = true;
         this._student.seatComponent = this;
+        this._student.seatNumber = this.props.index;
         this.forceUpdate();
 
         const isCurrent = (this === this.props.data.getCurrentSeat());
-        if(isCurrent)
+        if (isCurrent)
             this.props.data.updateCurrentStudent(this._student);
+    }
+    public initStudent = (student:StudentData) =>{
+        this._student = student;
+        this._student.seatComponent = this;
     }
 
     private onSelect = () => {
