@@ -2,59 +2,40 @@
 //学生选择
 
 import * as React from 'react'
-import * as $ from 'jquery'
 import { Modal, Button, Radio, Checkbox } from 'antd'
-import { StudentData } from '../data/studentData'
+import { Tool, SendType } from '../data/tool'
 
 const CheckboxGroup = Checkbox.Group;
 
-//选择哪些学生
-enum SelectType {
-    Signed,
-    NotSigned,
-    Both,
-}
-
-interface StudentSelectorProps {
-    students: StudentData[];
-}
-
-export class StudentSelector extends React.Component<StudentSelectorProps, any>{
-    private visible: boolean = false;
+export class StudentSelector extends React.Component<any, any>{
     private checkedAll: boolean = false;
     private indeterminate: boolean = false;
-    private enables: string[] = [];
-    private disableCheckeds: string[] = [];
     private checks: string[] = [];
-    private selectType: SelectType = 0;
-    private onCallBack: (students: StudentData[]) => void = undefined;
+
+    private visible: boolean = false;
+    //调用本组件时的座位号,-1代表全部
+    private seatIndex = -1;
+    //{id,name}
+    private students: object[] = [];
 
     render() {
-        const students = this.props.students;
-        const selectType = this.selectType;
+        const students = this.students;
 
         let items = [];
         let index = 0;
         for (let s of students) {
-            const checked = s.hasSigned;
-            const disabled = (selectType === SelectType.Signed && !s.hasSigned)
-                || (selectType === SelectType.NotSigned && s.hasSigned);
-
-            let strIndex = this.getIndexString(index++);
             const checkProps = {
-                disabled: disabled,
-                checked: checked,
-                value: strIndex,
-                key:strIndex,
+                value: s['id'],
+                key: s['id'],
                 style: {
                     width: '100px',
                 },
             }
 
-            items.push(<Checkbox {...checkProps}>{s.name}</Checkbox>);
+            items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
         const groupProps = {
-            value: this.checks,
+            value:this.checks,
             onChange: this.onCheckChanged,
         };
         const group = <CheckboxGroup {...groupProps}>
@@ -79,32 +60,45 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
             {group}
         </Modal>;
     }
+    //value:{visible: boolean, seatIndex: number}
+    public receiveData = (value:object) => {
+        Tool.lib.fillData(this, value);
+        this.seatIndex = (value['seatIndex'] === undefined) ? -1 : this.seatIndex;
 
-    public show = (type:SelectType, callback?: (students: StudentData[]) => void) => {
-        this.selectType = type;
-        this.visible = true;
-        this.initData();
-        this.onCallBack = callback;
+        if (this.visible) {
+            Tool.back.sendData(SendType.SigninDialog, undefined, this.receiveStudent);
+            return;
+        }
+
+        this.forceUpdate();
+    }
+    //value:{students:object[]}
+    private receiveStudent = (value: object) => {
+        Tool.lib.fillData(this, value);
+        if (this.students.length === 0)
+            this.visible = false;
 
         this.forceUpdate();
     }
 
     private onOk = () => {
-        this.sendData();
+        this.select(this.seatIndex, this.checks);
         this.onCancel();
     }
     private onCancel = () => {
         this.visible = false;
+        this.checkedAll = false;
+        this.indeterminate = false;
+        this.checks = [];
+
         this.forceUpdate();
     }
     private onCheckChanged = (checkeds) => {
-        const disableCheckedCount = this.disableCheckeds.length;
         const selectCount = checkeds.length;
-        const totalCount = this.enables.length + disableCheckedCount;
-
-        this.indeterminate = (selectCount > disableCheckedCount)
-            && (selectCount < totalCount);
-        this.checkedAll = (selectCount === totalCount);
+        const count = this.students.length;
+        this.indeterminate = (selectCount > 0)
+            && (selectCount < count);
+        this.checkedAll = (selectCount === count);
         this.checks = checkeds;
 
         this.forceUpdate();
@@ -113,62 +107,20 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         const checked = e.target.checked;
         this.indeterminate = false;
         this.checkedAll = checked;
-        this.checks = checked ? [...this.enables, ...this.disableCheckeds] : this.disableCheckeds;
+        let items = [];
+        if (checked) {
+            for (let s of this.students)
+                items.push(s['id']);
+        }
+        this.checks = items;
 
         this.forceUpdate();
     }
 
-    private initData() {
-        const students = this.props.students;
-        const selectType = this.selectType;
+    private select(index: number, ids: string[]) {
+        if(ids.length === 0)
+            return;
 
-        this.enables = [];
-        this.disableCheckeds = [];
-        this.checks = [];
-
-        let index = 0;
-        for (let s of students) {
-            const checked = s.hasSigned;
-            const disabled = (selectType === SelectType.Signed && !s.hasSigned)
-                || (selectType === SelectType.NotSigned && s.hasSigned);
-
-            let strIndex = this.getIndexString(index++);
-            if (disabled) {
-                if (checked)
-                    this.disableCheckeds.push(strIndex);
-            }
-            else
-                this.enables.push(strIndex);
-        }
-
-        this.checkedAll = false;
-        this.indeterminate = false;
-        this.checks = [...this.disableCheckeds];
-    }
-    private getIndexString(index: number) {
-        let str = index.toString();
-        if (str.length == 1)
-            str = '0' + str;
-        return str;
-    }
-    private sendData() {
-        const students = this.props.students;
-        const selectType = this.selectType;
-
-        this.checks.sort();
-        let selects = [];
-        for (let c of this.checks) {
-            let s = this.props.students[parseInt(c)];
-            const disabled = (selectType === SelectType.Signed && !s.hasSigned)
-                || (selectType === SelectType.NotSigned && s.hasSigned);
-
-            if (disabled)
-                continue;
-
-            selects.push(s);
-        }
-
-        if(this.onCallBack !== undefined)
-            this.onCallBack(selects);
+        console.log(ids);
     }
 }

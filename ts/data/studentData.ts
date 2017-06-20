@@ -5,7 +5,7 @@ import { PaperState } from '../define'
 import { HomeworkData } from './homeworkData'
 
 export class StudentData {
-    public id: string = 'student';
+    public id: string = '测试';
     public name: string = '测试';
     public school: string = '闵行区第一小学';
     public grade: number = 3;

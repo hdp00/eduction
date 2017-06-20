@@ -47,12 +47,43 @@ const props = {
     }
 }
 
+const a = {
+    a: 1,
+    b: 2,
+}
+
+function bbb(value?: number) {
+    console.log(value);
+}
+bbb();
+
+import { StudentSelector } from './seat/studentSelector'
+
+class Long extends React.Component<any, any>{
+    render() {
+        return <div>
+            <Button onClick={this.onClick}>aaa</Button>
+            <StudentSelector ref='selector' />
+        </div>;
+    }
+    private onClick = () => {
+        (this.refs['selector'] as StudentSelector).receiveData({visible:true});
+    }
+
+}
+
+
+
 export class App {
     run() {
 
-        ReactDOM.render(<div style={{border:'1px solid blue'}}>
-            <EducationRouter />
+        ReactDOM.render(<div style={{ border: '1px solid blue' }}>
+            <Long />
         </div>,
             document.getElementById('root'));
+
+
     }
+
+
 }

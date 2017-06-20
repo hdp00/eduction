@@ -5,27 +5,78 @@ import * as $ from 'jquery'
 import { PaperState, UserType } from '../define'
 import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
-//回调函数处理类
-class CallbackContainer {
-    constructor(callback: (response: string) => void) {
+//工具库
+class Lib {
+    //填充数据
+    fillData = (componet, value) => {
+        const keys = Object.keys(value);
+        for (let key of keys)
+            componet[key] = value[key];
+    }
+}
+
+//数据接收处理类
+class ReceiveManager {
+    private type: SendType;
+    private sendData: object;
+    private callback: (response: object) => void;
+
+    constructor(type: SendType, data?: object, callback?: (response: object) => void) {
+        this.type = type;
+        this.sendData = data;
         this.callback = callback;
+
+        this.send();
     }
 
-    private callback: (response: string) => void;
-
-    public run = (response: string) => {
-        let data = this.convertData(response);
-        this.showMessage(data);
-        this.callback(data);
+    private send = () => {
+        //post
+        setTimeout(this.receive, 300);
+    }
+    private receive = (response?: string) => {
+        let receiveData = this.convertData(response);
+        if (this.callback !== undefined)
+            this.callback(receiveData);
     }
 
-    private convertData = (response: any) => {
+    private convertData(response: string) {
         //return JSON.parse(response);
-        return response;
+        let data: object;
+
+        switch (this.type) {
+            case SendType.SigninDialog:
+                return this.getSigninDialog(data);
+            case SendType.StudentSeat:
+                return this.getStudentSeat(data);
+        }
+
+        return new Object();
     }
-    private showMessage(data: any) {
-        if (data.code !== 0)
-            console.log(data.comment);
+    private showMessage(value: any) {
+        if (value.code !== 0)
+            console.log(value.comment);
+    }
+    private getSigninDialog(value: object) {
+        let data = [];
+        for (let s of students) {
+            if (!s.hasSigned)
+                data.push({
+                    id: s.id,
+                    name: s.name,
+                });
+        }
+
+        return { students: data };
+    }
+    private getStudentSeat(value: object) {
+        let id = this.sendData['id'];
+        let s = studentMap[id];
+        return {
+            name: s.name,
+            homeworkText:
+        };
+
+
     }
 }
 
@@ -116,7 +167,7 @@ class User {
     private _currentRole: UserType = UserType.None;
     public set currentRole(value: any) {
         let v = parseInt(value);
-        if(isNaN(v))
+        if (isNaN(v))
             this.currentRole = UserType.None;
         this._currentRole = v;
         localStorage.currentRole = this.currentRole;
@@ -196,10 +247,10 @@ class EducationTool {
 
         // },
         postLogin(url: string, request: object, callback: (response: string) => void) {
-            let c = new CallbackContainer(callback);
+            //let c = new ReceiveManager(callback);
             //$.post(url, request, c.run);
 
-            c.run(data[url]);
+            //c.run(data[url]);
         },
         post: (url: string, request?: object, callback?: (response: string) => void) => {
             // let data:object = {
@@ -211,21 +262,22 @@ class EducationTool {
             //  else
             //     $.post(url, data, callback);
 
-            if (callback === undefined)
-                return;
-            let c = new CallbackContainer(callback);
-            c.run(data[url]);
+            // if (callback === undefined)
+            //     return;
+            // let c = new ReceiveManager(callback);
+            // c.run(data[url]);
         },
-
-
+        sendData: (type: SendType, request?: object, callback?: (response: object) => void) => {
+            new ReceiveManager(type, request, callback);
+        },
 
         //sse连接
         addEventSource: (url: string, callback: (event: any) => void) => {
             // let e:EventSource = new EventSource(url);
             // e.onmessage = callback;
 
-            let c = new CallbackContainer(callback);
-            c.run(data[url]);
+            // let c = new ReceiveManager(callback);
+            // c.run(data[url]);
         },
     }
 
@@ -234,6 +286,39 @@ class EducationTool {
         //标题页面
         title: {},
     }
+
+    public lib: Lib = new Lib();
+
+
+}
+
+export enum SendType {
+    //seat
+    SigninDialog,
+    StudentSeat,
 }
 
 export const Tool = new EducationTool();
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//temp data
+
+import { StudentData } from './studentData'
+let studentMap = {};
+let students: StudentData[] = [];
+for (let i = 0; i < 30; i++) {
+    let s = new StudentData();
+    s.id = s.name = s.name + i;
+    students.push(s);
+    studentMap[s.id] = s;
+}
+students[4].hasSigned = true;
+students[5].hasSigned = true;
+students[6].hasSigned = true;
+let row = 6;
+let col = 6;
+
+function getHomeworkText() {
+
+}

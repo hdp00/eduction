@@ -3,39 +3,42 @@
 
 import * as React from 'react'
 import { Button } from 'antd'
-import { PaperState } from '../define'
-import { StudentData } from '../data/studentData'
-import { StudentSelector } from './studentSelector'
+import { Tool, SendType } from '../data/tool'
+import { SeatManager } from './seatManager'
 
 interface StudentSeatProps {
-    data: {
-        showSelector: (type: number, callback: (students: StudentData[]) => void) => void;
-        setCurrentSeat: (value: object) => void;
-        getCurrentSeat: () => object;
-        updateCurrentStudent: (data: StudentData) => void;
-    },
-    //座位号
-    index: number;
+    manager: SeatManager;
 }
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
-    private _student: StudentData;
-    get student() {
-        return this._student;
-    }
+    //学生id
+    private id: string;
+    //座位索引
+    private index: number = 0;
+    //学生名字
+    private name: string;
+    //作业文本
+    private homeworkText: string;
+    //作业状态
+    private homeworkState: number;
+    //定时器
+    private timer;
 
     render() {
-        const isCurrent = (this === this.props.data.getCurrentSeat());
-        const selectClass = isCurrent ? 'seat-select' : '';
-        const hasSigned = (this._student !== undefined);
+        const isSelect = (this.props.manager.currentIndex === this.index);
+        const selectClass = isSelect ? 'seat-select' : '';
+        const hasSigned = (this.id !== undefined);
 
-        const name = hasSigned ? this._student.name : undefined;
-        const homework = hasSigned ? this.homeworkState() : undefined;
-
-        const buttonLabel = hasSigned ? '签退' : '签到';
-        const buttonProps = {
-            onClick: this.onSign,
-        };
+        let items = [];
+        if (hasSigned) {
+            items.push(<label>{this.name}</label>);
+            items.push(<br />);
+            items.push(<label>{this.homeworkText}</label>);
+            items.push(<br />);
+        }
+        else {
+            items.push(<Button onClick={this.onSign}>签到</Button>)
+        }
 
         const divProps = {
             className: 'seat-student-seat-div' + ' ' + selectClass,
@@ -46,26 +49,25 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         }
 
         return <div {...divProps}>
-            <label>{name}</label>
-            <br />
-            <label>{homework}</label>
-            <br />
-            <Button {...buttonProps}>{buttonLabel}</Button>
+            {items}
         </div>;
     }
 
-    public receiveStudent = (students: StudentData[]) => {
-        this._student = students[0];
-        this._student.hasSigned = true;
-        this._student.seatComponent = this;
-        this._student.seatNumber = this.props.index;
-        this.forceUpdate();
+    //value{id:string}
+    public receiveData = (value: object) => {
+        Tool.lib.fillData(this, value);
 
-        const isCurrent = (this === this.props.data.getCurrentSeat());
-        if (isCurrent)
-            this.props.data.updateCurrentStudent(this._student);
+        Tool.back.sendData(SendType)
     }
-    public initStudent = (student:StudentData) =>{
+    //value{name:string, homework:string}
+    private receiveStudent = (value: object) => {
+
+    }
+    private load() {
+
+    }
+
+    public initStudent = (student: StudentData) => {
         this._student = student;
         this._student.seatComponent = this;
     }
@@ -85,17 +87,5 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         } else {
             this.props.data.showSelector(1, this.receiveStudent);
         }
-    }
-
-    private homeworkState() {
-        let homeworks = this._student.homeworks;
-        let count = homeworks.length;
-        let finished = 0;
-        for (let h of homeworks) {
-            if (h.status === PaperState.Finished)
-                finished++;
-        }
-
-        return finished + '/' + count;
     }
 }
