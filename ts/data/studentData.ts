@@ -2,7 +2,7 @@
 //学生数据
 
 import { PaperState } from '../define'
-import { HomeworkData } from './homeworkData'
+import { TaskData } from './TaskData'
 
 export class StudentData {
     public id: string = '测试';
@@ -12,7 +12,7 @@ export class StudentData {
     public class: number = 1;
     public sex: string = '女';
     public hasSigned: boolean = false;
-    public homeworks: HomeworkData[] = [
+    public Tasks: TaskData[] = [
         {
             subject: '语文',
             status: PaperState.New,

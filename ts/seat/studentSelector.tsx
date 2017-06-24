@@ -60,13 +60,13 @@ export class StudentSelector extends React.Component<any, any>{
             {group}
         </Modal>;
     }
-    //value:{visible: boolean, seatIndex: number}
-    public receiveData = (value:object) => {
-        Tool.lib.fillData(this, value);
-        this.seatIndex = (value['seatIndex'] === undefined) ? -1 : this.seatIndex;
+
+    public setVisible = (visible:boolean, seatIndex:number = -1) =>{
+        this.visible = visible;
+        this.seatIndex = (seatIndex === undefined) ? -1 : this.seatIndex;
 
         if (this.visible) {
-            Tool.back.sendData(SendType.SigninDialog, undefined, this.receiveStudent);
+            Tool.back.sendData(SendType.StudentSelector, undefined, this.receiveStudent);
             return;
         }
 

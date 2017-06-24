@@ -3,7 +3,7 @@
 
 import {IPaper, PaperState} from '../define'
 
-export class HomeworkData {
+export class TaskData {
     public subject: string = '语文';
     public status: PaperState = PaperState.New;
     public type: string = '阅读';

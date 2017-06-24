@@ -30,24 +30,55 @@ class ReceiveManager {
     }
 
     private send = () => {
+        let data = this.converSendData();
         //post
-        setTimeout(this.receive, 300);
+        setTimeout(this.receive, 200);
     }
     private receive = (response?: string) => {
-        let receiveData = this.convertData(response);
+        let receiveData = this.convertReceiveData(response);
         if (this.callback !== undefined)
             this.callback(receiveData);
     }
+    //数据格式转换
+    //临时在这里写入数据
+    private converSendData() {
+        if (this.sendData === undefined)
+            return undefined;
 
-    private convertData(response: string) {
+        switch (this.type) {
+            case SendType.Signin:
+                {
+                    let id = this.sendData['id'];
+                    let seatIndex = this.sendData['index'];
+                    studentMap[id]['hasSigned'] = true;
+                    studentMap[id]['seatIndex'] = seatIndex;
+                }
+                break;
+            case SendType.Signout:
+                {
+                    let id = this.sendData['id'];
+                    studentMap[id]['hasSigned'] = false;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return '';
+    }
+    private convertReceiveData(response: string) {
         //return JSON.parse(response);
         let data: object;
 
         switch (this.type) {
-            case SendType.SigninDialog:
-                return this.getSigninDialog(data);
+            case SendType.StudentSelector:
+                return this.getStudentSelector(data);
             case SendType.StudentSeat:
                 return this.getStudentSeat(data);
+            case SendType.StudentContainer:
+                return this.getStudentContainer(data);
+            default:
+                break;
         }
 
         return new Object();
@@ -56,7 +87,7 @@ class ReceiveManager {
         if (value.code !== 0)
             console.log(value.comment);
     }
-    private getSigninDialog(value: object) {
+    private getStudentSelector(value: object) {
         let data = [];
         for (let s of students) {
             if (!s.hasSigned)
@@ -73,10 +104,28 @@ class ReceiveManager {
         let s = studentMap[id];
         return {
             name: s.name,
-            homeworkText:
+            taskText: getTaskText(s),
+            taskStatus: getTaskStatus(s),
         };
+    }
+    private getStudentContainer(value: object) {
+        let data = [];
+        for (let s of students) {
+            if (s.hasSigned)
+                data.push({
+                    id: s.id,
+                    name: s.name,
+                    index: s.seatIndex,
+                    taskText: getTaskText(s),
+                    taskStatus: getTaskStatus(s),
+                });
+        }
 
-
+        return {
+            row:row,
+            col:col,
+            students:data,
+        }
     }
 }
 
@@ -294,8 +343,24 @@ class EducationTool {
 
 export enum SendType {
     //seat
-    SigninDialog,
+
+    //set undefined
+    //get {id:string, name:string}[]
+    StudentSelector,
+    //set{id:string,index:number}
+    //get undefined
+    Signin,
+    //set{id:string}
+    //get undefined
+    Signout,
+    //set {id:string}
+    //get {name:string, taskText:string, taskStatus:number}
     StudentSeat,
+    //set undefined
+    //get {col:number, row:number
+    //  students:{id:string, index:number, name:string, taskText:string, taskStatus:number}[]    
+    //}
+    StudentContainer,
 }
 
 export const Tool = new EducationTool();
@@ -305,6 +370,7 @@ export const Tool = new EducationTool();
 //temp data
 
 import { StudentData } from './studentData'
+import { TaskData } from './taskData'
 let studentMap = {};
 let students: StudentData[] = [];
 for (let i = 0; i < 30; i++) {
@@ -316,9 +382,22 @@ for (let i = 0; i < 30; i++) {
 students[4].hasSigned = true;
 students[5].hasSigned = true;
 students[6].hasSigned = true;
+students[4].seatIndex = 12;
+students[5].seatIndex = 15;
+students[6].seatIndex = 16;
 let row = 6;
 let col = 6;
 
-function getHomeworkText() {
+function getTaskText(s: StudentData) {
+    let count = s.Tasks.length;
+    let fininshedCount = 0;
+    for (let t of s.Tasks) {
+        if (t.status === PaperState.Finished)
+            fininshedCount++;
+    }
 
+    return fininshedCount + '/' + count;
+}
+function getTaskStatus(s: StudentData) {
+    return PaperState.New;
 }

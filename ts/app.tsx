@@ -58,16 +58,31 @@ function bbb(value?: number) {
 bbb();
 
 import { StudentSelector } from './seat/studentSelector'
+import { StudentSeat } from './seat/studentSeat'
+import { SeatManager } from './seat/seatManager'
 
 class Long extends React.Component<any, any>{
+    manager: SeatManager = new SeatManager();
+
     render() {
         return <div>
             <Button onClick={this.onClick}>aaa</Button>
-            <StudentSelector ref='selector' />
+            <Button onClick={this.onClickB}>bbb</Button>
+            <Button onClick={this.onClickC}>ccc</Button>
+            <StudentSeat manager={this.manager} ref='com' />
         </div>;
     }
     private onClick = () => {
-        (this.refs['selector'] as StudentSelector).receiveData({visible:true});
+        (this.refs['com'] as StudentSeat).setId('测试5');
+
+    }
+    private onClickB = () => {
+        let d = new Date();
+        d.setTime(d.getTime() + 1000 * 3);
+        (this.refs['com'] as StudentSeat).setDelayTime(d);
+    }
+    private onClickC = () => {
+        window.localStorage.removeItem('测试5_delay');
     }
 
 }
@@ -76,13 +91,10 @@ class Long extends React.Component<any, any>{
 
 export class App {
     run() {
-
         ReactDOM.render(<div style={{ border: '1px solid blue' }}>
             <Long />
         </div>,
             document.getElementById('root'));
-
-
     }
 
 
