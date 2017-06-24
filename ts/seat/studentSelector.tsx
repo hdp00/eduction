@@ -7,7 +7,11 @@ import { Tool, SendType } from '../data/tool'
 
 const CheckboxGroup = Checkbox.Group;
 
-export class StudentSelector extends React.Component<any, any>{
+interface StudentSelectorProps {
+    onSelect:(index: number, ids: string[]) => void;
+}
+
+export class StudentSelector extends React.Component<StudentSelectorProps, any>{
     private checkedAll: boolean = false;
     private indeterminate: boolean = false;
     private checks: string[] = [];
@@ -63,7 +67,7 @@ export class StudentSelector extends React.Component<any, any>{
 
     public setVisible = (visible:boolean, seatIndex:number = -1) =>{
         this.visible = visible;
-        this.seatIndex = (seatIndex === undefined) ? -1 : this.seatIndex;
+        this.seatIndex = seatIndex;
 
         if (this.visible) {
             Tool.back.sendData(SendType.StudentSelector, undefined, this.receiveStudent);
@@ -72,7 +76,6 @@ export class StudentSelector extends React.Component<any, any>{
 
         this.forceUpdate();
     }
-    //value:{students:object[]}
     private receiveStudent = (value: object) => {
         Tool.lib.fillData(this, value);
         if (this.students.length === 0)
@@ -117,10 +120,9 @@ export class StudentSelector extends React.Component<any, any>{
         this.forceUpdate();
     }
 
-    private select(index: number, ids: string[]) {
+    private select = (index: number, ids: string[]) => {
         if(ids.length === 0)
             return;
-
-        console.log(ids);
+        this.props.onSelect(index, ids);
     }
 }

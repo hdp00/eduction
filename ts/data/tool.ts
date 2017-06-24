@@ -18,7 +18,7 @@ class Lib {
 //数据接收处理类
 class ReceiveManager {
     private type: SendType;
-    private sendData: object;
+    private sendData: any;
     private callback: (response: object) => void;
 
     constructor(type: SendType, data?: object, callback?: (response: object) => void) {
@@ -48,16 +48,30 @@ class ReceiveManager {
         switch (this.type) {
             case SendType.Signin:
                 {
-                    let id = this.sendData['id'];
-                    let seatIndex = this.sendData['index'];
-                    studentMap[id]['hasSigned'] = true;
-                    studentMap[id]['seatIndex'] = seatIndex;
+                    for (let s of this.sendData) {
+                        let id = s['id'];
+                        let seatIndex = s['index'];
+                        studentMap[id]['hasSigned'] = true;
+                        studentMap[id]['seatIndex'] = seatIndex;
+                    }
                 }
                 break;
             case SendType.Signout:
                 {
                     let id = this.sendData['id'];
                     studentMap[id]['hasSigned'] = false;
+                }
+                break;
+            case SendType.addCredit:
+                {
+                    let s = studentMap[this.sendData['id']];
+                    s['credit'] = s['credit'] + this.send['credit'];
+                }
+                break;
+            case SendType.reduceCredit:
+                {
+                    let s = studentMap[this.sendData['id']];
+                    s['credit'] = s['credit'] - this.send['credit'];
                 }
                 break;
             default:
@@ -77,6 +91,12 @@ class ReceiveManager {
                 return this.getStudentSeat(data);
             case SendType.StudentContainer:
                 return this.getStudentContainer(data);
+            case SendType.addCreditItem:
+                return this.getAddCreditItem(data);
+            case SendType.reduceCreditItem:
+                return this.getReduceCreditItem(data);
+            case SendType.studentDetail:
+                return this.getStudentDetail(data);
             default:
                 break;
         }
@@ -122,10 +142,27 @@ class ReceiveManager {
         }
 
         return {
-            row:row,
-            col:col,
-            students:data,
+            row: row,
+            col: col,
+            students: data,
         }
+    }
+    private getAddCreditItem(value: object) {
+        return { items: addItems };
+    }
+    private getReduceCreditItem(value: object) {
+        return { items: reduceItems };
+    }
+    private getStudentDetail(value: object) {
+        let id = this.sendData['id'];
+        let s = studentMap[id];
+        return {
+            name: s.name,
+            school: s.school,
+            grade: s.grade,
+            class: s.class,
+            credit: s.credit,
+        };
     }
 }
 
@@ -347,20 +384,44 @@ export enum SendType {
     //set undefined
     //get {id:string, name:string}[]
     StudentSelector,
-    //set{id:string,index:number}
+
+    //set{id:string,index:number}[]
     //get undefined
     Signin,
+
     //set{id:string}
     //get undefined
     Signout,
+
     //set {id:string}
     //get {name:string, taskText:string, taskStatus:number}
     StudentSeat,
+
     //set undefined
     //get {col:number, row:number
     //  students:{id:string, index:number, name:string, taskText:string, taskStatus:number}[]    
     //}
     StudentContainer,
+
+    //set undefined
+    //get {items:string[]}
+    addCreditItem,
+
+    //set undefined
+    //get {items:string[]}
+    reduceCreditItem,
+
+    //set {id:string, credit:number, text:string}
+    //get undefined
+    addCredit,
+
+    //set {id:string, credit:number, text:string}
+    //get undefined
+    reduceCredit,
+
+    //set{id:string}
+    //get{name:string, school:string, grade:number, class:number, credit:number}
+    studentDetail,
 }
 
 export const Tool = new EducationTool();
@@ -401,3 +462,7 @@ function getTaskText(s: StudentData) {
 function getTaskStatus(s: StudentData) {
     return PaperState.New;
 }
+
+const addItems = ['纪律好A', '纪律好B', '纪律好C'];
+const reduceItems = ['纪律差A', '纪律差B', '纪律差C'];
+

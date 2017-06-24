@@ -20,14 +20,14 @@ export class StudentData {
             id: '0',
             paper: null,
         },
-                {
+        {
             subject: '英语',
             status: PaperState.New,
             type: '默写',
             id: '1',
             paper: null,
         },
-                {
+        {
             subject: '数学',
             status: PaperState.New,
             type: '练习',
@@ -37,5 +37,6 @@ export class StudentData {
     ];
 
     public seatComponent: object;
-    public seatIndex:number = 0;
+    public seatIndex: number = 0;
+    public credit: number = 1000;
 }

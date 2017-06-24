@@ -2,33 +2,50 @@
 //学生信息
 
 import * as React from 'react'
-import { StudentData } from '../data/studentData'
+import { SeatManager } from './seatManager'
 
-export class StudentDetail extends React.Component<any, any>{
-    private student: StudentData;
+interface StudentDetailProps {
+    manager: SeatManager,
+}
 
+export class StudentDetail extends React.Component<StudentDetailProps, any>{
     render() {
-        const exist = (this.student !== undefined);
-        const name = exist ? this.student.name : undefined;
-        const school = exist ? this.student.school : undefined;
+        const id: string = this.props.manager.getCurrentId();
+        let detail;
+        let credit;
+        let addCredit;
+        let reduceCredit;
+
+        if (id !== undefined) {
+
+            detail = <div>
+                <label>{name}</label><br />
+                <label>{school}</label><br />
+            </div>;
+        }
 
         const divProps = {
             style: {
-                border: '1px solid yellow',
+                border: '1px solid gray',
                 height: '300px',
             },
         };
 
         return <div {...divProps}>
-            <label>{name}</label>
-            <br />
-            <label>{school}</label>
-            <br />
+            {detail}
+            {credit}
+            {addCredit}
+            {reduceCredit}
         </div>;
     }
+    componentDidMount(){
+        
+    }
 
-    public update = (data: StudentData) => {
-        this.student = data;
-        this.forceUpdate();
+    public update = () => {
+
+    }
+    private receiveDetail = () => {
+
     }
 }

@@ -5,7 +5,7 @@ export class SeatManager {
     //当前座位
     public currentIndex: number = -1;
     //座位和学生的对应数据
-    public seatIds: string[];
+    public seatIds: string[] = [];
 
     public getCurrentId = () => {
         if (this.currentIndex === -1)

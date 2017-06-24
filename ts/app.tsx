@@ -60,6 +60,8 @@ bbb();
 import { StudentSelector } from './seat/studentSelector'
 import { StudentSeat } from './seat/studentSeat'
 import { SeatManager } from './seat/seatManager'
+import { SeatContainer } from './seat/seatContainer'
+import './css/seat.css'
 
 class Long extends React.Component<any, any>{
     manager: SeatManager = new SeatManager();
@@ -69,20 +71,17 @@ class Long extends React.Component<any, any>{
             <Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
             <Button onClick={this.onClickC}>ccc</Button>
-            <StudentSeat manager={this.manager} ref='com' />
+            <SeatContainer manager={this.manager} />
         </div>;
     }
     private onClick = () => {
-        (this.refs['com'] as StudentSeat).setId('测试5');
 
     }
     private onClickB = () => {
-        let d = new Date();
-        d.setTime(d.getTime() + 1000 * 3);
-        (this.refs['com'] as StudentSeat).setDelayTime(d);
+
     }
     private onClickC = () => {
-        window.localStorage.removeItem('测试5_delay');
+
     }
 
 }

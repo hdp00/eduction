@@ -8,7 +8,9 @@ import { SeatManager } from './seatManager'
 
 interface StudentSeatProps {
     manager: SeatManager,
-    index:number,
+    index: number,
+    onSignin: (index: number) => void;
+    onSelect: (index: number) => void;
 }
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
@@ -146,11 +148,9 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         if (this.props.manager.currentIndex === this.props.index)
             return;
 
-        //cancel select
-        console.log();
+        this.props.onSelect(this.props.index);
     }
     private onSign = () => {
-        //select
-        console.log();
+        this.props.onSignin(this.props.index);
     }
 }
