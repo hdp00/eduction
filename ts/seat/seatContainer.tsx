@@ -29,7 +29,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         let items = [];
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) {
-                const key = i * row + j;
+                const key = i * col + j;
                 const studentProps = {
                     manager: this.props.manager,
                     index: key,
@@ -43,13 +43,14 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 items.push(item);
             }
             const brkey = i + 'br';
-            items.push(<br key={brkey} style={{ clear: 'both' }} />);
+            items.push(<br key={brkey} />);
         }
+        items.push(<br key={'end_br'} style={{ clear: 'both' }} />)
 
         const divProps = {
             style: {
                 float: 'left',
-                border: '1px solid blue',
+                border: '1px solid gray',
             },
         }
         const timerProps = {
@@ -113,6 +114,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 while (this.props.manager.seatIds[seatIndex] !== undefined) {
                     seatIndex++;
                 }
+                console.log(seatIndex);
 
                 const seat = this.refs[seatIndex] as StudentSeat;
                 if (seat === undefined)

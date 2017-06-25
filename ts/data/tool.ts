@@ -65,13 +65,23 @@ class ReceiveManager {
             case SendType.addCredit:
                 {
                     let s = studentMap[this.sendData['id']];
-                    s['credit'] = s['credit'] + this.send['credit'];
+                    s['credit'] = s['credit'] + this.sendData['credit'];
+                    s['addCreditStatus'] = {
+                        credit: this.sendData['credit'],
+                        text: this.sendData['text'],
+                    };
+
+                    console.log(s);
                 }
                 break;
             case SendType.reduceCredit:
                 {
                     let s = studentMap[this.sendData['id']];
-                    s['credit'] = s['credit'] - this.send['credit'];
+                    s['credit'] = s['credit'] - this.sendData['credit'];
+                    s['reduceCreditStatus'] = {
+                        credit: this.sendData['credit'],
+                        text: this.sendData['text'],
+                    };
                 }
                 break;
             default:
@@ -148,10 +158,10 @@ class ReceiveManager {
         }
     }
     private getAddCreditItem(value: object) {
-        return { items: addItems };
+        return { addCreditItems: addItems };
     }
     private getReduceCreditItem(value: object) {
-        return { items: reduceItems };
+        return { reduceCreditItems: reduceItems };
     }
     private getStudentDetail(value: object) {
         let id = this.sendData['id'];
@@ -159,9 +169,10 @@ class ReceiveManager {
         return {
             name: s.name,
             school: s.school,
-            grade: s.grade,
             class: s.class,
             credit: s.credit,
+            addCreditStatus: s.addCreditStatus,
+            reduceCreditStatus: s.reduceCreditStatus,
         };
     }
 }
@@ -404,11 +415,11 @@ export enum SendType {
     StudentContainer,
 
     //set undefined
-    //get {items:string[]}
+    //get {addCreditItems:string[]}
     addCreditItem,
 
     //set undefined
-    //get {items:string[]}
+    //get {reduceCreditItems:string[]}
     reduceCreditItem,
 
     //set {id:string, credit:number, text:string}
@@ -420,7 +431,10 @@ export enum SendType {
     reduceCredit,
 
     //set{id:string}
-    //get{name:string, school:string, grade:number, class:number, credit:number}
+    //get{name:string, school:string, class:number, credit:number
+    //  addCreditStatus:{credit:number, text:string}
+    //  reduceCreditStatus:{credit:number, text:string}
+    //}
     studentDetail,
 }
 
@@ -447,7 +461,7 @@ students[4].seatIndex = 12;
 students[5].seatIndex = 15;
 students[6].seatIndex = 16;
 let row = 6;
-let col = 6;
+let col = 8;
 
 function getTaskText(s: StudentData) {
     let count = s.Tasks.length;
