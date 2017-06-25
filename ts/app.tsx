@@ -61,7 +61,8 @@ import { StudentSelector } from './seat/studentSelector'
 import { StudentSeat } from './seat/studentSeat'
 import { SeatManager } from './seat/seatManager'
 import { SeatContainer } from './seat/seatContainer'
-import {StudentDetail} from './seat/studentDetail'
+import { StudentDetail } from './seat/studentDetail'
+import { HomeworkContainer } from './seat/homeworkContainer'
 import './css/seat.css'
 
 class Long extends React.Component<any, any>{
@@ -72,13 +73,13 @@ class Long extends React.Component<any, any>{
             <Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
             <Button onClick={this.onClickC}>ccc</Button>
-            <StudentDetail ref='detail' manager={this.manager} />
+            <HomeworkContainer ref='detail' manager={this.manager} />
         </div>;
     }
     private onClick = () => {
-        this.manager.currentIndex = 12;
-        this.manager.seatIds[12] = '测试12';
-        (this.refs['detail'] as StudentDetail).update();
+        this.manager.currentIndex = 0;
+        this.manager.seatIds[0] = '测试0';
+        (this.refs['detail'] as HomeworkContainer).update();
     }
     private onClickB = () => {
 
@@ -89,11 +90,9 @@ class Long extends React.Component<any, any>{
 
 }
 
-
-
 export class App {
     run() {
-        ReactDOM.render(<div style={{ border: '1px solid blue' }}>
+        ReactDOM.render(<div>
             <Long />
         </div>,
             document.getElementById('root'));

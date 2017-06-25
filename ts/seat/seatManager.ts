@@ -13,4 +13,6 @@ export class SeatManager {
 
         return this.seatIds[this.currentIndex];
     }
+
+    public currentHomeworkIndex: number = -1;
 }

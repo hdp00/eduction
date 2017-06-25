@@ -2,7 +2,7 @@
 //学生数据
 
 import { PaperState } from '../define'
-import { TaskData } from './TaskData'
+import { HomeworkData } from './homeworkData'
 
 export class StudentData {
     public id: string = '测试';
@@ -11,28 +11,11 @@ export class StudentData {
     public class: string = '三年级二班';
     public sex: string = '女';
     public hasSigned: boolean = false;
-    public Tasks: TaskData[] = [
-        {
-            subject: '语文',
-            status: PaperState.New,
-            type: '阅读',
-            id: '0',
-            paper: null,
-        },
-        {
-            subject: '英语',
-            status: PaperState.New,
-            type: '默写',
-            id: '1',
-            paper: null,
-        },
-        {
-            subject: '数学',
-            status: PaperState.New,
-            type: '练习',
-            id: '2',
-            paper: null,
-        },
+    public homeworks: HomeworkData[] = [
+        new HomeworkData(),
+        new HomeworkData(),
+        new HomeworkData(),
+        new HomeworkData(),
     ];
 
     public seatComponent: object;

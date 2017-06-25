@@ -84,6 +84,12 @@ class ReceiveManager {
                     };
                 }
                 break;
+            case SendType.changeHomeworkStatus:
+                {
+                    setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
+                    console.log(students[0].homeworks);
+                }
+                break;
             default:
                 break;
         }
@@ -107,6 +113,8 @@ class ReceiveManager {
                 return this.getReduceCreditItem(data);
             case SendType.studentDetail:
                 return this.getStudentDetail(data);
+            case SendType.homework:
+                return this.getHomework(data);
             default:
                 break;
         }
@@ -134,8 +142,8 @@ class ReceiveManager {
         let s = studentMap[id];
         return {
             name: s.name,
-            taskText: getTaskText(s),
-            taskStatus: getTaskStatus(s),
+            taskText: getHomeworkText(s),
+            taskStatus: getHomeworkStatus(s),
         };
     }
     private getStudentContainer(value: object) {
@@ -146,8 +154,8 @@ class ReceiveManager {
                     id: s.id,
                     name: s.name,
                     index: s.seatIndex,
-                    taskText: getTaskText(s),
-                    taskStatus: getTaskStatus(s),
+                    taskText: getHomeworkText(s),
+                    taskStatus: getHomeworkStatus(s),
                 });
         }
 
@@ -174,6 +182,12 @@ class ReceiveManager {
             addCreditStatus: s.addCreditStatus,
             reduceCreditStatus: s.reduceCreditStatus,
         };
+    }
+    private getHomework(value: object) {
+        let id = this.sendData['studentId'];
+        let s: StudentData = studentMap[id];
+
+        return { homeworks: s.homeworks };
     }
 }
 
@@ -436,6 +450,15 @@ export enum SendType {
     //  reduceCreditStatus:{credit:number, text:string}
     //}
     studentDetail,
+
+    //set{homeworId:string, status:number}
+    changeHomeworkStatus,
+
+    //set{studentId:string}
+    //get {homeworks:
+    //{id: string,status: number,subject: string,item: string,childItem: string,
+    //    book: string,range: string,times: string,desc: string,remark: string,isNeedSign:boolean,}[]}
+    homework,
 }
 
 export const Tool = new EducationTool();
@@ -445,7 +468,7 @@ export const Tool = new EducationTool();
 //temp data
 
 import { StudentData } from './studentData'
-import { TaskData } from './taskData'
+import { HomeworkData } from './homeworkData'
 let studentMap = {};
 let students: StudentData[] = [];
 for (let i = 0; i < 30; i++) {
@@ -460,21 +483,34 @@ students[6].hasSigned = true;
 students[4].seatIndex = 12;
 students[5].seatIndex = 15;
 students[6].seatIndex = 16;
+students[0].homeworks[0].id = '作业A';
+students[0].homeworks[1].id = '作业B';
+students[0].homeworks[2].id = '作业C';
+students[0].homeworks[3].id = '作业D';
 let row = 6;
 let col = 8;
 
-function getTaskText(s: StudentData) {
-    let count = s.Tasks.length;
+function getHomeworkText(s: StudentData) {
+    let count = s.homeworks.length;
     let fininshedCount = 0;
-    for (let t of s.Tasks) {
+    for (let t of s.homeworks) {
         if (t.status === PaperState.Finished)
             fininshedCount++;
     }
 
     return fininshedCount + '/' + count;
 }
-function getTaskStatus(s: StudentData) {
+function getHomeworkStatus(s: StudentData) {
     return PaperState.New;
+}
+function setHomeworStatus(id: string, status: number) {
+    let s = students[0];
+    for (let homework of s.homeworks) {
+        if (homework.id === id) {
+            homework.status = status;
+            return;
+        }
+    }
 }
 
 const addItems = ['纪律好A', '纪律好B', '纪律好C'];

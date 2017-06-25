@@ -2,7 +2,6 @@
 //试卷拍摄
 
 import * as React from 'react'
-import { HomeworkData } from '../data/homeworkData'
 
 export class Camera extends React.Component<any, any>{
     render() {

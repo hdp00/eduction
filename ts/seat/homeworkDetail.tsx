@@ -3,7 +3,8 @@
 
 import * as React from 'react'
 import { Select } from 'antd'
-import { HomeworkData } from '../data/homeworkData'
+import { Tool, SendType } from '../data/tool'
+import { SeatManager } from './seatManager'
 
 const Option = Select.Option;
 
@@ -15,46 +16,68 @@ const PaperStateName = [
 ];
 
 interface HomeworkDetailProps {
-    data: HomeworkData;
-    setSelectObject: (value: object) => void;
-    getSelectObject: () => object;
+    manager: SeatManager,
+    index: number;
+    homework: object;
+    //   { id: string,
+    //     status: number,
+    //     subject: string,
+    //     item: string,
+    //     childItem: string,
+    //     book: string,
+    //     range: string,
+    //     times: string,
+    //     desc: string,
+    //     remark: string,
+    //     isNeedSign: boolean,}
+    onSelect: (index: number) => void;
+
 }
 
 export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
     render() {
-        const isSelect = (this === this.props.getSelectObject());
-        const data = this.props.data;
-        const title = data.subject + '-' + data.type;
-        const status = this.props.data.status;
-        const selectValue = PaperStateName[status];
+        const isSelect = (this.props.index === this.props.manager.currentHomeworkIndex);
+        const selectValue = PaperStateName[this.props.homework['status']];
+        let needSign;
+        if (this.props.homework['isNeedSign'])
+            needSign = <label>需要签字</label>;
+
         const options = [];
+        let statusIndex = 0;
         for (let n of PaperStateName) {
-            options.push(<Option key={n} value={n}>{n}</Option>);
+            options.push(<Option key={statusIndex++} >{n}</Option>);
         }
 
         const divProps = {
             className: isSelect ? 'seat-select' : '',
             onClick: this.onSelect,
+            style: {
+                margin: '5px',
+                border: '1px solid gray',
+            }
         };
 
         return <div {...divProps}>
-            <label>{title}</label>
+            <label>{this.props.homework['subject']} {this.props.homework['item']} {this.props.homework['childItem']}</label><br />
+            <label>{this.props.homework['book']}</label><br />
+            <label>{this.props.homework['range']}</label><br />
+            <label>{this.props.homework['times']}</label><br />
+            <label>{this.props.homework['desc']}</label><br />
+            <label>{this.props.homework['remark']}</label><br />
+            {needSign}<br />
+
             <Select value={selectValue} style={{ width: 120 }} onChange={this.onChange}>
                 {options}
             </Select>
         </div>;
     }
 
-    public onSelect = () => {
-        this.props.setSelectObject(this);
+    private onSelect = () => {
+        this.props.onSelect(this.props.index);
     }
-
     private onChange = (value) => {
-        for (let i = 0; i < PaperStateName.length; i++) {
-            if (PaperStateName[i] === value) {
-                this.props.data.status = i;
-                this.forceUpdate();
-            }
-        }
+        const statusIndex = parseInt(value);
+        Tool.back.sendData(SendType.changeHomeworkStatus,
+            { homeworkId: this.props.homework['id'], status: statusIndex });
     }
 }
