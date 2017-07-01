@@ -27,6 +27,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
                     index: i,
                     key: i,
                     ref: i.toString(),
+                    onSelect: this.onSelect,
                 };
 
                 items.push(<HomeworkDetail {...homeworkProps} />);
@@ -40,15 +41,8 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             },
         }
 
-        const homeworkProps = {
-            style: {
-                overflow: 'auto',
-                height: '500px',   
-            }
-        }
-
         return <div {...containerProps}>
-            <div {...homeworkProps}>
+            <div style={{overflow:'auto', height:'500px'}}>
                 {items}
             </div>
             <div>
@@ -70,6 +64,17 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
     private receiveHomeworks = (value: object) => {
         Tool.lib.fillData(this, value);
         this.forceUpdate();
+    }
+
+    private onSelect = (index: number) => {
+        let preIndex = this.props.manager.currentHomeworkIndex;
+        this.props.manager.currentHomeworkIndex = index;
+
+        let preHomework = (this.refs[preIndex] as HomeworkDetail);
+        if (preHomework !== undefined)
+            preHomework.forceUpdate();
+        const homework = (this.refs[index] as HomeworkDetail);
+        homework.forceUpdate();
     }
 }
 

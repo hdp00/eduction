@@ -32,7 +32,10 @@ class ReceiveManager {
     private send = () => {
         let data = this.converSendData();
         //post
-        setTimeout(this.receive, 200);
+        let time = 200;
+        if (this.type === SendType.uploadPapers)
+            time = 5000;
+        setTimeout(this.receive, time);
     }
     private receive = (response?: string) => {
         let receiveData = this.convertReceiveData(response);
@@ -70,8 +73,6 @@ class ReceiveManager {
                         credit: this.sendData['credit'],
                         text: this.sendData['text'],
                     };
-
-                    console.log(s);
                 }
                 break;
             case SendType.reduceCredit:
@@ -87,7 +88,28 @@ class ReceiveManager {
             case SendType.changeHomeworkStatus:
                 {
                     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
-                    console.log(students[0].homeworks);
+                }
+                break;
+            //实际是要写在发送函数中，临时在这里写写
+            case SendType.uploadPapers:
+                {
+                    let f = new FormData();
+                    let papers: object[] = this.sendData['papers'];
+                    for (let i = 0; i < papers.length; i++) {
+                        f.append('paper' + i, papers[i]['data'], papers[i]['name']);
+                    }
+
+                    $.ajax({
+                        url: '/api/upload',
+                        type: 'POST',
+                        data: data,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: () => { console.log('ok') },
+                        error: () => { console.log('error') },
+                    });
+
                 }
                 break;
             default:
@@ -115,6 +137,8 @@ class ReceiveManager {
                 return this.getStudentDetail(data);
             case SendType.homework:
                 return this.getHomework(data);
+            case SendType.homeworkPaper:
+                return this.getHomeworkPaper(data);
             default:
                 break;
         }
@@ -188,6 +212,9 @@ class ReceiveManager {
         let s: StudentData = studentMap[id];
 
         return { homeworks: s.homeworks };
+    }
+    private getHomeworkPaper(value: object) {
+        return homeworkPaper;
     }
 }
 
@@ -459,6 +486,13 @@ export enum SendType {
     //{id: string,status: number,subject: string,item: string,childItem: string,
     //    book: string,range: string,times: string,desc: string,remark: string,isNeedSign:boolean,}[]}
     homework,
+
+    //set{homeworkId:string, papers:{name:string, data:base64}[])
+    uploadPapers,
+
+    //set{homeworkId:string}
+    //get{homeworkId:string, subject: string, book: string, papers: string[]}
+    homeworkPaper,
 }
 
 export const Tool = new EducationTool();
@@ -489,6 +523,13 @@ students[0].homeworks[2].id = '作业C';
 students[0].homeworks[3].id = '作业D';
 let row = 6;
 let col = 8;
+
+const homeworkPaper = {
+    homeworId: '作业A',
+    subject: '语文',
+    book: '一课一练',
+    defaultPapers: [],
+}
 
 function getHomeworkText(s: StudentData) {
     let count = s.homeworks.length;

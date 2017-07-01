@@ -49,11 +49,10 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
         }
 
         const divProps = {
-            className: isSelect ? 'seat-select' : '',
+            className: isSelect ? 'seat-select' : 'seat-component',
             onClick: this.onSelect,
             style: {
                 margin: '5px',
-                border: '1px solid gray',
             }
         };
 

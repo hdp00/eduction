@@ -11,13 +11,6 @@ import { EducationRouter } from './educationRouter';
 // import { IPaper, PaperState } from './define'
 
 
-
-
-
-
-
-
-
 import { Title } from './title/title'
 import { Login } from './login/login'
 import { Radio, Checkbox, Button, Modal } from 'antd'
@@ -63,26 +56,31 @@ import { SeatManager } from './seat/seatManager'
 import { SeatContainer } from './seat/seatContainer'
 import { StudentDetail } from './seat/studentDetail'
 import { HomeworkContainer } from './seat/homeworkContainer'
-import './css/seat.css'
+import { UploadPaper } from './seat/uploadPaper'
+//import './css/seat.css'
 
 class Long extends React.Component<any, any>{
     manager: SeatManager = new SeatManager();
+    index:number = 0;
 
     render() {
         return <div>
             <Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
-            <Button onClick={this.onClickC}>ccc</Button>
-            <HomeworkContainer ref='detail' manager={this.manager} />
+            <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}
+            {/*{<UploadPaper ref='detail' manager={this.manager} />}*/}
+            <div ref='test'>{this.index}</div>
         </div>;
     }
     private onClick = () => {
-        this.manager.currentIndex = 0;
-        this.manager.seatIds[0] = '测试0';
-        (this.refs['detail'] as HomeworkContainer).update();
+        // this.manager.currentIndex = 0;
+        // this.manager.seatIds[0] = '测试0';
+        // (this.refs['detail'] as HomeworkContainer).update();
     }
     private onClickB = () => {
-
+        this.index++;
+        (this.refs['button'] as Button).forceUpdate();
+        console.log();
     }
     private onClickC = () => {
 
