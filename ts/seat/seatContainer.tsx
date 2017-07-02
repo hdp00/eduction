@@ -43,39 +43,53 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 items.push(item);
             }
             const brkey = i + 'br';
-            items.push(<br key={brkey} />);
+            items.push(<div key={brkey} style={{ clear: 'both' }} />);
         }
-        items.push(<br key={'end_br'} style={{ clear: 'both' }} />)
+        items.push(<div key={'end_br'} style={{ clear: 'both' }} />)
 
         const divProps = {
-            style: {
-                float: 'left',
-                border: '1px solid gray',
-            },
+            className: 'seat-student-contain-div',
         }
         const timerProps = {
-            defaultValue: this.delayMinute.toString(),
             style: {
-                width: '120px',
+                float: 'right',
+                marginLeft: '4px',
+                marginRight: '20px',
             },
+            defaultValue: this.delayMinute.toString(),
             onChange: this.onChangeDelayTime,
         };
 
+        const buttonAProps = {
+            style: {
+                float: 'left',
+                marginLeft: '20px',
+            }
+        }
+        const buttonBProps = {
+            style: {
+                float: 'right',
+                marginLeft: '20px',
+            }
+        }
+
+        //rely on css
+        let width = (84 + 3 * 2 ) * col + 'px';
         return <div {...divProps}>
-            {items}
-            <div>
-                <Button onClick={this.onSigninAll}>全体签到</Button>
-                <Button onClick={this.onSignout}>签退</Button>
-                <div>
-                    <Button onClick={this.onDelay}>计时</Button>
-                    <Select {...timerProps}>
-                        <Option value="5">5</Option>
-                        <Option value="10">10</Option>
-                        <Option value="15">15</Option>
-                        <Option value="20">20</Option>
-                        <Option value="30">30</Option>
-                    </Select>
-                </div>
+            <div style={{ width: width, margin: '0 auto' }}>
+                {items}
+            </div>
+            <div style={{ margin: '20px' }}>
+                <Button {...buttonAProps} size='large' type='primary' icon='login' onClick={this.onSigninAll}>全体签到</Button>
+                <Button {...buttonAProps} size='large' type='primary' icon='logout' onClick={this.onSignout}>签退</Button>
+                <Select {...timerProps} size='large'>
+                    <Option value="5">5</Option>
+                    <Option value="10">10</Option>
+                    <Option value="15">15</Option>
+                    <Option value="20">20</Option>
+                    <Option value="30">30</Option>
+                </Select>
+                <Button {...buttonBProps} size='large' type='primary' icon='clock-circle-o' onClick={this.onDelay}>计时</Button>
             </div>
             <StudentSelector ref='selector' onSelect={this.onEndSignin} />
         </div>;

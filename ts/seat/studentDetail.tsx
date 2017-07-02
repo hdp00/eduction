@@ -32,21 +32,21 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
 
         if (this.id !== undefined) {
 
-            detail = <div style={{ float: 'left' }}>
-                <label>{this.name}</label><br />
-                <label>{this.school}</label><br />
-                <label>{this.class}</label>
+            detail = <div style={{ marginBottom: '10px' }}>
+                <label style={{ fontSize: '28px' }}>{this.name}</label><br />
+                <label style={{ fontSize: '18px' }}>{this.school}</label><br />
+                <label style={{ fontSize: '18px' }}>{this.class}</label>
             </div>;
 
-            credit = <div style={{ float: 'left' }}>
-                <label>积分：{this.credit}</label><br />
+            credit = <div>
+                <label style={{ fontSize: '18px' }}>积分：{this.credit}</label><br />
                 <div>
                     <label>纪律加分</label>
                     <Rate disabled value={this.addCreditStatus.credit} /><br />
                     <label>纪律减分</label>
                     <Rate disabled value={this.reduceCreditStatus.credit} /><br />
-                    <Button onClick={this.onBeginAddCredit}>加分</Button>
-                    <Button onClick={this.onBeginReduceCredit}>减分</Button>
+                    <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginAddCredit}>加分</Button>
+                    <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginReduceCredit}>减分</Button>
                 </div>
             </div>;
 
@@ -61,14 +61,14 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
                 onCancel: this.onAddCreditCancel,
             };
 
-            addCredit = <Modal {...addCreditProps}>
-                <label>纪律加分</label>
+            addCredit = <Modal width='260px' {...addCreditProps}>
+                <label style={{marginRight:'10px'}}>分数</label>
                 <Rate defaultValue={this.addCreditStatus.credit}
                     onChange={
                         (value: number) => { this.addCredit = value; }
                     } />
                 <br />
-                <label>加分原因</label>
+                <label style={{marginRight:'10px'}}>选项</label>
                 <Select defaultValue={this.addCreditStatus.text} style={{ width: 120 }}
                     onChange={
                         (value: string) => { this.addText = value; }
@@ -88,14 +88,14 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
                 onCancel: this.onReduceCreditCancel,
             };
 
-            reduceCredit = <Modal {...reduceCreditProps}>
-                <label>纪律减分</label>
+            reduceCredit = <Modal width='260px' {...reduceCreditProps}>
+                <label style={{marginRight:'10px'}}>分数</label>
                 <Rate defaultValue={this.reduceCreditStatus.credit}
                     onChange={
                         (value: number) => { this.reduceCredit = value; }
                     } />
                 <br />
-                <label>加分原因</label>
+                <label style={{marginRight:'10px'}}>选项</label>
                 <Select defaultValue={this.reduceCreditStatus.text} style={{ width: 120 }}
                     onChange={
                         (value: string) => { this.reduceText = value; }
@@ -106,13 +106,10 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         }
 
         const divProps = {
-            style: {
-                border: '1px solid gray',
-                height: '300px',
-            },
+
         };
 
-        return <div {...divProps}>
+        return <div className='seat-student-detail-div'>
             {detail}
             {credit}
             {addCredit}

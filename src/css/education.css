@@ -1,7 +1,10 @@
 /*by hdp 2017.07.02*/
 .component-select{
-    border: 2px solid blue;
+    background-color: rgba(0,0,255,0.15);
 }
-.component-border{
+.component-normal{
     border: 1px solid gray;
+}
+.font-big{
+    font-size: 16px;
 }

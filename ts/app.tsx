@@ -58,6 +58,7 @@ import { StudentDetail } from './seat/studentDetail'
 import { HomeworkContainer } from './seat/homeworkContainer'
 import { UploadPaper } from './seat/uploadPaper'
 import './css/seat.css'
+import './css/education.css'
 
 class Long extends React.Component<any, any>{
 
@@ -65,9 +66,12 @@ class Long extends React.Component<any, any>{
 
     render() {
         return <div>
-            <Button onClick={this.onClick}>aaa</Button>
+            <div style={{wordBreak:'break-word', width:'50px'}}>dgdflhkgophnkgfpogkr;hkgpfogkdpohktropyihkpofkf;dlgkfpobk,ewrpogkf</div>
+            <label>__________</label>
+            {/*<Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
-            <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}
+            <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}*/}
+            <div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>
             <Seat />
         </div>;
     }

@@ -32,7 +32,7 @@ export class Seat extends React.Component<any, any>{
 
         return <div>
             <SeatContainer {...SeatProps} />
-            <div style={{ float: 'left' }}>
+            <div className='seat-single-student-div'>
                 <StudentDetail {...studentProps} />
                 <HomeworkContainer {...homeworkProps} />
             </div>

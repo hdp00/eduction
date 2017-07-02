@@ -1,14 +1,40 @@
 /*by hdp 2017.06.11*/
+
+/*学生座位*/
 .seat-student-seat-div{
-    width:80px;
+    width:84px;
     height: 80px;
     float: left;
-    margin: 10px;
-    border: 1px solid black;
+    margin: 3px;
+    text-align: center;
 }
-.seat-select{
-    border: 2px solid blue;
-}
-.seat-component{
+/*所有座位*/
+.seat-student-contain-div{
+    width: 800px;
+    height: 800px;
+    float: left;
+    text-align: center;
+    margin: 2px;
+    background-color: rgba(0,255,0,0.03);
     border: 1px solid gray;
 }
+/*学生信息*/
+.seat-single-student-div{
+    width: 220px;
+    height: 800px;
+    float: left;
+}
+/*学生细节*/
+.seat-student-detail-div{
+    margin: 2px;
+    background-color: rgba(0,255,0,0.03);
+    border: 1px solid gray;
+    height: 250px;
+}
+/*作业*/
+.seat-homework-container-div{
+    margin: 2px;
+    background-color: rgba(0,255,0,0.03);
+    border: 1px solid gray;
+}
+

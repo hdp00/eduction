@@ -2,7 +2,7 @@
 //学生座位
 
 import * as React from 'react'
-import { Button } from 'antd'
+import { Button, Icon } from 'antd'
 import { Tool, SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 
@@ -21,7 +21,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     //作业文本
     private taskText: string;
     //作业状态
-    private taskStatus: number;
+    private taskStatus: number;//PaperState 
     //定时结束时间
     private delayTime: Date;
     //刷新定时器id
@@ -38,34 +38,46 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
         let timer;
         if (hasTimer) {
-            let component = timerIsOver ?
+            timer = timerIsOver ?
                 <Button onClick={this.finishDelay}>计时完成</Button> :
-                <label>{this.delayText}</label>;
-            timer = <div>
-                {component}
-            </div>;
+                <div>
+                    <Icon type='clock-circle' /><label>{this.delayText}</label>
+                </div>;
         }
 
         let item;
         if (hasSigned) {
-            item = <div>
-                <label>{this.taskText}</label>
-                <br />
-                <label>{this.name}</label>
+            let color;
+            switch (this.taskStatus) {
+                case 0:
+                    color = 'rgba(0, 0, 255, 0.4)';
+                    break;
+                case 2:
+                    color = 'rgba(255, 255, 0, 0.4)';
+                    break;
+                case 3:
+                    color = 'rgba(0, 255, 0, 0.4)';
+                    break;
+                default:
+                    color = 'rgba(0, 0, 255, 0.4)';
+                    break;
+            }
+
+            item = <div style={{ paddingTop: '7px' }}>
+                <div style={{ backgroundColor: color }}>{this.taskText}</div>
+                <label style={{ fontSize: '16px' }}>{this.name}</label>
                 <br />
                 {timer}
             </div>;
         }
         else {
-            item = <Button onClick={this.onSign}>签到</Button>
+            item = <Button style={{ marginTop: '7px', width: '60px', height: '60px' }}
+                onClick={this.onSign}>签到</Button>;
         }
 
         const divProps = {
             className: 'seat-student-seat-div' + ' ' + selectClass,
             onClick: this.onSelect,
-            style: {
-                float: 'left',
-            }
         }
 
         return <div {...divProps}>

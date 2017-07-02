@@ -47,19 +47,13 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             }
         }
 
-        const containerProps = {
-            style: {
-                border: '1px solid gray',
-            },
-        }
-
-        return <div {...containerProps}>
-            <div style={{ overflow: 'auto', height: '500px' }}>
+        return <div className='seat-homework-container-div'>
+            <div style={{ overflow: 'auto', height: '498px' }}>
                 {items}
             </div>
             <div>
-                <Button onClick={this.onUploadPaper}>上传作业</Button>
-                <Button onClick={this.onViewPaper}>查看作业</Button>
+                <Button style={{ margin: '10px' }} type='primary' onClick={this.onUploadPaper}>上传作业</Button>
+                <Button style={{ margin: '10px' }} type='primary' onClick={this.onViewPaper}>查看作业</Button>
             </div>
             <UploadPaper ref='upload'/>
         </div>;

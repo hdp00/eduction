@@ -34,7 +34,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             const isSelect = (this.index == i);
             const paperProps = {
                 key: i,
-                className: isSelect ? 'component-select' : 'seat-component',
+                className: isSelect ? 'component-select' : 'component-normal',
                 onClick: this.onSelectPaper,
                 style: {
                     margin: '5px',
