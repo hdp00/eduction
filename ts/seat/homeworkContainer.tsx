@@ -6,6 +6,7 @@ import { Button } from 'antd'
 import { HomeworkDetail } from './homeworkDetail'
 import { Tool, SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
+import { UploadPaper } from './uploadPaper'
 
 interface HomeworkContainerProps {
     manager: SeatManager,
@@ -13,6 +14,17 @@ interface HomeworkContainerProps {
 
 export class HomeworkContainer extends React.Component<HomeworkContainerProps, any>{
     private homeworks: object[];
+    //   { id: string,
+    //     status: number,
+    //     subject: string,
+    //     item: string,
+    //     childItem: string,
+    //     book: string,
+    //     range: string,
+    //     times: string,
+    //     desc: string,
+    //     remark: string,
+    //     isNeedSign: boolean,}
 
     render() {
         const exist = (this.homeworks !== undefined);
@@ -42,13 +54,14 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
         }
 
         return <div {...containerProps}>
-            <div style={{overflow:'auto', height:'500px'}}>
+            <div style={{ overflow: 'auto', height: '500px' }}>
                 {items}
             </div>
             <div>
-                <Button>上传作业</Button>
-                <Button>查看作业</Button>
+                <Button onClick={this.onUploadPaper}>上传作业</Button>
+                <Button onClick={this.onViewPaper}>查看作业</Button>
             </div>
+            <UploadPaper ref='upload'/>
         </div>;
     }
 
@@ -75,6 +88,19 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             preHomework.forceUpdate();
         const homework = (this.refs[index] as HomeworkDetail);
         homework.forceUpdate();
+    }
+    private onUploadPaper = () => {
+        if(this.homeworks === undefined)
+            return;
+        const h:object = this.homeworks[this.props.manager.currentHomeworkIndex];
+        if(h === undefined)
+            return;
+            
+        const upload = (this.refs['upload'] as UploadPaper);
+        upload.setVisible(true, h['id']);
+    }
+    private onViewPaper = () => {
+
     }
 }
 

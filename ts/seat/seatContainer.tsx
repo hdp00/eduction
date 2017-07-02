@@ -114,7 +114,6 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 while (this.props.manager.seatIds[seatIndex] !== undefined) {
                     seatIndex++;
                 }
-                console.log(seatIndex);
 
                 const seat = this.refs[seatIndex] as StudentSeat;
                 if (seat === undefined)
@@ -133,14 +132,14 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             seat.setId(id);
         }
 
-        //console.log();
+        this.props.manager.onCurrentStudentChange();
     }
     //当前座位发生变化
     private onSelect = (index: number) => {
         let preIndex = this.props.manager.currentIndex;
         this.props.manager.currentIndex = index;
-        //notify others
-        console.log();
+
+        this.props.manager.onCurrentStudentChange();
 
         (this.refs[index] as StudentSeat).forceUpdate();
         const preSeat = (this.refs[preIndex] as StudentSeat);
@@ -162,8 +161,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         this.props.manager.seatIds[index] = undefined;
         (this.refs[index] as StudentSeat).setId(undefined);
 
-        //updat others
-        console.log();
+        this.props.manager.onCurrentStudentChange();
     }
     private onDelay = () => {
         const index = this.props.manager.currentIndex;

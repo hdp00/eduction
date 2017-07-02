@@ -15,4 +15,7 @@ export class SeatManager {
     }
 
     public currentHomeworkIndex: number = -1;
+
+    //选择学生改变
+    public onCurrentStudentChange: () => void;
 }

@@ -2,65 +2,45 @@
 //座位页面
 
 import * as React from 'react'
-import { StudentData } from '../data/studentData'
-import { StudentSelector } from './studentSelector'
 import { SeatContainer } from './seatContainer'
 import { StudentDetail } from './studentDetail'
 import { HomeworkContainer } from './homeworkContainer'
-import { Camera } from './camera'
+import { SeatManager } from './seatManager'
 import '../css/seat.css'
 
 export class Seat extends React.Component<any, any>{
-    func: () => void;
+    private manager: SeatManager = new SeatManager();
+
+    constructor(props:any){
+        super(props);
+        //绑定学生变化事件
+        this.manager.onCurrentStudentChange = this.onCurrentStudentChange;
+    }
 
     render() {
-        const containerProps = {
-            data: {
-                students: datas,
-                row: row,
-                col: col,
-                showSelector: this.showSelector,
-            },
-            ref: 'container',
-        };
-        const selectorProps = {
-            students: datas,
-            ref: 'selector',
+        const SeatProps = {
+            manager: this.manager,
         };
         const studentProps = {
+            manager: this.manager,
             ref: 'student',
         };
         const homeworkProps = {
+            manager: this.manager,
             ref: 'homework',
         };
 
         return <div>
-            <SeatContainer {...containerProps} />
+            <SeatContainer {...SeatProps} />
             <div style={{ float: 'left' }}>
                 <StudentDetail {...studentProps} />
                 <HomeworkContainer {...homeworkProps} />
             </div>
-            <StudentSelector {...selectorProps}></StudentSelector>
         </div>;
     }
-    componentDidMount() {
-        //绑定学生变化事件
-        // const student = (this.refs['student'] as StudentDetail);
-        // const homework = (this.refs['homework'] as HomeworkContainer);
-        // const container = (this.refs['container'] as SeatContainer);
-        // container.addChangedNotify(student.update);
-        // container.addChangedNotify(homework.update);
 
-        Tool.post(aaa, () => {
-
-        })
-
-        Manager.post
-    }
-
-    private showSelector = (type: number, callback: (students: StudentData[]) => void) => {
-        (this.refs['selector'] as StudentSelector).show(type, callback);
-    }
+    private onCurrentStudentChange = () => {
+        (this.refs['student'] as StudentDetail).update();
+        (this.refs['homework'] as HomeworkContainer).update();
+    };
 }
-
-export const seatComponent = <Seat />;

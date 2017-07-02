@@ -99,16 +99,16 @@ class ReceiveManager {
                         f.append('paper' + i, papers[i]['data'], papers[i]['name']);
                     }
 
-                    $.ajax({
-                        url: '/api/upload',
-                        type: 'POST',
-                        data: data,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        success: () => { console.log('ok') },
-                        error: () => { console.log('error') },
-                    });
+                    // $.ajax({
+                    //     url: '/api/upload',
+                    //     type: 'POST',
+                    //     data: data,
+                    //     cache: false,
+                    //     processData: false,
+                    //     contentType: false,
+                    //     success: () => { console.log('ok') },
+                    //     error: () => { console.log('error') },
+                    // });
 
                 }
                 break;
@@ -478,7 +478,7 @@ export enum SendType {
     //}
     studentDetail,
 
-    //set{homeworId:string, status:number}
+    //set{homeworkId:string, status:number}
     changeHomeworkStatus,
 
     //set{studentId:string}
@@ -525,7 +525,7 @@ let row = 6;
 let col = 8;
 
 const homeworkPaper = {
-    homeworId: '作业A',
+    homeworkId: '作业A',
     subject: '语文',
     book: '一课一练',
     defaultPapers: [],

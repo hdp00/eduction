@@ -2,7 +2,7 @@
 //试卷拍摄
 
 import * as React from 'react'
-import { Button } from 'antd'
+import { Modal, Button } from 'antd'
 import { Tool, SendType } from '../data/tool'
 
 interface UploadControlProps {
@@ -33,7 +33,8 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         for (let p of this.papers) {
             const isSelect = (this.index == i);
             const paperProps = {
-                className: isSelect ? 'seat-select' : 'seat-component',
+                key: i,
+                className: isSelect ? 'component-select' : 'seat-component',
                 onClick: this.onSelectPaper,
                 style: {
                     margin: '5px',
@@ -41,12 +42,11 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             };
 
             items.push(<div data-index={i} {...paperProps}>{p['name']}</div>);
+            i++;
         }
 
         const buttonProps = {
-            style: {
-                disabled: this.isUploading,
-            }
+            disabled: this.isUploading,
         }
 
         return <div>
@@ -64,13 +64,14 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         </div>;
     }
     public setPapers(papers: object[]) {
+        this.isUploading = false;
         this.index = -1;
         this.papers = papers;
         this.forceUpdate();
     }
 
     private onTakePicture = () => {
-        const name = this.props.homeworkId + '_' + (new Date().getTime);
+        const name = this.props.homeworkId + '_' + (new Date().getTime());
         let paper = { name: name, data: undefined, hasUpload: false };
         this.papers.push(paper);
         this.index = this.papers.length - 1;
@@ -115,26 +116,34 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         if (index < 0 || index > (this.papers.length - 1))
             return;
 
-        let papers = [];
-        for (let i = 0; i < this.papers.length; i++) {
-            if (i == index)
-                continue;
-            papers.push(this.papers[i]);
-        }
-        this.papers = papers;
+        Modal.confirm({
+            content: '删除试卷？',
+            onOk: () => {
+                let papers = [];
+                for (let i = 0; i < this.papers.length; i++) {
+                    if (i == index)
+                        continue;
+                    papers.push(this.papers[i]);
+                }
+                this.papers = papers;
 
-        if (index > (this.papers.length - 1))
-            this.index = this.papers.length - 1;
+                if (index > (this.papers.length - 1))
+                    this.index = this.papers.length - 1;
 
-        this.props.onSelectPaper(this.papers[index]);
-        this.forceUpdate();
+                this.props.onSelectPaper(this.papers[this.index]);
+                this.forceUpdate();
+            }
+        });
     }
     private onExit = () => {
         this.props.onExit();
     }
     private onSelectPaper = (event) => {
-        let index = event.currentTarget.dataset.index;
-        this.props.onSelectPaper(this.papers[index]);
+        let index = parseInt(event.currentTarget.dataset.index);
+        if (this.index === index)
+            return;
+        this.index = index;
+        this.props.onSelectPaper(this.papers[this.index]);
 
         this.forceUpdate();
     }

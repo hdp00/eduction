@@ -31,7 +31,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
     render() {
         const isSelect = (this.props.manager.currentIndex === this.props.index);
-        const selectClass = isSelect ? 'seat-select' : '';
+        const selectClass = isSelect ? 'component-select' : '';
         const hasSigned = (this.id !== undefined);
         const hasTimer = (this.delayTime !== undefined);
         const timerIsOver = (this.timerId === undefined);

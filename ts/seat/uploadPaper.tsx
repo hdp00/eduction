@@ -2,6 +2,7 @@
 //试卷拍摄
 
 import * as React from 'react'
+import { Modal } from 'antd'
 import { UploadControl } from './uploadControl'
 import { Tool, SendType } from '../data/tool'
 
@@ -16,6 +17,10 @@ export class UploadPaper extends React.Component<any, any>{
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     video: HTMLVideoElement;
+    control: UploadControl;
+    canvasWidth = 640;
+    canvasHeight = 480;
+    image: HTMLImageElement = new Image();
 
     render() {
         const vedioProps = {
@@ -37,24 +42,91 @@ export class UploadPaper extends React.Component<any, any>{
             }
         };
         const controlProps = {
-            homeworkId: this.props.homeworkId,
-            subject: this.props.subject,
-            book: this.props.book,
+            ref: 'control',
+
+            homeworkId: this.homeworkId,
+            subject: this.subject,
+            book: this.book,
 
             onTakePicture: this.onTakePicture,
             onSelectPaper: this.onSelectPaper,
             onExit: this.onExit,
         }
 
-        return <div>
+        const modalProps = {
+            title: '上传试卷',
+            visible: this.visible,
+            footer: null,
+            width: '1200px',
+            onCancel: this.onExit,
+        };
+
+        return <Modal {...modalProps}>
             <video {...vedioProps}></video>
             <UploadControl {...controlProps} />
             <canvas {...canvasProps}></canvas>
-        </div>;
+            <div style={{ clear: 'both' }} />
+        </Modal>;
     }
-    componentDidMount() {
+    componentDidUpdate() {
+        this.initComponent();
+    }
+    public setVisible = (visible: boolean, homeworkId: string) => {
+        this.visible = visible;
+        this.homeworkId = homeworkId;
+
+        if(this.video === undefined)
+            this.forceUpdate();
+        else
+            Tool.back.sendData(SendType.homeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
+    }
+    private receiveHomeworkPaper = (value: object) => {
+        Tool.lib.fillData(this, value);
+
+        this.papers = [];
+        this.control.setPapers(this.papers);
+
+        this.video.play();
+
+        this.forceUpdate();
+    }
+
+    private onTakePicture = (paper: object) => {
+        //this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.ctx.drawImage(this.video, 0, 0);
+        //this.ctx.fillText(paper['name'], 100, 100);
+        paper['data'] = this.canvas.toDataURL();
+    }
+    private onSelectPaper = (paper: object) => {
+        if(paper === undefined)
+            return;
+
+        this.showCanvas(paper);
+    }
+    private onExit = () => {
+        this.visible = false;
+        this.forceUpdate();
+
+        this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        if(this.video.readyState !== 0)
+            this.video.pause();
+    }
+
+    private showCanvas = (paper: object) => {
+        this.image.src = paper['data'];
+        this.image.onload = () => {
+            //this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+            this.ctx.drawImage(this.image, 0, 0, this.canvasWidth, this.canvasHeight);
+        }
+    }
+    private initComponent = () => {
+        if (this.video !== undefined)
+            return;
         this.video = this.refs['video'] as HTMLVideoElement;
-        this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
+        if (this.video === undefined)
+            return;
+
+        this.canvas = this.refs['canvas'] as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
         navigator.getUserMedia = navigator.getUserMedia ||
             navigator['webkitGetUserMedia'] ||
@@ -65,35 +137,8 @@ export class UploadPaper extends React.Component<any, any>{
             this.video.src = URL.createObjectURL(stream);
             this.video.play();
         }, (value) => { console.log(value) });
-    }
-    public setVisible = (visible: boolean, homeworkId: string) => {
-        this.visible = visible;
-        this.homeworkId = homeworkId;
+
+        this.control = (this.refs['control'] as UploadControl);
         Tool.back.sendData(SendType.homeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
-    }
-    private receiveHomeworkPaper = (value: object) => {
-        Tool.lib.fillData(this, value);
-
-        this.forceUpdate();
-    }
-
-    private onTakePicture = (paper: object) => {
-        this.ctx.drawImage(this.video, 0, 0);
-        paper['data'] = this.canvas.toDataURL();
-    }
-    private onSelectPaper = (paper: object) => {
-        this.showCanvas(paper);
-    }
-    private onExit = () => {
-        this.visible = false;
-        this.forceUpdate();
-    }
-
-    private showCanvas = (paper: object) => {
-        let image: HTMLImageElement = new Image();
-        image.src = paper['data'];
-        image.onload = () => {
-            this.ctx.drawImage(image, 0, 0, 640, 480);
-        }
     }
 }
