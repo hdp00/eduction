@@ -57,7 +57,8 @@ export class UploadPaper extends React.Component<any, any>{
             title: '上传试卷',
             visible: this.visible,
             footer: null,
-            width: '1200px',
+            width: '1500px',
+            maskClosable:false,
             onCancel: this.onExit,
         };
 

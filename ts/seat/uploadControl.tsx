@@ -25,6 +25,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             style: {
                 border: '1px solid gray',
                 float: 'left',
+                margin: '2px',
             }
         };
 
@@ -46,21 +47,26 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         }
 
         const buttonProps = {
-            disabled: this.isUploading,
+            style: {
+                margin: '5px',
+            },
+
         }
 
-        return <div>
-            <div {...controlProps}>
-                <Button {...buttonProps} onClick={this.onTakePicture}>拍摄</Button>
-                <Button {...buttonProps} onClick={this.onUpload}>上传</Button>
+        return <div {...controlProps}>
+            <div >
+                <Button type='primary' icon='camera' {...buttonProps} onClick={this.onTakePicture}>拍摄</Button>
+                <Button type='primary' icon='upload' {...buttonProps} onClick={this.onUpload} loading={this.isUploading}>上传</Button>
                 <div>
-                    <Button {...buttonProps} onClick={this.onMoveUp}>上移</Button>
-                    <Button {...buttonProps} onClick={this.onMoveDown}>下移</Button>
-                    <Button {...buttonProps} onClick={this.onDelete}>删除</Button>
+                    <Button type='primary' icon='up' {...buttonProps} onClick={this.onMoveUp} />
+                    <Button type='primary' icon='down' {...buttonProps} onClick={this.onMoveDown} />
+                    <Button type='primary' icon='close' {...buttonProps} onClick={this.onDelete} />
+                </div>
+                <div style={{ overflow: 'auto', height: '363px' }}>
                     {items}
                 </div>
             </div>
-            <Button onClick={this.onExit}>退出</Button>
+            <Button type='primary' style={{ margin: '5px 55px' }}   onClick={this.onExit}>退出</Button>
         </div>;
     }
     public setPapers(papers: object[]) {
@@ -71,6 +77,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
     }
 
     private onTakePicture = () => {
+        if (this.isUploading)
+            return;
+
         const name = this.props.homeworkId + '_' + (new Date().getTime());
         let paper = { name: name, data: undefined, hasUpload: false };
         this.papers.push(paper);
@@ -80,6 +89,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onUpload = () => {
+        if (this.isUploading)
+            return;
+
         let sendPapers = [];
         for (let p of this.papers) {
             let data = p['hasUpload'] ? undefined : p['data'];
@@ -92,6 +104,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onMoveUp = () => {
+        if(this.isUploading)
+            return;
+
         const index = this.index;
         if (index <= 0 || index > (this.papers.length - 1))
             return;
@@ -102,6 +117,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onMoveDown = () => {
+        if(this.isUploading)
+            return;
+
         const index = this.index;
         if (index < 0 || index >= (this.papers.length - 1))
             return;
@@ -112,6 +130,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onDelete = () => {
+        if(this.isUploading)
+            return;
+
         const index = this.index;
         if (index < 0 || index > (this.papers.length - 1))
             return;
@@ -136,6 +157,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         });
     }
     private onExit = () => {
+        if(this.isUploading)
+            return;
+
         this.props.onExit();
     }
     private onSelectPaper = (event) => {

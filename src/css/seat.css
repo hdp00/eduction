@@ -1,4 +1,10 @@
 /*by hdp 2017.06.11*/
+/*顶层div*/
+.seat-total-div{
+    background-color: rgba(0,255,0,0.03);
+    width: 1028px;
+    margin: auto;
+}
 
 /*学生座位*/
 .seat-student-seat-div{
@@ -15,7 +21,6 @@
     float: left;
     text-align: center;
     margin: 2px;
-    background-color: rgba(0,255,0,0.03);
     border: 1px solid gray;
 }
 /*学生信息*/
@@ -27,14 +32,12 @@
 /*学生细节*/
 .seat-student-detail-div{
     margin: 2px;
-    background-color: rgba(0,255,0,0.03);
     border: 1px solid gray;
     height: 250px;
 }
 /*作业*/
 .seat-homework-container-div{
     margin: 2px;
-    background-color: rgba(0,255,0,0.03);
     border: 1px solid gray;
 }
 

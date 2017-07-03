@@ -2,7 +2,7 @@
 //作业信息
 
 import * as React from 'react'
-import { Select } from 'antd'
+import { Select, Icon } from 'antd'
 import { Tool, SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 
@@ -31,7 +31,6 @@ interface HomeworkDetailProps {
     //     remark: string,
     //     isNeedSign: boolean,}
     onSelect: (index: number) => void;
-
 }
 
 export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
@@ -40,7 +39,10 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
         const selectValue = PaperStateName[this.props.homework['status']];
         let needSign;
         if (this.props.homework['isNeedSign'])
-            needSign = <label>需要签字</label>;
+            needSign = <span><Icon type='check-square' />签字</span>;
+        let hasPaper;
+        //if(this.props.homework['hasPaper'])
+        hasPaper = <span><Icon type='book' />作业</span>
 
         const options = [];
         let statusIndex = 0;
@@ -57,15 +59,11 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
         };
 
         return <div {...divProps}>
-            <label>{this.props.homework['subject']} {this.props.homework['item']} {this.props.homework['childItem']}</label><br />
-            <label>{this.props.homework['book']}</label><br />
-            <label>{this.props.homework['range']}</label><br />
-            <label>{this.props.homework['times']}</label><br />
-            <label>{this.props.homework['desc']}</label><br />
-            <label>{this.props.homework['remark']}</label><br />
-            {needSign}<br />
-
-            <Select value={selectValue} style={{ width: 120 }} onChange={this.onChange}>
+            <div style={{ fontSize: '18px' }}>{this.props.homework['subject']} {this.props.homework['item']} {this.props.homework['childItem']}</div>
+            <div>{this.props.homework['book']} {this.props.homework['range']} {this.props.homework['times']}</div>
+            <div>{this.props.homework['desc']} {this.props.homework['remark']}</div>
+            <div>{needSign} {hasPaper}</div>
+            <Select value={selectValue} style={{ width: 100 }} onChange={this.onChange}>
                 {options}
             </Select>
         </div>;

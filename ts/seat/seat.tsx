@@ -11,7 +11,7 @@ import '../css/seat.css'
 export class Seat extends React.Component<any, any>{
     private manager: SeatManager = new SeatManager();
 
-    constructor(props:any){
+    constructor(props: any) {
         super(props);
         //绑定学生变化事件
         this.manager.onCurrentStudentChange = this.onCurrentStudentChange;
@@ -30,11 +30,14 @@ export class Seat extends React.Component<any, any>{
             ref: 'homework',
         };
 
-        return <div>
-            <SeatContainer {...SeatProps} />
-            <div className='seat-single-student-div'>
-                <StudentDetail {...studentProps} />
-                <HomeworkContainer {...homeworkProps} />
+        return <div style={{ textAlign: 'center' }} >
+            <div className='seat-total-div'>
+                <SeatContainer {...SeatProps} />
+                <div className='seat-single-student-div'>
+                    <StudentDetail {...studentProps} />
+                    <HomeworkContainer {...homeworkProps} />
+                </div>
+                <div style={{ clear: 'both' }} />
             </div>
         </div>;
     }
