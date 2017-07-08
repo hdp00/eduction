@@ -98,7 +98,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         this.forceUpdate();
     }
     public receiveStudent = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
 
         let d = localStorage[this.id + '_delay'];
         this.setDelayTime(new Date(d));

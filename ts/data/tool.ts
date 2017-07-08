@@ -8,10 +8,10 @@ import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '..
 //工具库
 class Lib {
     //填充数据
-    fillData = (componet, value) => {
+    fillData = (value, component) => {
         const keys = Object.keys(value);
         for (let key of keys)
-            componet[key] = value[key];
+            component[key] = value[key];
     }
 }
 
@@ -112,6 +112,12 @@ class ReceiveManager {
 
                 }
                 break;
+            case SendType.addGrade:
+                {
+                    //set{id:string,
+                    //grade:{date:Date, grade:{subject:string, score:number}[]}}
+                }
+                break;
             default:
                 break;
         }
@@ -139,6 +145,8 @@ class ReceiveManager {
                 return this.getHomework(data);
             case SendType.homeworkPaper:
                 return this.getHomeworkPaper(data);
+            case SendType.students:
+                return this.getStudents(data);
             default:
                 break;
         }
@@ -215,6 +223,9 @@ class ReceiveManager {
     }
     private getHomeworkPaper(value: object) {
         return homeworkPaper;
+    }
+    private getStudents(value: object) {
+        return { students: students };
     }
 }
 
@@ -493,6 +504,16 @@ export enum SendType {
     //set{homeworkId:string}
     //get{homeworkId:string, subject: string, book: string, papers: string[]}
     homeworkPaper,
+
+    //set undefined
+    //get {students:{id:string, name:string, school:string, class:number, sex:stirng,
+    //grade:{date:Date, grade:{subject:string, score:number}[]}}[]}
+    students,
+
+    //set{id:string,
+    //grade:{date:Date, grade:{subject:string, score:number}[]}}
+    //get undefined
+    addGrade,
 }
 
 export const Tool = new EducationTool();

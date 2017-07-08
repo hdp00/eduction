@@ -58,6 +58,7 @@ import { StudentDetail } from './seat/studentDetail'
 import { HomeworkContainer } from './seat/homeworkContainer'
 import { UploadPaper } from './seat/uploadPaper'
 import { StudentCard } from './student/studentCard'
+import { Student } from './student/student'
 import './css/seat.css'
 import './css/education.css'
 
@@ -73,7 +74,7 @@ class Long extends React.Component<any, any>{
             <Button onClick={this.onClickB}>bbb</Button>
             <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}*/}
             {/*<div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>*/}
-            <Seat />
+            <Student />
         </div>;
     }
     private onClick = () => {

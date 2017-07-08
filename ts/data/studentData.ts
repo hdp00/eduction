@@ -30,4 +30,38 @@ export class StudentData {
         credit: 5,
         text: '纪律差B',
     };
+
+
+    public grade = [
+        {
+            date: new Date(),
+            grade: [
+                { subject: '语文', score: 12, },
+                { subject: '数学', score: 34, },
+                { subject: '英语', score: 56, },
+            ],
+        },
+        {
+            date: new Date(),
+            grade: [
+                { subject: '语文', score: 11, },
+                { subject: '数学', score: 22, },
+                { subject: '英语', score: 33, },
+                { subject: '物理', score: 78, },
+                { subject: '化学', score: 90, },
+            ],
+        },
+        {
+            date: new Date(),
+            grade: [
+                { subject: '语文', score: 44, },
+                { subject: '数学', score: 55, },
+                { subject: '英语', score: 66, },
+                { subject: '物理', score: 78, },
+                { subject: '化学', score: 90, },
+            ],
+        }
+
+    ];
+
 }

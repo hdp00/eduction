@@ -82,7 +82,7 @@ export class UploadPaper extends React.Component<any, any>{
             Tool.back.sendData(SendType.homeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
     }
     private receiveHomeworkPaper = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
 
         this.papers = [];
         this.control.setPapers(this.papers);

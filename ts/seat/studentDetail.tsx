@@ -121,10 +121,10 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         Tool.back.sendData(SendType.reduceCreditItem, undefined, this.onReceiveReduceCreditItem);
     }
     private onReceiveAddCreditItem = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
     }
     private onReceiveReduceCreditItem = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
     }
 
     public update = () => {
@@ -138,7 +138,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             Tool.back.sendData(SendType.studentDetail, { id: id }, this.receiveDetail)
     }
     private receiveDetail = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
         this.forceUpdate();
     }
 

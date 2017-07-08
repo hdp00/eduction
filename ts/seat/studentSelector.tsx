@@ -77,7 +77,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         this.forceUpdate();
     }
     private receiveStudent = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
         if (this.students.length === 0)
             this.visible = false;
 

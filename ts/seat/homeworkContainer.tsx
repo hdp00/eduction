@@ -69,7 +69,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             Tool.back.sendData(SendType.homework, { studentId: id }, this.receiveHomeworks);
     }
     private receiveHomeworks = (value: object) => {
-        Tool.lib.fillData(this, value);
+        Tool.lib.fillData(value, this);
         this.forceUpdate();
     }
 
