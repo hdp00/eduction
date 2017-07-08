@@ -57,6 +57,7 @@ import { SeatContainer } from './seat/seatContainer'
 import { StudentDetail } from './seat/studentDetail'
 import { HomeworkContainer } from './seat/homeworkContainer'
 import { UploadPaper } from './seat/uploadPaper'
+import { StudentCard } from './student/studentCard'
 import './css/seat.css'
 import './css/education.css'
 
@@ -66,12 +67,12 @@ class Long extends React.Component<any, any>{
 
     render() {
         return <div>
-            <div style={{wordBreak:'break-word', width:'50px'}}>dgdflhkgophnkgfpogkr;hkgpfogkdpohktropyihkpofkf;dlgkfpobk,ewrpogkf</div>
-            <label>__________</label>
+            {/*<div style={{wordBreak:'break-word', width:'50px'}}>dgdflhkgophnkgfpogkr;hkgpfogkdpohktropyihkpofkf;dlgkfpobk,ewrpogkf</div>
+            <label>__________</label>*/}
             {/*<Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
             <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}*/}
-            <div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>
+            {/*<div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>*/}
             <Seat />
         </div>;
     }
