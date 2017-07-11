@@ -3,5 +3,5 @@
 
 export class StudentManager {
     //当前学生
-    public currentIndex: number = -1;
+    public currentIndex: number = 0;
 }

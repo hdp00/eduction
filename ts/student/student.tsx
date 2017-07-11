@@ -2,13 +2,15 @@
 //学生统计页面
 
 import * as React from 'react'
-import { Button, Switch, Modal, InputNumber } from 'antd'
+import { Button, Switch } from 'antd'
 import { StudentCard } from './studentCard'
 import { StudentManager } from './studentManager'
+import { AddGradeModal } from './addGradeModal'
 import { Tool, SendType } from '../data/tool'
 
 export class Student extends React.Component<any, any>{
-    private modalVisible: boolean = false;
+    private addModalVisible: boolean = false;
+    private modifyModalVisible: boolean = false;
     private gradeVisible: boolean = false;
     private students: object[] = [];
     //{id:string, name:string, school:string, class:number, sex:stirng,
@@ -16,8 +18,12 @@ export class Student extends React.Component<any, any>{
     private manager: StudentManager = new StudentManager();
 
     render() {
-        const buttonProps = {
-            onClick: this.onOpenModal,
+        const addModalProps = {
+            onClick: this.onOpenAddModal,
+        };
+
+        const modifyModalProps = {
+            onClick: this.onOpenModifyModal,
         }
         const switchProps = {
             checked: this.gradeVisible,
@@ -41,36 +47,16 @@ export class Student extends React.Component<any, any>{
 
             items.push(<StudentCard {...itemProps} />);
         }
-        const modalProps = {
-            visible: this.modalVisible,
-            title: '添加成绩',
-            maskClosable: false,
-            onOk: this.onAddGrade,
-        };
-        const inputNumerProps = {
-            min: 0,
-            max: 100,
-            value: 0,
-        }
+
 
         return <div>
-            <Button {...buttonProps}>添加成绩</Button>
+            <Button {...buttonProps}>成绩输入</Button>
+            <Button {...buttonProps}>成绩修改</Button>
             <Switch {...switchProps} />
             <div>
                 {items}
             </div>
-            <Modal {...modalProps}>
-                <label>语文</label>
-                <InputNumber onChange={(value: number) => { this.newGrade[0].score = value }} /><br />
-                <label>数学</label>
-                <InputNumber onChange={(value: number) => { this.newGrade[1].score = value }} {...inputNumerProps} /><br />
-                <label>英语</label>
-                <InputNumber onChange={(value: number) => { this.newGrade[2].score = value }} {...inputNumerProps} /><br />
-                <label>物理</label>
-                <InputNumber onChange={(value: number) => { this.newGrade[3].score = value }} {...inputNumerProps} /><br />
-                <label>化学</label>
-                <InputNumber onChange={(value: number) => { this.newGrade[4].score = value }} {...inputNumerProps} /><br />
-            </Modal>
+
         </div>;
     }
 
@@ -82,15 +68,14 @@ export class Student extends React.Component<any, any>{
         this.forceUpdate();
     }
 
-    private onOpenModal = () => {
+    private onOpenAddModal = () => {
         const index = this.manager.currentIndex;
-        if (index < 0 || index >= this.students.length)
+        if (index >= this.students.length)
             return;
 
-        for (let g of this.newGrade)
-            g.score = 0;
+        const id = this.students[index]['id'];
 
-        this.modalVisible = true;
+        this.addModalVisible = true;
         this.forceUpdate();
     }
     private onChangeGradeVisible = (value: boolean) => {
@@ -108,24 +93,5 @@ export class Student extends React.Component<any, any>{
         studentCard.forceUpdate();
     }
 
-    private newGrade = [
-        { subject: '语文', score: 0 },
-        { subject: '数学', score: 0 },
-        { subject: '英语', score: 0 },
-        { subject: '物理', score: 0 },
-        { subject: '化学', score: 0 },];
-    private onAddGrade = () => {
-        const index = this.manager.currentIndex;
-        const id = this.students[index]['id'];
-        const grade = {
-            date: new Date(),
-            grade: this.newGrade,
-        };
 
-        Tool.back.sendData(SendType.addGrade, {id: id, grade:grade});
-
-        (this.students[index]['grade'] as object[]).push(grade);
-        const studentCard = (this.refs[index] as StudentCard);
-        studentCard.forceUpdate();
-    }
 }
