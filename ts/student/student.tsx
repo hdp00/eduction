@@ -2,10 +2,12 @@
 //学生统计页面
 
 import * as React from 'react'
+import * as $ from 'jquery'
 import { Button, Switch } from 'antd'
 import { StudentCard } from './studentCard'
 import { StudentManager } from './studentManager'
 import { AddGradeModal } from './addGradeModal'
+import { ModifyGradeModal } from './modifyGradeModal'
 import { Tool, SendType } from '../data/tool'
 
 export class Student extends React.Component<any, any>{
@@ -14,15 +16,14 @@ export class Student extends React.Component<any, any>{
     private gradeVisible: boolean = false;
     private students: object[] = [];
     //{id:string, name:string, school:string, class:number, sex:stirng,
-    //grade:{date:Date, grade:{subject:string, score:number}[]}}[]
+    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}[]
     private manager: StudentManager = new StudentManager();
 
     render() {
-        const addModalProps = {
+        const addButtonProps = {
             onClick: this.onOpenAddModal,
         };
-
-        const modifyModalProps = {
+        const modifyButtonProps = {
             onClick: this.onOpenModifyModal,
         }
         const switchProps = {
@@ -48,15 +49,15 @@ export class Student extends React.Component<any, any>{
             items.push(<StudentCard {...itemProps} />);
         }
 
-
         return <div>
-            <Button {...buttonProps}>成绩输入</Button>
-            <Button {...buttonProps}>成绩修改</Button>
+            <Button type='primary' {...addButtonProps}>成绩输入</Button>
+            <Button type='primary' {...modifyButtonProps}>成绩修改</Button>
             <Switch {...switchProps} />
             <div>
                 {items}
             </div>
-
+            <AddGradeModal ref='addModal' onAddGrade={this.onAddGrade} />
+            <ModifyGradeModal ref='modifyModal' onModifyGrade={this.onModifyGrade} />
         </div>;
     }
 
@@ -72,12 +73,33 @@ export class Student extends React.Component<any, any>{
         const index = this.manager.currentIndex;
         if (index >= this.students.length)
             return;
-
         const id = this.students[index]['id'];
 
-        this.addModalVisible = true;
+        (this.refs['addModal'] as AddGradeModal).setVisible(true, id);
+    }
+    private onOpenModifyModal = () => {
+        const index = this.manager.currentIndex;
+        if (index >= this.students.length)
+            return;
+        const id = this.students[index]['id'];
+        const student = this.students[index];
+
+        (this.refs['modifyModal'] as ModifyGradeModal).setVisible(true, id, student['grades']);
+    }
+    private onAddGrade = (value: object) => {
+        const index = this.manager.currentIndex;
+        const student = this.students[index];
+        const grade = $.extend(true, {}, value);
+        student['grades'].push(grade);
         this.forceUpdate();
     }
+    private onModifyGrade = (value: object[]) => {
+        const index = this.manager.currentIndex;
+        const student = this.students[index];
+        student['grades'] = $.extend(true, [], value);
+        this.forceUpdate();
+    }
+
     private onChangeGradeVisible = (value: boolean) => {
         this.gradeVisible = value;
         this.forceUpdate();
@@ -92,6 +114,4 @@ export class Student extends React.Component<any, any>{
         const studentCard = (this.refs[index.toString()] as StudentCard);
         studentCard.forceUpdate();
     }
-
-
 }

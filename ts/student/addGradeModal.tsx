@@ -11,11 +11,11 @@ interface AddGradeModalProps {
 
 export class AddGradeModal extends React.Component<AddGradeModalProps, any>{
     private newGrade = [
-        { subject: '语文', score: 0 },
-        { subject: '数学', score: 0 },
-        { subject: '英语', score: 0 },
-        { subject: '物理', score: 0 },
-        { subject: '化学', score: 0 },];
+        { subjectId: '语文', score: 0 },
+        { subjectId: '数学', score: 0 },
+        { subjectId: '英语', score: 0 },
+        { subjectId: '物理', score: 0 },
+        { subjectId: '化学', score: 0 },];
     private visible = false;
     private id: string;
 
@@ -25,7 +25,7 @@ export class AddGradeModal extends React.Component<AddGradeModalProps, any>{
             title: '成绩输入',
             maskClosable: false,
             onOk: this.onAddGrade,
-            onCancle: this.onCancel,
+            onCancel: this.onCancel,
         };
         const inputNumerProps = {
             min: 0,

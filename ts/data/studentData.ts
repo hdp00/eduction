@@ -32,33 +32,33 @@ export class StudentData {
     };
 
 
-    public grade = [
+    public grades = [
         {
             date: new Date(),
             grade: [
-                { subject: '语文', score: 12, },
-                { subject: '数学', score: 34, },
-                { subject: '英语', score: 56, },
+                { subjectId: '语文', score: 12, },
+                { subjectId: '数学', score: 34, },
+                { subjectId: '英语', score: 56, },
             ],
         },
         {
             date: new Date(),
             grade: [
-                { subject: '语文', score: 11, },
-                { subject: '数学', score: 22, },
-                { subject: '英语', score: 33, },
-                { subject: '物理', score: 78, },
-                { subject: '化学', score: 90, },
+                { subjectId: '语文', score: 11, },
+                { subjectId: '数学', score: 22, },
+                { subjectId: '英语', score: 33, },
+                { subjectId: '物理', score: 78, },
+                { subjectId: '化学', score: 90, },
             ],
         },
         {
             date: new Date(),
             grade: [
-                { subject: '语文', score: 44, },
-                { subject: '数学', score: 55, },
-                { subject: '英语', score: 66, },
-                { subject: '物理', score: 78, },
-                { subject: '化学', score: 90, },
+                { subjectId: '语文', score: 44, },
+                { subjectId: '数学', score: 55, },
+                { subjectId: '英语', score: 66, },
+                { subjectId: '物理', score: 78, },
+                { subjectId: '化学', score: 90, },
             ],
         }
 

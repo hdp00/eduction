@@ -115,7 +115,7 @@ class ReceiveManager {
             case SendType.addGrade:
                 {
                     //set{id:string,
-                    //grade:{date:Date, grade:{subject:string, score:number}[]}}
+                    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}
                 }
                 break;
             default:
@@ -507,13 +507,18 @@ export enum SendType {
 
     //set undefined
     //get {students:{id:string, name:string, school:string, class:number, sex:stirng,
-    //grade:{date:Date, grade:{subject:string, score:number}[]}}[]}
+    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}[]}
     students,
 
     //set{id:string,
     //grade:{date:Date, grade:{subject:string, score:number}[]}}
     //get undefined
     addGrade,
+
+    //set{id:string,
+    //grades:{date:Date, grade:{subjectId:string, score:number}[]}[]}
+    //get undfined
+    modifyGrade,
 }
 
 export const Tool = new EducationTool();

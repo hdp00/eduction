@@ -10,7 +10,7 @@ interface StudentCardProps {
     school: string;
     class: string;
     sex: string;
-    grade:{date:Date, grade:{subject:string, score:number}[]
+    grades:{date:Date, grade:{subjectId:string, score:number}[]}[]
     */
     manager: object;/*currentIndex:number */
     index: number;
@@ -31,9 +31,9 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
             onClick: this.onSelect,
         };
 
-        let grade;
+        let grades;
         if (this.props.gradeVisible)
-            grade = this.getGradeComponent();
+            grades = this.getGradeComponent();
 
         return <div {...cardProps}>
             <div>{this.props.student['name']}</div>
@@ -41,7 +41,7 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
                 <div>{this.props.student['school']} {this.props.student['class']}</div>
                 <div>{this.props.student['sex']}</div>
             </div>
-            {grade}
+            {grades}
         </div>;
     }
 
@@ -61,32 +61,16 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
 
         let items = [];
         let key = 0;
-        for (let g of this.props.student['grade']) {
+        for (let g of this.props.student['grades']) {
             const d = g['date'] as Date;
-            const date = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDay();
+            const date = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
             const grade = g['grade'] as object[];
 
-            let chinese;
-            let math;
-            let english;
-            let physics;
-            let chemistry;
-
-            for (let o of grade) {
-                const subject = o['subject'] as string;
-                const score = o['score'] as number;
-
-                if (subject === '语文')
-                    chinese = score;
-                else if (subject === '数学')
-                    math = score;
-                else if (subject === '英语')
-                    english = score;
-                else if (subject === '物理')
-                    physics = score;
-                else if (subject === '化学')
-                    chemistry = score;
-            }
+            const chinese = this.getScore(grade, 0);
+            const math = this.getScore(grade, 1);
+            const english = this.getScore(grade, 2);
+            const physics = this.getScore(grade, 3);
+            const chemistry = this.getScore(grade, 4);
 
             items.push(<tr key={key++}>
                 <td>{date}</td>
@@ -104,5 +88,15 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
                 {items}
             </tbody>
         </table>;
+    }
+
+    private getScore = (grade: object[], index: number) => {
+        if(grade[index] === undefined)
+            return undefined;
+        let score = grade[index]['score'];
+        if(score === 0)
+            return undefined;
+
+        return score;
     }
 }

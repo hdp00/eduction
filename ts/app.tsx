@@ -1,22 +1,17 @@
 import * as  React from 'react';
 import * as  ReactDOM from 'react-dom';
 import * as $ from 'jquery';
-import { Alert } from 'antd';
 import './css/antd.css';
 
 import { EducationRouter } from './educationRouter';
 
-// import { Modal, Button, Table, Icon } from 'antd';
 
-// import { IPaper, PaperState } from './define'
 
 
 import { Title } from './title/title'
 import { Login } from './login/login'
-import { Radio, Checkbox, Button, Modal } from 'antd'
 import { Seat } from './seat/seat'
 
-const CheckboxGroup = Checkbox.Group;
 
 function onChange(checkeds) {
     console.log(checkeds);
@@ -28,7 +23,6 @@ function onClick() {
 const style = {
     width: '100px',
 }
-let aaa = [];
 let visible = false;
 
 const props = {
@@ -45,10 +39,6 @@ const a = {
     b: 2,
 }
 
-function bbb(value?: number) {
-    console.log(value);
-}
-bbb();
 
 import { StudentSelector } from './seat/studentSelector'
 import { StudentSeat } from './seat/studentSeat'
@@ -59,8 +49,41 @@ import { HomeworkContainer } from './seat/homeworkContainer'
 import { UploadPaper } from './seat/uploadPaper'
 import { StudentCard } from './student/studentCard'
 import { Student } from './student/student'
+import { InputNumber, Button, DatePicker } from 'antd'
+import * as moment from 'moment'
 import './css/seat.css'
 import './css/education.css'
+
+let aaa = [{a:'a1'},{a:'a2'}];
+let bbb = [{b:'b1'},{b:'b2'}];
+aaa = $.extend(true, {}, bbb);
+console.log(aaa);
+
+
+var formatTime = moment(Date.now());
+
+import { ModifyGradeModal } from './student/modifyGradeModal'
+let grades = [
+    {
+        date: new Date(),
+        scores: [1, 22, 33, 44, 55],
+    },
+    {
+        date: new Date(),
+        scores: [2, 3, 7, 88, 99],
+    },
+    {
+        date: new Date(),
+        scores: [3, 22, 33, 44, 55],
+    },
+    {
+        date: new Date(),
+        scores: [4, 22, 55, 44, 55],
+    },
+];
+
+
+
 
 class Long extends React.Component<any, any>{
 
@@ -70,9 +93,8 @@ class Long extends React.Component<any, any>{
         return <div>
             {/*<div style={{wordBreak:'break-word', width:'50px'}}>dgdflhkgophnkgfpogkr;hkgpfogkdpohktropyihkpofkf;dlgkfpobk,ewrpogkf</div>
             <label>__________</label>*/}
-            {/*<Button onClick={this.onClick}>aaa</Button>
             <Button onClick={this.onClickB}>bbb</Button>
-            <Button ref='button' onClick={this.onClickC}>{this.index}</Button>}*/}
+            {/* <Button ref='button' onClick={this.onClickC}>{this.index}</Button>} */}
             {/*<div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>*/}
             <Student />
         </div>;
@@ -80,10 +102,12 @@ class Long extends React.Component<any, any>{
     private onClick = () => {
     }
     private onClickB = () => {
+        (this.refs['test'] as ModifyGradeModal).setVisible(true, 'test', grades);
 
     }
-    private onClickC = () => {
-
+    private onClickC = (a, b) => {
+        console.log(a['_d']);
+        console.log(b);
     }
 
 }
