@@ -33,7 +33,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         if (this.id !== undefined) {
 
             detail = <div style={{ marginBottom: '10px' }}>
-                <label style={{ fontSize: '28px' }}>{this.name}</label><br />
+                <label className='font-title'>{this.name}</label><br />
                 <label style={{ fontSize: '18px' }}>{this.school}</label><br />
                 <label style={{ fontSize: '18px' }}>{this.class}</label>
             </div>;

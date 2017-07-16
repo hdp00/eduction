@@ -24,28 +24,35 @@ export class AddGradeModal extends React.Component<AddGradeModalProps, any>{
             visible: this.visible,
             title: '成绩输入',
             maskClosable: false,
+            width: 180,
             onOk: this.onAddGrade,
             onCancel: this.onCancel,
+        };
+        const labelProps = {
+            style: {
+                width: '40px',
+                display: 'inline-block',
+            }
         };
         const inputNumerProps = {
             min: 0,
             max: 100,
-        }
+        };
 
         return < Modal {...modalProps }>
-            <label>语文</label>
+            <label {...labelProps}>语文</label>
             <InputNumber value={this.newGrade[0].score}
                 onChange={(value: number) => { this.setScore(0, value) }} {...inputNumerProps} /> <br />
-            <label>数学</label>
+            <label {...labelProps}>数学</label>
             <InputNumber value={this.newGrade[1].score}
                 onChange={(value: number) => { this.setScore(1, value) }} {...inputNumerProps} /> <br />
-            <label>英语</label>
+            <label {...labelProps}>英语</label>
             <InputNumber value={this.newGrade[2].score}
                 onChange={(value: number) => { this.setScore(2, value) }} {...inputNumerProps} /> <br />
-            <label>物理</label>
+            <label {...labelProps}>物理</label>
             <InputNumber value={this.newGrade[3].score}
                 onChange={(value: number) => { this.setScore(3, value) }} {...inputNumerProps} /> <br />
-            <label>化学</label>
+            <label {...labelProps}>化学</label>
             <InputNumber value={this.newGrade[4].score}
                 onChange={(value: number) => { this.setScore(4, value) }} {...inputNumerProps} /> <br />
         </Modal >;

@@ -91,8 +91,6 @@ export class ModifyGradeModal extends React.Component<ModifyGradeModalProps, any
         this.grades = $.extend(true, [], grades);
         this.initGrades();
 
-        console.log(this.grades);
-
         this.forceUpdate();
     }
 

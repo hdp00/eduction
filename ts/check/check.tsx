@@ -110,10 +110,8 @@ export class Check extends React.Component<any, any>{
                 this.paperMap[d.id] = d;
             }else{
                 let p:IPaper = this.paperMap[d.id];
-                $.extend(p, d);
+                $.extend(true, p, d);
             }
         }
     }
 }
-
-

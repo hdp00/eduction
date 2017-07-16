@@ -1,10 +1,4 @@
 /*by hdp 2017.06.11*/
-/*顶层div*/
-.seat-total-div{
-    background-color: rgba(0,255,0,0.03);
-    width: 1028px;
-    margin: auto;
-}
 
 /*学生座位*/
 .seat-student-seat-div{

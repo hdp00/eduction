@@ -9,6 +9,7 @@ import { StudentManager } from './studentManager'
 import { AddGradeModal } from './addGradeModal'
 import { ModifyGradeModal } from './modifyGradeModal'
 import { Tool, SendType } from '../data/tool'
+import '../css/gradeTable.css'
 
 export class Student extends React.Component<any, any>{
     private addModalVisible: boolean = false;
@@ -21,12 +22,26 @@ export class Student extends React.Component<any, any>{
 
     render() {
         const addButtonProps = {
+            style: {
+                margin: '5px',
+                float: 'right',
+                visibility: this.gradeVisible ? 'visible' : 'hidden',
+            },
             onClick: this.onOpenAddModal,
         };
         const modifyButtonProps = {
+            style: {
+                margin: '5px',
+                float: 'right',
+                visibility: this.gradeVisible ? 'visible' : 'hidden',
+            },
             onClick: this.onOpenModifyModal,
         }
         const switchProps = {
+            style: {
+                margin: '8px',
+                float: 'right',
+            },
             checked: this.gradeVisible,
             checkedChildren: '成绩',
             unCheckedChildren: '成绩',
@@ -49,15 +64,18 @@ export class Student extends React.Component<any, any>{
             items.push(<StudentCard {...itemProps} />);
         }
 
-        return <div>
-            <Button type='primary' {...addButtonProps}>成绩输入</Button>
-            <Button type='primary' {...modifyButtonProps}>成绩修改</Button>
-            <Switch {...switchProps} />
-            <div>
-                {items}
+        return <div style={{ textAlign: 'center' }} >
+            <div className='student-total-div' style={{ textAlign: 'left' }}>
+                <Switch {...switchProps} />
+                <Button type='primary' {...modifyButtonProps}>成绩修改</Button>
+                <Button type='primary' {...addButtonProps}>成绩输入</Button>
+                <div style={{ clear: 'both'}}>
+                    {items}
+                    <div style={{ clear: 'both' }} />
+                </div>
+                <AddGradeModal ref='addModal' onAddGrade={this.onAddGrade} />
+                <ModifyGradeModal ref='modifyModal' onModifyGrade={this.onModifyGrade} />
             </div>
-            <AddGradeModal ref='addModal' onAddGrade={this.onAddGrade} />
-            <ModifyGradeModal ref='modifyModal' onModifyGrade={this.onModifyGrade} />
         </div>;
     }
 

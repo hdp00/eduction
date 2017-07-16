@@ -25,7 +25,7 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
             className: (isSelect ? 'component-select' : '') + ' ' + 'component-normal',
             style: {
                 float: 'left',
-                width: '200px',
+                width: '240px',
                 margin: '5px'
             },
             onClick: this.onSelect,
@@ -36,7 +36,7 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
             grades = this.getGradeComponent();
 
         return <div {...cardProps}>
-            <div>{this.props.student['name']}</div>
+            <div className='font-title'>{this.props.student['name']}</div>
             <div>
                 <div>{this.props.student['school']} {this.props.student['class']}</div>
                 <div>{this.props.student['sex']}</div>
@@ -82,19 +82,21 @@ export class StudentCard extends React.Component<StudentCardProps, any>{
             </tr>);
         }
 
-        return <table>
-            <tbody>
-                {header}
-                {items}
-            </tbody>
-        </table>;
+        return <div style={{ overflow: 'auto', height: '108px' }}>
+            <table className='bordered'>
+                <tbody>
+                    {header}
+                    {items}
+                </tbody>
+            </table>
+        </div>;
     }
 
     private getScore = (grade: object[], index: number) => {
-        if(grade[index] === undefined)
+        if (grade[index] === undefined)
             return undefined;
         let score = grade[index]['score'];
-        if(score === 0)
+        if (score === 0)
             return undefined;
 
         return score;

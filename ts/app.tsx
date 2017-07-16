@@ -57,7 +57,6 @@ import './css/education.css'
 let aaa = [{a:'a1'},{a:'a2'}];
 let bbb = [{b:'b1'},{b:'b2'}];
 aaa = $.extend(true, {}, bbb);
-console.log(aaa);
 
 
 var formatTime = moment(Date.now());

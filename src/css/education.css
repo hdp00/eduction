@@ -8,3 +8,12 @@
 .font-big{
     font-size: 16px;
 }
+/*顶层div*/
+.seat-total-div,.student-total-div{
+    background-color: rgba(0,255,0,0.03);
+    width: 1028px;
+    margin: auto;
+}
+.font-title{
+    font-size: 28px;
+}
