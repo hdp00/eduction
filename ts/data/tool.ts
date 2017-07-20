@@ -519,6 +519,10 @@ export enum SendType {
     //grades:{date:Date, grade:{subjectId:string, score:number}[]}[]}
     //get undfined
     modifyGrade,
+
+    //set HomeworkData
+    //get undefined
+    modifyHomework,
 }
 
 export const Tool = new EducationTool();

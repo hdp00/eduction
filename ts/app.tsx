@@ -49,7 +49,7 @@ import { HomeworkContainer } from './seat/homeworkContainer'
 import { UploadPaper } from './seat/uploadPaper'
 import { StudentCard } from './student/studentCard'
 import { Student } from './student/student'
-import { InputNumber, Button, DatePicker } from 'antd'
+import { InputNumber, Button, DatePicker, Input } from 'antd'
 import * as moment from 'moment'
 import './css/seat.css'
 import './css/education.css'
@@ -87,6 +87,7 @@ let grades = [
 class Long extends React.Component<any, any>{
 
     index: number = 0;
+    text:string = '';
 
     render() {
         return <div>
@@ -96,6 +97,7 @@ class Long extends React.Component<any, any>{
             {/* <Button ref='button' onClick={this.onClickC}>{this.index}</Button>} */}
             {/*<div style={{backgroundColor:'rgba(0,0,255,1)'}}>aaa</div>*/}
             <Student />
+            <Input value={this.text} onChange={this.onChange} />
         </div>;
     }
     private onClick = () => {
@@ -107,6 +109,11 @@ class Long extends React.Component<any, any>{
     private onClickC = (a, b) => {
         console.log(a['_d']);
         console.log(b);
+    }
+    private onChange = (event) =>{
+        console.log(event.currentTarget.value);
+        this.text = event.currentTarget.value;
+        this.forceUpdate();
     }
 
 }
