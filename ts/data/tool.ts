@@ -49,6 +49,12 @@ class ReceiveManager {
             return undefined;
 
         switch (this.type) {
+            case SendType.Login:
+                {
+                    Tool.user.login('data');
+                }
+                break;
+
             case SendType.Signin:
                 {
                     for (let s of this.sendData) {
@@ -329,9 +335,9 @@ class User {
     public login = (data: any) => {
         this.loggedin = true;
         if (data !== undefined) {
-            localStorage.userId = this.userId = data.userId;
-            localStorage.token = this.token = data.token;
-            localStorage.currentRole = this.currentRole = data.currentRole;
+            localStorage.userId = this.userId = 'aaa';
+            localStorage.token = this.token = 'bbb';
+            localStorage.currentRole = this.currentRole = UserType.None;
             this.roles = data.roles;
         }
 
@@ -386,7 +392,7 @@ class EducationTool {
 
         classroom: '/classroom',
         seat: '/classroom/seat',
-        statistics: '/classroom/statistics',
+        student: '/classroom/student',
         homework: '/classroom/homework',
     };
 
@@ -442,6 +448,14 @@ class EducationTool {
 }
 
 export enum SendType {
+    //user
+
+    //set {user:string, password:string}
+    //get
+    Login,
+
+
+
     //seat
 
     //set undefined

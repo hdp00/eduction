@@ -37,7 +37,6 @@ export class Check extends React.Component<any, any>{
                 margin: '5px',
             }
         };
-        console.log('aaa');
 
         return <div className='check-total-div'>
             <PaperView {...paperViewProps} />

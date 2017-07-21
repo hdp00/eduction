@@ -12,7 +12,8 @@ import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
 import { Select } from './login/select'
-import { Seat, seatComponent } from './seat/seat'
+import { Seat } from './seat/seat'
+import { Student } from './student/student'
 
 const Tr = Tool.router;
 
@@ -75,12 +76,6 @@ class PrivateRoute extends Route {
     }
 }
 
-// const Seat = () => (
-//     <div>seat</div>
-// )
-const Statistics = () => (
-    <div>statistics</div>
-)
 const Homework = () => (
     <div>homework</div>
 )
@@ -93,6 +88,7 @@ export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>
+                aaa
                 <Route component={Title} />
 
                 <Route exact path={Tr.root} render={
@@ -102,8 +98,8 @@ export class EducationRouter extends React.Component<any, any>{
 
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />
-                <PrivateRoute path={Tr.seat} render={() => seatComponent} />
-                <PrivateRoute path={Tr.statistics} component={Statistics} />
+                <PrivateRoute path={Tr.seat} component={Seat} />
+                <PrivateRoute path={Tr.student} component={Student} />
                 <PrivateRoute path={Tr.homework} component={Homework} />
 
                 <PrivateRoute path={Tr.check} component={Check} />

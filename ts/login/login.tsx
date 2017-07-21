@@ -4,7 +4,7 @@
 import * as  React from 'react';
 import { Redirect } from 'react-router-dom'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { Tool } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import '../css/login.css';
 
 const FormItem = Form.Item;
@@ -14,6 +14,8 @@ class LoginForm extends React.Component<any, any> {
     private comment: string = '';
 
     render() {
+        console.log('login');
+
         if (Tool.user.loggedin)
             return <Redirect to={Tr.select} />;
 
@@ -51,15 +53,14 @@ class LoginForm extends React.Component<any, any> {
         this.comment = '';
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                Tool.back.postLogin(Tr.login, values, this.onLogin);
+                Tool.back.sendData(SendType.Login, values, this.onLogin);
             }
         });
     }
 
     private onLogin = (data: any) => {
-        if (data.code === 0) {
+        if (true) {
             this.props.form.resetFields();
-            Tool.user.login(data.data);
             this.props.history.replace(Tr.select);
         } else {
             this.comment = data.comment;

@@ -14,7 +14,6 @@ import { Seat } from './seat/seat'
 
 
 function onChange(checkeds) {
-    console.log(checkeds);
 }
 function onClick() {
     $("input:[type='checkbox']:checked").val();
@@ -121,7 +120,7 @@ class Long extends React.Component<any, any>{
 export class App {
     run() {
         ReactDOM.render(<div>
-            <Long />
+            <EducationRouter />
         </div>,
             document.getElementById('root'));
     }

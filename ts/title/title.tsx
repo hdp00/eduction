@@ -31,13 +31,14 @@ export class Title extends React.Component<any, any>{
 
         let defaultSelectedKeys = [];
         let items = [];
+
         switch (Tool.user.currentRole) {
             case UserType.Teacher:
                 items.push(<Item key='seat'>
                     <Link to={Tr.seat}><Icon type='team' />座位表</Link>
                 </Item>);
-                items.push(<Item key='statistics'>
-                    <Link to={Tr.statistics}><Icon type='bars' />学生统计</Link>
+                items.push(<Item key='student'>
+                    <Link to={Tr.student}><Icon type='bars' />学生统计</Link>
                 </Item>);
                 items.push(<Item key='homework'>
                     <Link to={Tr.homework}><Icon type='book' />作业录入</Link>
