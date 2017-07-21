@@ -523,6 +523,10 @@ export enum SendType {
     //set HomeworkData
     //get undefined
     modifyHomework,
+
+    //set{id:string}
+    //get undefined
+    deleteHomework,
 }
 
 export const Tool = new EducationTool();

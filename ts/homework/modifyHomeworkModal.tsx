@@ -12,7 +12,7 @@ interface ModifyHomeworkModalProps {
     homeworkItem: object;//homeworkItem
     //{id,name}
     students: object[];
-    onModify: () => void;
+    onUpdate: () => void;
 }
 
 export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProps, any>{
@@ -20,7 +20,6 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     private studentId: string;
     private homeworkId: string;
     private homeworkData: object = {};//homeworkData
-    private checks: string[] = [];
 
     render() {
         const isAdd = (this.homeworkId === undefined);
@@ -55,7 +54,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
         const groupProps = {
-            value: this.checks,
+            value: this.homeworkData['studentIds'],
             onChange: this.onStudentCheckChange,
         };
 
@@ -88,13 +87,14 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.studentId = studentId;
         this.homeworkId = homewokId;
         this.homeworkData = homeworkData;
-        this.checks = [studentId];
+        if (this.homeworkData['studentIds'] === undefined)
+            this.homeworkData['studentIds'] = [studentId];
 
         this.forceUpdate();
     }
 
     private onModifyHomework = () => {
-        Tool.back.sendData(SendType.modifyHomework, this.homeworkData, this.props.onModify);
+        Tool.back.sendData(SendType.modifyHomework, this.homeworkData, this.props.onUpdate);
         this.onCancel();
     }
     private onCancel = () => {
@@ -115,7 +115,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     }
 
     private onStudentCheckChange = (checkeds) => {
-        this.checks = checkeds;
+        this.homeworkData['studentIds'] = checkeds;
         this.forceUpdate();
     }
 }

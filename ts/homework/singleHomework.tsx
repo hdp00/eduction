@@ -7,20 +7,9 @@ import { HomeworkManager } from './homeworkManager'
 import { Tool, SendType } from '../data/tool'
 
 interface SingleHomeworkProps {
-    homeworkId: string,
-    homework: object;
-    //   { id: string,
-    //     status: number,
-    //     subject: string,
-    //     item: string,
-    //     childItem: string,
-    //     book: string,
-    //     range: string,
-    //     times: string,
-    //     desc: string,
-    //     remark: string,
-    //     isNeedSign: boolean,}
+    homework: object;//homeworkData
     onUpdate: () => void;
+    onEdit: (id: string) => void;
 }
 
 export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
@@ -51,14 +40,9 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
     }
 
     private onEdit = () => {
+        this.props.onEdit(this.props.homework['id']);
     }
     private onDelete = () => {
+        Tool.back.sendData(SendType.deleteHomework, );
     }
-
-    private onEditFinished = () => {
-        this.props.onUpdate();
-    }
-
-
-
 }
