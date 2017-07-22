@@ -74,7 +74,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         }
 
         //rely on css
-        let width = (84 + 3 * 2 ) * col + 'px';
+        let width = (84 + 3 * 2) * col + 'px';
         return <div {...divProps}>
             <div style={{ width: width, margin: '0 auto' }}>
                 {items}

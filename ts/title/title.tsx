@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool, DataUrl } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import { UserType } from '../define'
 
 const SubMenu = Menu.SubMenu;
@@ -73,20 +73,15 @@ export class Title extends React.Component<any, any>{
     //退出登录
     public logout = () => {
         Tool.back.post(Tr.logout, {}, this.onLogout);
+        Tool.back.sendData(SendType.Logout, {}, this.onLogout);
     }
     private onLogout = (response: any) => {
-        Tool.user.logout();
         this.props.history.push(Tr.login);
     }
     //检查是否已登录
     private checkLogin = () => {
-        Tool.back.post(DataUrl.checkLogin, {}, this.onCheckLogin);
-    }
-    private onCheckLogin = (data: any) => {
-        if (data.code === 0) {
-            Tool.user.login(undefined);
+        if(Tool.user.loggedin)
             this.props.history.push(Tr.select);
-        }
     }
 
     private onClick = ({ item, key, keyPath }) => {

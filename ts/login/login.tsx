@@ -14,8 +14,6 @@ class LoginForm extends React.Component<any, any> {
     private comment: string = '';
 
     render() {
-        console.log('login');
-
         if (Tool.user.loggedin)
             return <Redirect to={Tr.select} />;
 
@@ -62,10 +60,11 @@ class LoginForm extends React.Component<any, any> {
         if (true) {
             this.props.form.resetFields();
             this.props.history.replace(Tr.select);
-        } else {
-            this.comment = data.comment;
-            this.forceUpdate();
-        }
+        } 
+        // else {
+        //     this.comment = data.comment;
+        //     this.forceUpdate();
+        // }
     }
 }
 

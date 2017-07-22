@@ -8,14 +8,14 @@ import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool, DataUrl } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import '../css/check.css'
 
 
 export class Check extends React.Component<any, any>{
     //试卷列表
     papers: IPaper[] = [];
-    paperIndex:number = -1;
+    paperIndex: number = -1;
     //错误项列表
     items: ICheckItem[] = [];
 
@@ -48,9 +48,8 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
-        console.log('bbbb');
         Tool.back.post(DataUrl.checkItemList, undefined, this.updateItems);
-        Tool.back.addEventSource(DataUrl.paperList, this.updatePapers);
+        Tool.back.sendData(SendType)
     }
 
     private updateItems = (response: any) => {
@@ -58,11 +57,11 @@ export class Check extends React.Component<any, any>{
         (this.refs['items'] as CheckItemList).update(this.items);
     }
     private updatePapers = (response: any) => {
-        const data:IPaper[] = response;
+        const data: IPaper[] = response;
         this.mixPapersData(data);
 
         (this.refs['papers'] as PaperList).update(this.papers);
-        if(this.paperIndex === -1)
+        if (this.paperIndex === -1)
             this.nextPaper();
     }
     //获取当前错误项
@@ -73,42 +72,42 @@ export class Check extends React.Component<any, any>{
     private nextPaper = () => {
         let count = this.papers.length;
         let index = this.paperIndex + 1;
-        if(count === 0)
+        if (count === 0)
             return;
 
-        for(let i = 0; i < (count - 1); i++){
+        for (let i = 0; i < (count - 1); i++) {
             let j = index + i;
             j = (j >= count) ? j - count : j;
-            if(this.papers[j].state !== PaperState.HasChecked){
+            if (this.papers[j].state !== PaperState.HasChecked) {
                 this.onPaperChange(j);
                 (this.refs['papers'] as PaperList).updateSelect(this.paperIndex);
                 return;
-            }               
+            }
         }
 
         this.onPaperChange(-1);
     }
     //试卷切换
-    private onPaperChange = (index:number) => {
+    private onPaperChange = (index: number) => {
         this.paperIndex = index;
         (this.refs['view'] as PaperView).update(this.papers[index]);
     }
     //数据不断更新，需要混合
     private paperMap = {};
-    private mixPapersData(data:IPaper[]){
-        if(this.papers.length === 0){
+    private mixPapersData(data: IPaper[]) {
+        if (this.papers.length === 0) {
             this.papers = data;
-            for(let p of this.papers)
+            for (let p of this.papers)
                 this.paperMap[p.id] = p;
             return;
         }
 
-        for(let d of data){
-            if(this.paperMap[d.id] === undefined){
+        for (let d of data) {
+            if (this.paperMap[d.id] === undefined) {
                 this.papers.push(d);
                 this.paperMap[d.id] = d;
-            }else{
-                let p:IPaper = this.paperMap[d.id];
+            } else {
+                let p: IPaper = this.paperMap[d.id];
                 $.extend(true, p, d);
             }
         }

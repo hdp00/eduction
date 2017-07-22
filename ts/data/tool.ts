@@ -54,7 +54,11 @@ class ReceiveManager {
                     Tool.user.login('data');
                 }
                 break;
-
+            case SendType.Logout:
+                {
+                    Tool.user.logout();
+                }
+                break;
             case SendType.Signin:
                 {
                     for (let s of this.sendData) {
@@ -239,81 +243,16 @@ class ReceiveManager {
 export const DataUrl = {
     checkItemList: '/check/checkItemList',
     paperList: '/check/paperList',
-
-    login: '/login',
-    logout: '/logout',
-    checkLogin: '/checkLogin',
 }
 
-let data = {};
-data[DataUrl.checkItemList] = [{
-    image: 0,
-    text: 'a',
-    score: 1,
-},
-{
-    image: 0,
-    text: 'b',
-    score: 1,
-},
-{
-    image: 0,
-    text: 'c',
-    score: 1,
-},
-{
-    image: 1,
-    text: 'd',
-    score: 1,
-},
-{
-    image: 1,
-    text: 'e',
-    score: 1,
-}];
-data[DataUrl.paperList] = [{
-    id: '0',
-    images: [
-        image0,
-        image2,
-        image3
-    ],
-    text: 'aaa',
-    state: PaperState.New,
-},
-{
-    id: '1',
-    images: [
-        image3,
-        image2,
-        image0
-    ],
-    text: 'bbb',
-    state: PaperState.New,
-}];
-data[DataUrl.login] = {
-    code: 0,
-    comment: '',
-    data: {
-        userId: 'aaa',
-        token: 'bbb',
-        roles: [UserType.Teacher, UserType.Checker],
-    },
-};
-data[DataUrl.logout] = {
-    code: 0,
-    comment: '',
-}
-data[DataUrl.checkLogin] = {
-    code: 0,
-    comment: '',
-};
+
 
 class User {
     constructor() {
         this.userId = localStorage.userId;
         this.token = localStorage.token;
         this.currentRole = localStorage.currentRole;
+        this.loggedin = (this.token !== undefined);
     }
 
     public userId: string = '';
@@ -338,7 +277,7 @@ class User {
             localStorage.userId = this.userId = 'aaa';
             localStorage.token = this.token = 'bbb';
             localStorage.currentRole = this.currentRole = UserType.None;
-            this.roles = data.roles;
+            this.roles = [UserType.Checker, UserType.Teacher];
         }
 
         //没有用户组的情况下，用户不能为空
@@ -451,10 +390,12 @@ export enum SendType {
     //user
 
     //set {user:string, password:string}
-    //get
+    //get undefined
     Login,
 
-
+    //set undefined
+    //get undefined
+    Logout,
 
     //seat
 
@@ -605,3 +546,49 @@ function setHomeworStatus(id: string, status: number) {
 const addItems = ['纪律好A', '纪律好B', '纪律好C'];
 const reduceItems = ['纪律差A', '纪律差B', '纪律差C'];
 
+const checkItemList = [{
+    image: 0,
+    text: 'a',
+    score: 1,
+},
+{
+    image: 0,
+    text: 'b',
+    score: 1,
+},
+{
+    image: 0,
+    text: 'c',
+    score: 1,
+},
+{
+    image: 1,
+    text: 'd',
+    score: 1,
+},
+{
+    image: 1,
+    text: 'e',
+    score: 1,
+}];
+
+const paperList = [{
+    id: '0',
+    images: [
+        image0,
+        image2,
+        image3
+    ],
+    text: 'aaa',
+    state: PaperState.New,
+},
+{
+    id: '1',
+    images: [
+        image3,
+        image2,
+        image0
+    ],
+    text: 'bbb',
+    state: PaperState.New,
+}];
