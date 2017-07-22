@@ -18,7 +18,6 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         if (this.props.homework['isNeedSign'])
             needSign = <span><Icon type='check-square' />签字</span>;
         let hasPaper;
-        //if(this.props.homework['hasPaper'])
         hasPaper = <span><Icon type='book' />作业</span>
 
         const divProps = {
@@ -43,6 +42,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         this.props.onEdit(this.props.homework['id']);
     }
     private onDelete = () => {
-        Tool.back.sendData(SendType.deleteHomework, );
+        Tool.back.sendData(SendType.deleteHomework,
+            { id: this.props.homework['id'] }, this.props.onUpdate);
     }
 }

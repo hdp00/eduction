@@ -157,6 +157,10 @@ class ReceiveManager {
                 return this.getHomeworkPaper(data);
             case SendType.students:
                 return this.getStudents(data);
+            case SendType.checkItms:
+                return this.getCheckItems(data);
+            case SendType.papers:
+                return this.getPapers(data);
             default:
                 break;
         }
@@ -237,15 +241,13 @@ class ReceiveManager {
     private getStudents(value: object) {
         return { students: students };
     }
+    private getCheckItems(value: object) {
+        return checkItemList;
+    }
+    private getPapers(value: object) {
+        return paperList;
+    }
 }
-
-//后台url列表
-export const DataUrl = {
-    checkItemList: '/check/checkItemList',
-    paperList: '/check/paperList',
-}
-
-
 
 class User {
     constructor() {
@@ -482,6 +484,16 @@ export enum SendType {
     //set{id:string}
     //get undefined
     deleteHomework,
+
+    //check
+
+    //set undefined
+    //get checkItemList
+    checkItms,
+
+    //set undefined
+    //get paperList
+    papers,
 }
 
 export const Tool = new EducationTool();

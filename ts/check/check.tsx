@@ -48,19 +48,26 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.post(DataUrl.checkItemList, undefined, this.updateItems);
-        Tool.back.sendData(SendType)
+        Tool.back.sendData(SendType.checkItms, undefined, this.updateItems);
+        Tool.back.sendData(SendType.papers, undefined, this.updatePapers);
     }
 
     private updateItems = (response: any) => {
         this.items = response;
-        (this.refs['items'] as CheckItemList).update(this.items);
+        const checkItems = this.refs['items'] as CheckItemList;
+        if (checkItems === undefined)
+            return;
+
+        checkItems.update(this.items);
     }
     private updatePapers = (response: any) => {
         const data: IPaper[] = response;
         this.mixPapersData(data);
+        const papers = (this.refs['papers'] as PaperList as PaperList);
+        if (papers === undefined)
+            return;
 
-        (this.refs['papers'] as PaperList).update(this.papers);
+        papers.update(this.papers);
         if (this.paperIndex === -1)
             this.nextPaper();
     }
