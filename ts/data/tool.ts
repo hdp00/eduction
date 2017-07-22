@@ -161,6 +161,8 @@ class ReceiveManager {
                 return this.getCheckItems(data);
             case SendType.papers:
                 return this.getPapers(data);
+            case SendType.homeworkOptions:
+                return HomeworkOptions;
             default:
                 break;
         }
@@ -450,9 +452,7 @@ export enum SendType {
     changeHomeworkStatus,
 
     //set{studentId:string}
-    //get {homeworks:
-    //{id: string,status: number,subject: string,item: string,childItem: string,
-    //    book: string,range: string,times: string,desc: string,remark: string,isNeedSign:boolean,}[]}
+    //get {homeworks:homeworkData[]}
     homework,
 
     //set{homeworkId:string, papers:{name:string, data:base64}[])
@@ -477,6 +477,8 @@ export enum SendType {
     //get undfined
     modifyGrade,
 
+    //homework
+
     //set HomeworkData
     //get undefined
     modifyHomework,
@@ -484,6 +486,10 @@ export enum SendType {
     //set{id:string}
     //get undefined
     deleteHomework,
+
+    //set undefined
+    //get homeworkOptions
+    homeworkOptions,
 
     //check
 
@@ -604,3 +610,28 @@ const paperList = [{
     text: 'bbb',
     state: PaperState.New,
 }];
+
+const HomeworkOptions = {
+    subjects: [
+        {
+            value: '语文', label: '语文',
+            children: [
+                { value: '听写', label: '听写' },
+                { value: '阅读', label: '阅读' },
+                {
+                    value: '复习', label: '复习',
+                    children: [
+                        { value: '阅读', label: '阅读' },
+                        { value: '背诵', label: '背诵' }
+                    ],
+                }]
+        },
+        {
+            value: '数学', label: '数学',
+            children: [
+                { value: '抄写', label: '抄写' },
+                { value: '背诵', label: '背诵' }
+            ]
+        }
+    ]
+}

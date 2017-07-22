@@ -9,7 +9,7 @@ import { Tool, SendType } from '../data/tool'
 interface SingleHomeworkProps {
     homework: object;//homeworkData
     onUpdate: () => void;
-    onEdit: (id: string) => void;
+    onEdit: (homework:object) => void;
 }
 
 export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
@@ -23,6 +23,9 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         const divProps = {
             style: {
                 margin: '5px',
+                width:'200px',
+                border:'1px solid black',
+                float:'left',
             }
         };
 
@@ -39,7 +42,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
     }
 
     private onEdit = () => {
-        this.props.onEdit(this.props.homework['id']);
+        this.props.onEdit(this.props.homework);
     }
     private onDelete = () => {
         Tool.back.sendData(SendType.deleteHomework,

@@ -12,24 +12,35 @@ interface StudentListProps {
 
 export class StudentList extends React.Component<StudentListProps, any>{
     render() {
+        let overflow: "auto" | "hidden" | "scroll" | "visible" = 'auto';
         let items = [];
         let i = 0;
         for (let studnet of this.props.students) {
             const isSelect = (i === this.props.manager.studentIndex);
             const props = {
                 className: isSelect ? 'component-select' : 'component-normal',
+                style: {
+                    margin: '2px',
+                    fontSize: '20px',
+                },
                 key: i.toString(),
                 onClick: this.onSelect,
             }
 
-            items.push(<div data-index={i}>
+            items.push(<div data-index={i} {...props}>
                 {studnet.name}
             </div>);
+            i++;
         }
 
         const divProps = {
+
             style: {
                 width: '200px',
+                height: '800px',
+                border: '1px solid black',
+                float: 'left',
+                overflow: overflow,
             }
         }
 

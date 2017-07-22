@@ -52,9 +52,10 @@ import { InputNumber, Button, DatePicker, Input } from 'antd'
 import * as moment from 'moment'
 import './css/seat.css'
 import './css/education.css'
+import { Homework } from './homework/homework'
 
-let aaa = [{a:'a1'},{a:'a2'}];
-let bbb = [{b:'b1'},{b:'b2'}];
+let aaa = [{ a: 'a1' }, { a: 'a2' }];
+let bbb = [{ b: 'b1' }, { b: 'b2' }];
 aaa = $.extend(true, {}, bbb);
 
 
@@ -86,7 +87,7 @@ let grades = [
 class Long extends React.Component<any, any>{
 
     index: number = 0;
-    text:string = '';
+    text: string = '';
 
     render() {
         return <div>
@@ -109,7 +110,7 @@ class Long extends React.Component<any, any>{
         console.log(a['_d']);
         console.log(b);
     }
-    private onChange = (event) =>{
+    private onChange = (event) => {
         console.log(event.currentTarget.value);
         this.text = event.currentTarget.value;
         this.forceUpdate();

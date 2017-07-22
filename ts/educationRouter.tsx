@@ -14,6 +14,7 @@ import { Login } from './login/login'
 import { Select } from './login/select'
 import { Seat } from './seat/seat'
 import { Student } from './student/student'
+import { Homework } from './homework/homework'
 
 const Tr = Tool.router;
 
@@ -76,9 +77,6 @@ class PrivateRoute extends Route {
     }
 }
 
-const Homework = () => (
-    <div>homework</div>
-)
 
 export class EducationRouter extends React.Component<any, any>{
     constructor(props: any) {

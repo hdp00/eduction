@@ -9,7 +9,7 @@ import { Tool, SendType } from '../data/tool'
 const CheckboxGroup = Checkbox.Group;
 
 interface ModifyHomeworkModalProps {
-    homeworkItem: object;//homeworkItem
+    homeworkOptions: object;//homeworkOptions
     //{id,name}
     students: object[];
     onUpdate: () => void;
@@ -28,11 +28,11 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             visible: this.visible,
             title: isAdd ? '添加作业' : '修改作业',
             maskClosable: false,
-            width: 600,
+            width: 640,
             onOk: this.onModifyHomework,
             onCancel: this.onCancel,
         };
-        const options = this.props.homeworkItem['subjects'];
+        const options = this.props.homeworkOptions['subjects'];
         const cascaderProps = {
             options: options,
             value: [this.homeworkData['subject'], this.homeworkData['item'], this.homeworkData['childItem']],
@@ -59,8 +59,8 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         };
 
         return <Modal {...modalProps}>
-            <div style={{ float: 'left' }}>
-                <label>项目</label>
+            <div style={{ float: 'left', margin:'5px' }}>
+                <label>项目</label><br/>
                 <Cascader expandTrigger='hover' {...cascaderProps} /><br />
                 <label>课本</label>
                 <Input value={this.homeworkData['book']} onChange={(event) => this.onTextChange(event, 'book')} /><br />
@@ -72,23 +72,27 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
                 <Input value={this.homeworkData['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
                 <label>备注</label>
                 <Input value={this.homeworkData['remark']} onChange={(event) => this.onTextChange(event, 'remark')} /><br />
-                <Checkbox value={this.homeworkData['isNeedSign']} onChange={this.onCheckChange}>签名</Checkbox>
+                <Checkbox checked={this.homeworkData['isNeedSign']} onChange={this.onCheckChange}>签名</Checkbox>
             </div>
-            <div style={{ float: 'left' }}>
+            <div style={{ float: 'left',width:'400px', margin:'5px' }}>
                 <CheckboxGroup {...groupProps}>
                     {items}
                 </CheckboxGroup>
             </div>
+            <div style={{clear:'both'}} />
         </Modal>;
     }
 
-    public setVisible = (value: boolean, studentId: string, homewokId: string = undefined, homeworkData: object = {}) => {
+    public setVisible = (value: boolean, studentId: string, homeworkData: object = {}) => {
         this.visible = value;
         this.studentId = studentId;
-        this.homeworkId = homewokId;
-        this.homeworkData = homeworkData;
+        this.homeworkData = $.extend(true, {}, homeworkData);
         if (this.homeworkData['studentIds'] === undefined)
             this.homeworkData['studentIds'] = [studentId];
+
+        console.log(homeworkData['isNeedSign']);
+        console.log(this.homeworkData['isNeedSign']);
+
 
         this.forceUpdate();
     }
@@ -102,7 +106,10 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.forceUpdate();
     }
     private onSelectItem = (value) => {
-        //temp
+        this.homeworkData['subject'] = value[0];
+        this.homeworkData['item'] = value[1];
+        this.homeworkData['childItem'] = value[2];
+
         this.forceUpdate();
     }
     private onTextChange = (event, type: string) => {
@@ -110,7 +117,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.forceUpdate();
     }
     private onCheckChange = (event) => {
-        this.homeworkData['isNeedSign'] = event.currentTarget.value;
+        this.homeworkData['isNeedSign'] = event.target.checked;
         this.forceUpdate();
     }
 
