@@ -86,7 +86,6 @@ export class EducationRouter extends React.Component<any, any>{
     render() {
         return <Router>
             <div>
-                aaa
                 <Route component={Title} />
 
                 <Route exact path={Tr.root} render={

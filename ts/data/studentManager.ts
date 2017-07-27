@@ -1,7 +1,7 @@
 //by hdp 2017.06.17
 //学生数据管理类
 
-import { PaperState } from '../define'
+import { PaperState } from './define'
 import { HomeworkData } from './homeworkData'
 import { StudentData } from './studentData'
 

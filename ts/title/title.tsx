@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
 import { Tool, SendType } from '../data/tool'
-import { UserType } from '../define'
+import { UserType } from '../data/define'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;

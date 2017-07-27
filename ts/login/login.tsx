@@ -3,7 +3,7 @@
 
 import * as  React from 'react';
 import { Redirect } from 'react-router-dom'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import { Tool, SendType } from '../data/tool'
 import '../css/login.css';
 
