@@ -2,22 +2,26 @@
 //数据
 
 import * as Type from './define'
+import {Lib} from './lib'
 
-class UserData {
+export class UserData {
+    public userName:string;
     public userId: string = '';
     public token: string = '';
-    public Role: Type.UserType[] = [];
-    public loggedin: boolean = false;
+    public roles: Type.UserType[] = [];
+    public currentRole:Type.UserType;
+    
+    public hasLogin: boolean = false;
 
-    constructor() {
-        this.userId = localStorage.userId;
-        this.token = localStorage.token;
-        this.currentRole = localStorage.currentRole;
-        this.loggedin = (this.token !== undefined);
+    private _lib:Lib;
+
+    constructor(lib:Lib) {
+        this._lib = lib;
+
+        this._lib.loadData('user', this);
     }
 
 
-    private _currentRole: UserType = UserType.None;
     public set currentRole(value: any) {
         let v = parseInt(value);
         if (isNaN(v))
@@ -31,7 +35,7 @@ class UserData {
     public roles: UserType[] = [];
 
     public login = (data: any) => {
-        this.loggedin = true;
+        this.hasLogin = true;
         if (data !== undefined) {
             localStorage.userId = this.userId = 'aaa';
             localStorage.token = this.token = 'bbb';
@@ -46,7 +50,7 @@ class UserData {
         }
     }
     public logout = () => {
-        this.loggedin = false;
+        this.hasLogin = false;
         this.userId = '';
         this.token = '';
         this.roles = [];

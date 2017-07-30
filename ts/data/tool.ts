@@ -6,24 +6,7 @@ import { PaperState, UserType } from './define'
 import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 import { EducationData } from './educationData'
 
-//工具库
-class Lib {
-    //填充数据
-    fillData = (value, container) => {
-        const keys = Object.keys(value);
-        for (let key of keys)
-            container[key] = value[key];
-    }
 
-    //读写数据
-    saveData = (name:string, value:object) => {
-        localStorage.setItem(name, JSON.stringify(value));
-    }
-    loadData = (name:string, container:object) =>{
-        const data = JSON.parse(localStorage.getItem(name));
-        this.fillData(data, container);
-    }
-}
 
 //数据接收处理类
 class ReceiveManager {
