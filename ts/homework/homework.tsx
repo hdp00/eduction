@@ -2,7 +2,7 @@
 //作业页面
 
 import * as React from 'react'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import { HomeworkManager } from './homeworkManager'
 import { StudentList } from './studentList'
 import { HomeowrkOperator } from './homeworkOperator'
@@ -36,7 +36,7 @@ export class Homework extends React.Component<any, any>{
     }
 
     componentDidMount() {
-        Tool.back.sendData(SendType.students, undefined, this.receiveStudents);
+        Tool.back.sendData(Type.SendType.students, undefined, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);

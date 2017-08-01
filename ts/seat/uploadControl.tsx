@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Modal, Button } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 
 interface UploadControlProps {
     homeworkId: string;
@@ -99,7 +99,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         }
         const datas = { homeworkId: this.props.homeworkId, papers: sendPapers };
 
-        Tool.back.sendData(SendType.uploadPapers, datas, this.uploadFinished);
+        Tool.back.sendData(Type.SendType.uploadPapers, datas, this.uploadFinished);
         this.isUploading = true;
         this.forceUpdate();
     }

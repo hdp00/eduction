@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Button } from 'antd'
 import { HomeworkDetail } from './homeworkDetail'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 import { UploadPaper } from './uploadPaper'
 
@@ -66,7 +66,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             this.forceUpdate();
         }
         else
-            Tool.back.sendData(SendType.homework, { studentId: id }, this.receiveHomeworks);
+            Tool.back.sendData(Type.SendType.homework, { studentId: id }, this.receiveHomeworks);
     }
     private receiveHomeworks = (value: object) => {
         Tool.lib.fillData(value, this);

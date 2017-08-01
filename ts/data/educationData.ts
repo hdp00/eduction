@@ -1,63 +1,8 @@
 //by hdp 2017.07.27
 //数据
 
-import * as Type from './define'
-import {Lib} from './lib'
+export * from './userData'
 
-export class UserData {
-    public userName:string;
-    public userId: string = '';
-    public token: string = '';
-    public roles: Type.UserType[] = [];
-    public currentRole:Type.UserType;
-    
-    public hasLogin: boolean = false;
-
-    private _lib:Lib;
-
-    constructor(lib:Lib) {
-        this._lib = lib;
-
-        this._lib.loadData('user', this);
-    }
-
-
-    public set currentRole(value: any) {
-        let v = parseInt(value);
-        if (isNaN(v))
-            this.currentRole = UserType.None;
-        this._currentRole = v;
-        localStorage.currentRole = this.currentRole;
-    }
-    public get currentRole() {
-        return this._currentRole;
-    }
-    public roles: UserType[] = [];
-
-    public login = (data: any) => {
-        this.hasLogin = true;
-        if (data !== undefined) {
-            localStorage.userId = this.userId = 'aaa';
-            localStorage.token = this.token = 'bbb';
-            localStorage.currentRole = this.currentRole = UserType.None;
-            this.roles = [UserType.Checker, UserType.Teacher];
-        }
-
-        //没有用户组的情况下，用户不能为空
-        if (this.roles === undefined || this.roles.length === 0) {
-            if (this.currentRole === UserType.None)
-                this.currentRole = UserType.Teacher;
-        }
-    }
-    public logout = () => {
-        this.hasLogin = false;
-        this.userId = '';
-        this.token = '';
-        this.roles = [];
-        this.currentRole = UserType.None;
-        localStorage.clear();
-    }
-}
 
 
 //批改项

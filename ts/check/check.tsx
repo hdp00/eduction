@@ -8,7 +8,7 @@ import { PaperState, IPaper, ICheckItem } from '../define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import '../css/check.css'
 
 
@@ -48,8 +48,8 @@ export class Check extends React.Component<any, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.sendData(SendType.checkItms, undefined, this.updateItems);
-        Tool.back.sendData(SendType.papers, undefined, this.updatePapers);
+        Tool.back.sendData(Type.SendType.checkItms, undefined, this.updateItems);
+        Tool.back.sendData(Type.SendType.papers, undefined, this.updatePapers);
     }
 
     private updateItems = (response: any) => {

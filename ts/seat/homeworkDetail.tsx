@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Select, Icon } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 
 const Option = Select.Option;
@@ -74,7 +74,7 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
     }
     private onChange = (value) => {
         const statusIndex = parseInt(value);
-        Tool.back.sendData(SendType.changeHomeworkStatus,
+        Tool.back.sendData(Type.SendType.changeHomeworkStatus,
             { homeworkId: this.props.homework['id'], status: statusIndex });
     }
 }

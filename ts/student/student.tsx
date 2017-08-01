@@ -8,7 +8,7 @@ import { StudentCard } from './studentCard'
 import { StudentManager } from './studentManager'
 import { AddGradeModal } from './addGradeModal'
 import { ModifyGradeModal } from './modifyGradeModal'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import '../css/gradeTable.css'
 
 export class Student extends React.Component<any, any>{
@@ -80,7 +80,7 @@ export class Student extends React.Component<any, any>{
     }
 
     componentDidMount() {
-        Tool.back.sendData(SendType.students, undefined, this.receiveStudents);
+        Tool.back.sendData(Type.SendType.students, undefined, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);

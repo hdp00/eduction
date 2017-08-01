@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Modal, Button, Radio, Checkbox } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -70,7 +70,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         this.seatIndex = seatIndex;
 
         if (this.visible) {
-            Tool.back.sendData(SendType.StudentSelector, undefined, this.receiveStudent);
+            Tool.back.sendData(Type.SendType.StudentSelector, undefined, this.receiveStudent);
             return;
         }
 

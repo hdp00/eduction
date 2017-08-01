@@ -4,7 +4,7 @@
 import * as  React from 'react';
 import { Redirect } from 'react-router-dom'
 import { Form, Icon, Input, Button } from 'antd';
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import '../css/login.css';
 
 const FormItem = Form.Item;
@@ -51,7 +51,7 @@ class LoginForm extends React.Component<any, any> {
         this.comment = '';
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                Tool.back.sendData(SendType.Login, values, this.onLogin);
+                Tool.back.sendData(Type.SendType.Login, values, this.onLogin);
             }
         });
     }

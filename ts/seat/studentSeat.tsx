@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Button, Icon } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 
 interface StudentSeatProps {
@@ -89,7 +89,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         this.id = id;
 
         if (this.id !== undefined) {
-            Tool.back.sendData(SendType.StudentSeat, { id: this.id }, this.receiveStudent);
+            Tool.back.sendData(Type.SendType.StudentSeat, { id: this.id }, this.receiveStudent);
             return;
         } else {
             this.clearDelay();

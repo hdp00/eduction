@@ -4,7 +4,7 @@
 import * as React from 'react'
 import * as $ from 'jquery'
 import { Modal, Button, Checkbox, Input, Cascader } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -98,7 +98,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     }
 
     private onModifyHomework = () => {
-        Tool.back.sendData(SendType.modifyHomework, this.homeworkData, this.props.onUpdate);
+        Tool.back.sendData(Type.SendType.modifyHomework, this.homeworkData, this.props.onUpdate);
         this.onCancel();
     }
     private onCancel = () => {

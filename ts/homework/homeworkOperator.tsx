@@ -6,7 +6,7 @@ import { Button } from 'antd'
 import { HomeworkManager } from './homeworkManager'
 import { SingleHomework } from './singleHomework'
 import { ModifyHomeworkModal } from './modifyHomeworkModal'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 
 interface HomeowrkOperatorProps {
     students: object[];//{id,name}
@@ -69,7 +69,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
 
 
     componentDidMount() {
-        Tool.back.sendData(SendType.homeworkOptions, undefined, this.receiveHomeworkOptions);
+        Tool.back.sendData(Type.SendType.homeworkOptions, undefined, this.receiveHomeworkOptions);
     }
     private receiveHomeworkOptions = (value: object) => {
         this.homeworkOptions = value;
@@ -80,7 +80,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         if (studentId === this.studentId)
             return;
         this.studentId = studentId;
-        Tool.back.sendData(SendType.homework, { studentId: this.studentId }, this.rectiveHomeworks);
+        Tool.back.sendData(Type.SendType.homework, { studentId: this.studentId }, this.rectiveHomeworks);
     }
     private rectiveHomeworks = (value: object) => {
         Tool.lib.fillData(value, this);

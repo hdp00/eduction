@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Button, Icon } from 'antd'
 import { HomeworkManager } from './homeworkManager'
-import { Tool, SendType } from '../data/tool'
+import { Tool, Type.SendType } from '../data/tool'
 
 interface SingleHomeworkProps {
     homework: object;//homeworkData
@@ -45,7 +45,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         this.props.onEdit(this.props.homework);
     }
     private onDelete = () => {
-        Tool.back.sendData(SendType.deleteHomework,
+        Tool.back.sendData(Type.SendType.deleteHomework,
             { id: this.props.homework['id'] }, this.props.onUpdate);
     }
 }

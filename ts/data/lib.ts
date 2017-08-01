@@ -1,3 +1,5 @@
+//by hdp 2017.08.01
+
 //工具库
 export class Lib {
     //填充数据
@@ -8,16 +10,20 @@ export class Lib {
     }
 
     //读写数据
-    saveData = (name:string, value:object) => {
-        if(value === undefined){
+    saveData = (name: string, value: object) => {
+        if (value === undefined) {
             localStorage.removeItem(name);
             return;
         }
 
         localStorage.setItem(name, JSON.stringify(value));
     }
-    loadData = (name:string, container:object) =>{
-        const data = JSON.parse(localStorage.getItem(name));
+    loadData = (name: string, container: object) => {
+        let data = localStorage.getItem(name);
+        if (data === undefined)
+            return;
+
+        data = JSON.parse(data);
         this.fillData(data, container);
     }
 }
