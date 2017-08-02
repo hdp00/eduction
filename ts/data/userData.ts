@@ -31,17 +31,17 @@ export class UserData {
 
     private _lib: Lib;
 
-    constructor(lib: Lib) {
+    public init(lib: Lib) {
         this._lib = lib;
         this.load();
     }
-
     public login = (value: LoginData) => {
         if (value == undefined)
             return;
 
         this.hasLogin = true;
         this._lib.fillData(value, this);
+        this.currentRole = this.roles[0];
         this.save();
     }
     public logout = () => {

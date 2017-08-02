@@ -53,7 +53,6 @@ export class Title extends React.Component<any, any>{
                 items.push(user);
                 defaultSelectedKeys = ['check'];
                 break;
-            case UserType.None:
             default:
                 break;
         }

@@ -11,66 +11,18 @@ import { Tool } from './data/tool'
 import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
-import { Select } from './login/select'
 import { Seat } from './seat/seat'
 import { Student } from './student/student'
 import { Homework } from './homework/homework'
 
-const Tr = Tool.router;
-
-
-
-
-/*class Navigation extends React.Component<any, any>{
-
-    constructor(props: any) {
-        super(props);
-
-        this.props.history.listen(this.onListen);
-    }
-
-
-    render() {
-        return <div>navigation
-            <button onClick={this.onStudent} >student</button>
-            <button>homework</button>
-        </div>;
-    }
-
-    private onStudent = () => {
-        console.log(this.props.history.push('/classroom/student'));
-    }
-    private onListen(location: Location) {
-        console.log(location.pathname);
-    }
-}*/
-
-
-/*class Login extends React.Component<any, any>{
-    render() {
-        if (loginSign.isLogin) {
-            return (
-                <Redirect to='/select' />
-            )
-        }
-
-        return <div>
-            <button onClick={this.onClick}>login</button>
-        </div>;
-    }
-
-    private onClick = () => {
-        loginSign.login();
-        this.forceUpdate();
-    }
-}*/
+const Tr = Tool.data.router;
 
 //登录路由
 class PrivateRoute extends Route {
     render() {
         const { component, ...rest } = this.props;
 
-        if (Tool.user.loggedin)
+        if (Tool.data.user.hasLogin)
             return <Route {...this.props} />;
         return <Route {...rest} render={
             () => <Redirect to={Tr.login} />} />;
@@ -91,7 +43,6 @@ export class EducationRouter extends React.Component<any, any>{
                 <Route exact path={Tr.root} render={
                     () => <Redirect to={Tr.login} />} />
                 <Route path={Tr.login} component={Login} />
-                <PrivateRoute path={Tr.select} component={Select} />
 
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />
@@ -103,6 +54,5 @@ export class EducationRouter extends React.Component<any, any>{
             </div>
         </Router>
     }
-
 }
 

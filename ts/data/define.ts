@@ -16,6 +16,12 @@ export enum UserType {
     Manager,        //管理
 }
 
+//网络类型
+export enum NetType {
+    Get,
+    Post
+}
+
 //发送数据类型
 export enum SendType {
     //user
