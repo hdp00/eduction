@@ -7,32 +7,56 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
-import { UserType } from '../data/define'
+import { Tool, UserType, SendType } from '../data/tool'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const Item = Menu.Item;
-const Tr = Tool.router;
+const Tr = Tool.data.router;
+const User = Tool.data.user;
 
 export class Title extends React.Component<any, any>{
     constructor(props: any) {
         super(props);
-
-        Tool.component.title = this;
         this.props.history.listen(this.onHistoryChanged);
     }
 
     render() {
-        const user = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
-            <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
+        //多用户
+        let roleSwitch;
+        if (User.roles.length > 1) {
+            let roleItems = [];
+
+            for (let role of User.roles) {
+                switch (role) {
+                    case UserType.Teacher:
+                        roleItems.push(<Menu.Item key='teacher'>教师</Menu.Item>);
+                        break;
+                    case UserType.Checker:
+                        roleItems.push(<Menu.Item key='checker'>批卷老师</Menu.Item>);
+                        break;
+                    case UserType.Manager:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            roleSwitch = <MenuItemGroup title='用户切换'>
+                {roleItems}
+            </MenuItemGroup>;
+        }
+
+        const userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
+            {roleSwitch}
+            {/* <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item> */}
             <Item key='logout'><Icon type='poweroff' />退出</Item>
         </SubMenu>;
 
         let defaultSelectedKeys = [];
         let items = [];
 
-        switch (Tool.user.currentRole) {
+        switch (User.currentRole) {
             case UserType.Teacher:
                 items.push(<Item key='seat'>
                     <Link to={Tr.seat}><Icon type='team' />座位表</Link>
@@ -43,49 +67,51 @@ export class Title extends React.Component<any, any>{
                 items.push(<Item key='homework'>
                     <Link to={Tr.homework}><Icon type='book' />作业录入</Link>
                 </Item>);
-                items.push(user);
+
                 defaultSelectedKeys = ['seat'];
                 break;
             case UserType.Checker:
                 items.push(<Item key='check'>
                     <Link to={Tr.check}><Icon type='check-square-o' />批改</Link>
                 </Item>);
-                items.push(user);
                 defaultSelectedKeys = ['check'];
                 break;
             default:
                 break;
         }
+        items.push(userMenu);
 
         return <div>
-            <label style={{ float: 'left' }}>君德教育</label>
+            <label style={{ fontSize: '28px', float: 'left' }}>君德教育</label>
             <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
                 {items}
             </Menu>
             <div style={{ clear: 'both' }} />
         </div>;
     }
-    componentDidMount() {
-        this.checkLogin();
-    }
 
     //退出登录
-    public logout = () => {
-        Tool.back.post(Tr.logout, {}, this.onLogout);
-        Tool.back.sendData(Type.SendType.Logout, {}, this.onLogout);
+    private logout = () => {
+        Tool.back.sendData(SendType.Logout, {}, this.onLogout);
     }
     private onLogout = (response: any) => {
+        User.logout();
         this.props.history.push(Tr.login);
     }
-    //检查是否已登录
-    private checkLogin = () => {
-        if(Tool.user.loggedin)
-            this.props.history.push(Tr.select);
+    private switchRole = () => {
+        
     }
 
     private onClick = ({ item, key, keyPath }) => {
-        if (key === 'logout')
-            this.logout();
+        switch (key) {
+            case 'logout':
+                this.logout();
+                break;
+            case 'teacher':
+            case 'checker':
+                this.switchRole();
+                break;
+        }
     }
     private onHistoryChanged = (location, action) => {
         this.forceUpdate();

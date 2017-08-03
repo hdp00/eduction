@@ -2,18 +2,19 @@
 //全局工具类
 
 import * as $ from 'jquery'
-import * as Type from './define'
+import { SendType, NetType } from './define'
 import { Lib } from './lib'
 import { EducationData } from './educationData'
 
+export * from './define'
 
 //数据接收处理类
 class ReceiveManager {
-    private type: Type.SendType;
+    private type: SendType;
     private sendData: object;
     private callback: (response: object) => void;
 
-    constructor(type: Type.SendType, data?: object, callback?: (response: object) => void) {
+    constructor(type: SendType, data?: object, callback?: (response: object) => void) {
         this.type = type;
         this.sendData = data;
         this.callback = callback;
@@ -26,7 +27,7 @@ class ReceiveManager {
         const netType = Tool.data.back.getNetType(this.type);
         const url = Tool.data.back.getUrl(this.type);
 
-        if (netType === Type.NetType.Get)
+        if (netType === NetType.Get)
             $.get(url, data, this.receive);
         else
             $.post(url, data, this.receive);
@@ -34,9 +35,9 @@ class ReceiveManager {
     private receive = (response?: string) => {
         const data = this.convertReceiveData(response);
 
-        if(this.callback === undefined)
+        if (this.callback === undefined)
             return;
-        if(data['code'] === 0 && this.type !== Type.SendType.Login)
+        if (data['code'] === 0 && this.type !== SendType.Login)
             return;
 
         this.callback(data);
@@ -46,13 +47,13 @@ class ReceiveManager {
         if (this.sendData === undefined)
             this.sendData = {};
 
-        if (this.type !== Type.SendType.Login) {
+        if (this.type !== SendType.Login) {
             this.sendData['userId'] = Tool.data.user.userId;
             this.sendData['token'] = Tool.data.user.token;
         }
 
         switch (this.type) {
-            case Type.SendType.Signin:
+            case SendType.Signin:
                 {
                     // for (let s of this.sendData) {
                     //     let id = s['id'];
@@ -62,13 +63,13 @@ class ReceiveManager {
                     // }
                 }
                 break;
-            case Type.SendType.Signout:
+            case SendType.Signout:
                 // {
                 //     let id = this.sendData['id'];
                 //     studentMap[id]['hasSigned'] = false;
                 // }
                 break;
-            case Type.SendType.addCredit:
+            case SendType.addCredit:
                 // {
                 //     let s = studentMap[this.sendData['id']];
                 //     s['credit'] = s['credit'] + this.sendData['credit'];
@@ -78,7 +79,7 @@ class ReceiveManager {
                 //     };
                 // }
                 break;
-            case Type.SendType.reduceCredit:
+            case SendType.reduceCredit:
                 // {
                 //     let s = studentMap[this.sendData['id']];
                 //     s['credit'] = s['credit'] - this.sendData['credit'];
@@ -88,12 +89,12 @@ class ReceiveManager {
                 //     };
                 // }
                 break;
-            case Type.SendType.changeHomeworkStatus:
+            case SendType.changeHomeworkStatus:
                 // {
                 //     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
                 // }
                 break;
-            case Type.SendType.uploadPapers:
+            case SendType.uploadPapers:
                 {
                     // let f = new FormData();
                     // let papers: object[] = this.sendData['papers'];
@@ -114,7 +115,7 @@ class ReceiveManager {
 
                 }
                 break;
-            case Type.SendType.addGrade:
+            case SendType.addGrade:
                 {
                     //set{id:string,
                     //grades:{date:Date, grade:{subjectId:string, score:number}[]}}

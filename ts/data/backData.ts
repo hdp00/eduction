@@ -1,20 +1,21 @@
 //by hdp 2017.08.01
 //后端数据
 
-import * as Type from './define'
+import { SendType } from './define'
 
 export class BackData {
-    private login: { netType: Type.NetType.Post, url: '/auth/login' };
-    private logout: { netType: Type.NetType.Post, url: '/auth/logout' };
-
+    private data: [] = [];
     private baseUrl = 'https://116.62.137.199/jd_app';
 
-    public getNetType(type: Type.SendType) {
-        const name = Type.SendType[type];
-        return this[name].netType;
+    constructor() {
+        this.data[SendType.Login] = { netType: Type.NetType.Post, url: '/auth/login' };
+        this.data[SendType.Logout] = { netType: Type.NetType.Post, url: '/auth/logout' };
+    }  
+
+    public getNetType(type: SendType) {
+        return this[type].netType;
     }
-    public getUrl(type: Type.SendType) {
-        const name = Type.SendType[type];
-        return this.baseUrl + this[name].url;
+    public getUrl(type: SendType) {
+        return this.baseUrl + this[type].url;
     }
 }

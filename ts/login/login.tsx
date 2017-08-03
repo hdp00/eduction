@@ -4,17 +4,18 @@
 import * as  React from 'react';
 import { Redirect } from 'react-router-dom'
 import { Form, Icon, Input, Button } from 'antd';
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import '../css/login.css';
 
 const FormItem = Form.Item;
-const Tr = Tool.router;
+const Tr = Tool.data.router;
+const User = Tool.data.user;
 
 class LoginForm extends React.Component<any, any> {
     private comment: string = '';
 
     render() {
-        if (Tool.user.loggedin)
+        if (User.hasLogin)
             return <Redirect to={Tr.select} />;
 
         const { getFieldDecorator } = this.props.form;
@@ -45,13 +46,16 @@ class LoginForm extends React.Component<any, any> {
         </Form>
         );
     }
+    componentDidMount() {
+        this.checkLogin();
+    }
 
     private handleSubmit = (e) => {
         e.preventDefault();
         this.comment = '';
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                Tool.back.sendData(Type.SendType.Login, values, this.onLogin);
+                Tool.back.sendData(SendType.Login, values, this.onLogin);
             }
         });
     }
@@ -60,11 +64,17 @@ class LoginForm extends React.Component<any, any> {
         if (true) {
             this.props.form.resetFields();
             this.props.history.replace(Tr.select);
-        } 
+        }
         // else {
         //     this.comment = data.comment;
         //     this.forceUpdate();
         // }
+    }
+
+    //检查是否已登录
+    private checkLogin = () => {
+        if (User.hasLogin)
+            this.props.history.push(Tr.select);
     }
 }
 

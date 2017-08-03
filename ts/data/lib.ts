@@ -20,7 +20,7 @@ export class Lib {
     }
     loadData = (name: string, container: object) => {
         let data = localStorage.getItem(name);
-        if (data === undefined)
+        if (data === undefined || data === null)
             return;
 
         data = JSON.parse(data);

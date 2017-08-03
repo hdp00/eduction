@@ -42,7 +42,7 @@ export class EducationRouter extends React.Component<any, any>{
 
                 <Route exact path={Tr.root} render={
                     () => <Redirect to={Tr.login} />} />
-                <Route path={Tr.login} component={Login} />
+                {/* <Route path={Tr.login} component={Login} /> */}
 
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />

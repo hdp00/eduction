@@ -3,9 +3,7 @@ import * as  ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import './css/antd.css';
 
-
-
-// import { EducationRouter } from './educationRouter';
+import { EducationRouter } from './educationRouter';
 
 
 
@@ -57,10 +55,8 @@ import './css/antd.css';
 export class App {
     run() {
         ReactDOM.render(<div>
-
+            <EducationRouter />
         </div>,
             document.getElementById('root'));
     }
-
-
 }
