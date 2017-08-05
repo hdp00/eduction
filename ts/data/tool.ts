@@ -2,11 +2,12 @@
 //全局工具类
 
 import * as $ from 'jquery'
-import { SendType, NetType } from './define'
+import { SendType, NetType, UserType } from './define'
 import { Lib } from './lib'
 import { EducationData } from './educationData'
 
 export * from './define'
+
 
 //数据接收处理类
 class ReceiveManager {
@@ -28,7 +29,7 @@ class ReceiveManager {
         const url = Tool.data.back.getUrl(this.type);
 
         if (netType === NetType.Get)
-            $.get(url, data, this.receive);
+            $.get(url, this.sendData, this.receive);
         else
             $.post(url, data, this.receive);
     }
@@ -37,7 +38,7 @@ class ReceiveManager {
 
         if (this.callback === undefined)
             return;
-        if (data['code'] === 0 && this.type !== SendType.Login)
+        if (data === undefined)
             return;
 
         this.callback(data);
@@ -125,45 +126,59 @@ class ReceiveManager {
                 break;
         }
 
+        const netType = Tool.data.back.getNetType(this.type);
+        if(netType === NetType.Get)
+            return this.sendData;
+
         return JSON.stringify(this.sendData);
     }
     private convertReceiveData(response: string) {
         let data = JSON.parse(response);
         this.showMessage(data);
+        //获取实际数据
+        if (this.type !== SendType.Login) {
+            if (Tool.data.isValidData(data)) {
+                data = data['data'];
+                if (data === undefined)
+                    data = {};
+            }
+            else
+                return undefined;
+        }
 
-        // switch (this.type) {
-        //     case Type.SendType.StudentSelector:
-        //         return this.getStudentSelector(data);
-        //     case Type.SendType.StudentSeat:
-        //         return this.getStudentSeat(data);
-        //     case Type.SendType.StudentContainer:
-        //         return this.getStudentContainer(data);
-        //     case Type.SendType.addCreditItem:
-        //         return this.getAddCreditItem(data);
-        //     case Type.SendType.reduceCreditItem:
-        //         return this.getReduceCreditItem(data);
-        //     case Type.SendType.studentDetail:
-        //         return this.getStudentDetail(data);
-        //     case Type.SendType.homework:
-        //         return this.getHomework(data);
-        //     case Type.SendType.homeworkPaper:
-        //         return this.getHomeworkPaper(data);
-        //     case Type.SendType.students:
-        //         return this.getStudents(data);
-        //     case Type.SendType.checkItms:
-        //         return this.getCheckItems(data);
-        //     case Type.SendType.papers:
-        //         return this.getPapers(data);
-        //     case Type.SendType.homeworkOptions:
-        //     //return HomeworkOptions;
-        //     default:
-        //         break;
-        // }
+        switch (this.type) {
+            //     case SendType.StudentSelector:
+            //         return this.getStudentSelector(data);
+            //     case SendType.StudentSeat:
+            //         return this.getStudentSeat(data);
+            //     case SendType.StudentContainer:
+            //         return this.getStudentContainer(data);
+            //     case SendType.addCreditItem:
+            //         return this.getAddCreditItem(data);
+            //     case SendType.reduceCreditItem:
+            //         return this.getReduceCreditItem(data);
+            //     case SendType.studentDetail:
+            //         return this.getStudentDetail(data);
+            //     case SendType.homework:
+            //         return this.getHomework(data);
+            //     case SendType.homeworkPaper:
+            //         return this.getHomeworkPaper(data);
+            //     case SendType.students:
+            //         return this.getStudents(data);
+            //     case SendType.checkItms:
+            //         return this.getCheckItems(data);
+            //     case SendType.papers:
+            //         return this.getPapers(data);
+            //     case SendType.homeworkOptions:
+            //     //return HomeworkOptions;
+            default:
+                break;
+        }
 
         return data;
     }
     private showMessage(value: any) {
-        if (value.code !== 0)
+        if (!Tool.data.isValidData(value))
             console.log(value.comment);
     }
     private getStudentSelector(value: object) {
@@ -246,7 +261,7 @@ class ReceiveManager {
 
 //后台数据
 class Back {
-    public sendData = (type: Type.SendType, request?: object, callback?: (response: object) => void) => {
+    public sendData = (type: SendType, request?: object, callback?: (response: object) => void) => {
         new ReceiveManager(type, request, callback);
     };
 
@@ -269,7 +284,6 @@ class EducationTool {
     constructor() {
         this.data.init(this.lib);
     }
-
 
     // //需要访问的组件
     // public component = {

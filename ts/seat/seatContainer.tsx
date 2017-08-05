@@ -6,7 +6,7 @@ import { Button, Select } from 'antd'
 import { StudentSeat } from './studentSeat'
 import { StudentSelector } from './studentSelector'
 import { SeatManager } from './seatManager'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 const Option = Select.Option;
 
@@ -96,7 +96,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
     }
 
     componentDidMount() {
-        Tool.back.sendData(Type.SendType.StudentContainer, undefined, this.receiveStudents);
+        Tool.back.sendData(SendType.StudentContainer, {}, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         this.row = value['row'];
@@ -106,7 +106,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         let students: object[] = value['students'];
         for (let s of students) {
             let index = s['index'];
-            this.props.manager.seatIds[index] = s['id'];
+            this.props.manager.seatIds[index] = s['studentId'];
         }
 
         this.forceUpdate();
@@ -133,7 +133,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 if (seat === undefined)
                     return;
 
-                Tool.back.sendData(Type.SendType.Signin, [{ id: id, index: seatIndex }]);
+                Tool.back.sendData(SendType.Signin, [{ id: id, index: seatIndex }]);
                 this.props.manager.seatIds[seatIndex] = id;
                 seat.setId(id);
             }
@@ -141,7 +141,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             const id = ids[0];
             const seat = this.refs[index] as StudentSeat;
 
-            Tool.back.sendData(Type.SendType.Signin, [{ id: id, index: index }]);
+            Tool.back.sendData(SendType.Signin, [{ id: id, index: index }]);
             this.props.manager.seatIds[index] = id;
             seat.setId(id);
         }
@@ -170,7 +170,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         if (id === undefined)
             return;
 
-        Tool.back.sendData(Type.SendType.Signout, { id: id });
+        Tool.back.sendData(SendType.Signout, { id: id });
         let index = this.props.manager.currentIndex;
         this.props.manager.seatIds[index] = undefined;
         (this.refs[index] as StudentSeat).setId(undefined);

@@ -54,7 +54,7 @@ export enum SendType {
 
     //set undefined
     //get {col:number, row:number
-    //  students:{id:string, index:number, name:string, taskText:string, taskStatus:number}[]    
+    //  students:{studentId:string, index:number, name:string, taskText:string, taskStatus:number}[]    
     //}
     StudentContainer,
 

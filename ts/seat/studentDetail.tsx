@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Button, Rate, Select, Modal } from 'antd'
 import { SeatManager } from './seatManager'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 const Option = Select.Option;
 
@@ -117,8 +117,8 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.sendData(Type.SendType.addCreditItem, undefined, this.onReceiveAddCreditItem);
-        Tool.back.sendData(Type.SendType.reduceCreditItem, undefined, this.onReceiveReduceCreditItem);
+        Tool.back.sendData(SendType.addCreditItem, {}, this.onReceiveAddCreditItem);
+        Tool.back.sendData(SendType.reduceCreditItem, {}, this.onReceiveReduceCreditItem);
     }
     private onReceiveAddCreditItem = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -135,7 +135,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             this.forceUpdate();
         }
         else
-            Tool.back.sendData(Type.SendType.studentDetail, { id: id }, this.receiveDetail)
+            Tool.back.sendData(SendType.studentDetail, { id: id }, this.receiveDetail)
     }
     private receiveDetail = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -154,7 +154,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             credit: this.addCredit,
             text: this.addText,
         }
-        Tool.back.sendData(Type.SendType.addCredit, {
+        Tool.back.sendData(SendType.addCredit, {
             id: this.id,
             credit: this.addCreditStatus.credit,
             text: this.addCreditStatus.text,
@@ -181,7 +181,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             credit: this.reduceCredit,
             text: this.reduceText,
         }
-        Tool.back.sendData(Type.SendType.reduceCredit, {
+        Tool.back.sendData(SendType.reduceCredit, {
             id: this.id,
             credit: this.reduceCreditStatus.credit,
             text: this.reduceCreditStatus.text,

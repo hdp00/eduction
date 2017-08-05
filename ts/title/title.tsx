@@ -24,22 +24,14 @@ export class Title extends React.Component<any, any>{
     render() {
         //多用户
         let roleSwitch;
+        let roleItems = [];
         if (User.roles.length > 1) {
-            let roleItems = [];
+            let roleComponents = [];
+            roleComponents[UserType.Teacher] = <Menu.Item key='teacher'>教师</Menu.Item>;
+            roleComponents[UserType.Checker] = <Menu.Item key='checker'>批卷老师</Menu.Item>
 
             for (let role of User.roles) {
-                switch (role) {
-                    case UserType.Teacher:
-                        roleItems.push(<Menu.Item key='teacher'>教师</Menu.Item>);
-                        break;
-                    case UserType.Checker:
-                        roleItems.push(<Menu.Item key='checker'>批卷老师</Menu.Item>);
-                        break;
-                    case UserType.Manager:
-                        break;
-                    default:
-                        break;
-                }
+                roleItems.push(roleComponents[role])
             }
 
             roleSwitch = <MenuItemGroup title='用户切换'>
@@ -47,11 +39,14 @@ export class Title extends React.Component<any, any>{
             </MenuItemGroup>;
         }
 
-        const userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
-            {roleSwitch}
-            {/* <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item> */}
-            <Item key='logout'><Icon type='poweroff' />退出</Item>
-        </SubMenu>;
+        let userMenu;
+        if (User.hasLogin) {
+            userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
+                {roleSwitch}
+                <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
+                <Item key='logout'><Icon type='poweroff' />退出</Item>
+            </SubMenu>;
+        }
 
         let defaultSelectedKeys = [];
         let items = [];
@@ -90,32 +85,49 @@ export class Title extends React.Component<any, any>{
         </div>;
     }
 
-    //退出登录
-    private logout = () => {
-        Tool.back.sendData(SendType.Logout, {}, this.onLogout);
-    }
-    private onLogout = (response: any) => {
-        User.logout();
-        this.props.history.push(Tr.login);
-    }
-    private switchRole = () => {
-        
-    }
-
     private onClick = ({ item, key, keyPath }) => {
         switch (key) {
             case 'logout':
                 this.logout();
                 break;
             case 'teacher':
+                this.switchRole(UserType.Teacher);
+                break;
             case 'checker':
-                this.switchRole();
+                this.switchRole(UserType.Teacher);
+                break;
+            default:
                 break;
         }
     }
+
     private onHistoryChanged = (location, action) => {
         this.forceUpdate();
     }
+
+    //退出登录
+    public logout = () => {
+        Tool.back.sendData(SendType.Logout, {}, this.onLogout);
+    }
+    private onLogout = (response: any) => {
+        User.logout();
+        this.props.history.push(Tr.login);
+    }
+    private switchRole = (type: UserType) => {
+        User.currentRole = type;
+
+        switch (type) {
+            case UserType.Teacher:
+                this.props.history.push(Tr.classroom);
+                break;
+            case UserType.Checker:
+                this.props.history.push(Tr.check);
+                break;
+        }
+
+    }
+
+
 }
 
 

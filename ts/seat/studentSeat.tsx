@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Button, Icon } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 
 interface StudentSeatProps {
@@ -15,7 +15,7 @@ interface StudentSeatProps {
 
 export class StudentSeat extends React.Component<StudentSeatProps, any>{
     //学生id
-    private id: string;
+    private studentId: string;
     //学生名字
     private name: string;
     //作业文本
@@ -32,7 +32,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     render() {
         const isSelect = (this.props.manager.currentIndex === this.props.index);
         const selectClass = isSelect ? 'component-select' : '';
-        const hasSigned = (this.id !== undefined);
+        const hasSigned = (this.studentId !== undefined);
         const hasTimer = (this.delayTime !== undefined);
         const timerIsOver = (this.timerId === undefined);
 
@@ -86,10 +86,10 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     }
 
     public setId = (id: string) => {
-        this.id = id;
+        this.studentId = id;
 
-        if (this.id !== undefined) {
-            Tool.back.sendData(Type.SendType.StudentSeat, { id: this.id }, this.receiveStudent);
+        if (this.studentId !== undefined) {
+            Tool.back.sendData(SendType.StudentSeat, { id: this.studentId }, this.receiveStudent);
             return;
         } else {
             this.clearDelay();
@@ -100,21 +100,21 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     public receiveStudent = (value: object) => {
         Tool.lib.fillData(value, this);
 
-        let d = localStorage[this.id + '_delay'];
+        let d = localStorage[this.studentId + '_delay'];
         this.setDelayTime(new Date(d));
 
         this.forceUpdate();
     }
 
     public setDelayTime = (delayTime: Date) => {
-        if (this.id === undefined || delayTime === undefined)
+        if (this.studentId === undefined || delayTime === undefined)
             return;
         if (isNaN(delayTime.getTime()))
             return;
         this.clearDelay();
 
         this.delayTime = delayTime;
-        localStorage[this.id + '_delay'] = delayTime;
+        localStorage[this.studentId + '_delay'] = delayTime;
 
         if (this.delayInterval())
             this.timerId = setInterval(this.delayInterval, 1000);
@@ -149,7 +149,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         clearInterval(this.timerId);
         this.delayTime = undefined;
         this.timerId = undefined;
-        localStorage.removeItem(this.id + '_delay');
+        localStorage.removeItem(this.studentId + '_delay');
     }
     private finishDelay = () => {
         this.clearDelay();

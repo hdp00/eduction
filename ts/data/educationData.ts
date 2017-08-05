@@ -4,18 +4,36 @@
 import { Lib } from './lib'
 import { UserData } from './userData'
 import { BackData } from './backData'
+import { SeatData } from './seatData'
+import { UserType } from './define'
 //import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
 export class EducationData {
     public user = new UserData();
     public back = new BackData();
     public router = new routerData();
+    public seat = new SeatData();
+
 
     private _lib: Lib;
 
     public init(lib: Lib) {
         this._lib = lib;
         this.user.init(this._lib);
+    }
+
+    //获取用户的默认地址
+    public getRoleDefaultUrl = () => {
+        let urls = [];
+        [urls[UserType.Teacher], urls[UserType.Checker]] = [
+            this.router.classroom,
+            this.router.check,
+        ];
+
+        return urls[this.user.currentRole];
+    }
+    public isValidData = (data: object) => {
+        return (data['code'] == 0);
     }
 }
 
@@ -33,7 +51,6 @@ class routerData {
     public student = '/classroom/student';
     public homework = '/classroom/homework';
 };
-
 
 
 // //批改项

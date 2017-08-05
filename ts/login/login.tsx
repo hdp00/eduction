@@ -16,7 +16,7 @@ class LoginForm extends React.Component<any, any> {
 
     render() {
         if (User.hasLogin)
-            return <Redirect to={Tr.select} />;
+            return <Redirect to={Tool.data.getRoleDefaultUrl()} />;
 
         const { getFieldDecorator } = this.props.form;
         return (<Form onSubmit={this.handleSubmit} className="login-form">
@@ -61,9 +61,10 @@ class LoginForm extends React.Component<any, any> {
     }
 
     private onLogin = (data: any) => {
-        if (true) {
+        if (Tool.data.isValidData(data)) {
+            User.login(data['data']);
             this.props.form.resetFields();
-            this.props.history.replace(Tr.select);
+            this.props.history.replace(Tool.data.getRoleDefaultUrl());
         }
         // else {
         //     this.comment = data.comment;
@@ -74,7 +75,7 @@ class LoginForm extends React.Component<any, any> {
     //检查是否已登录
     private checkLogin = () => {
         if (User.hasLogin)
-            this.props.history.push(Tr.select);
+            this.props.history.push(Tool.data.getRoleDefaultUrl());
     }
 }
 

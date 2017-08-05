@@ -33,17 +33,19 @@ export class Seat extends React.Component<any, any>{
         return <div style={{ textAlign: 'center' }} >
             <div className='seat-total-div'>
                 <SeatContainer {...SeatProps} />
-                <div className='seat-single-student-div'>
+                //temp
+                {/* <div className='seat-single-student-div'>
                     <StudentDetail {...studentProps} />
                     <HomeworkContainer {...homeworkProps} />
-                </div>
+                </div> */}
                 <div style={{ clear: 'both' }} />
             </div>
         </div>;
     }
 
     private onCurrentStudentChange = () => {
-        (this.refs['student'] as StudentDetail).update();
-        (this.refs['homework'] as HomeworkContainer).update();
+        //temp
+        // (this.refs['student'] as StudentDetail).update();
+        // (this.refs['homework'] as HomeworkContainer).update();
     };
 }

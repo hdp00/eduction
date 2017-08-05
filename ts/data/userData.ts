@@ -1,14 +1,14 @@
 //by hdp 2017.08.01
 //用户数据
 
-import * as Type from './define'
+import { UserType } from './define'
 import { Lib } from './lib'
 
 class LoginData {
     userId: string;
     userName: string;
     token: string;
-    roles: Type.UserType[];
+    roles: UserType[];
 }
 
 //用户
@@ -16,10 +16,10 @@ export class UserData {
     public userName: string;
     public userId: string = '';
     public token: string = '';
-    public roles: Type.UserType[] = [];
+    public roles: UserType[] = [];
 
-    private _currentRole: Type.UserType;
-    public set currentRole(value: any) {
+    private _currentRole: UserType;
+    public set currentRole(value: UserType) {
         this._currentRole = value;
         this.save();
     }
@@ -34,6 +34,10 @@ export class UserData {
     public init(lib: Lib) {
         this._lib = lib;
         this.load();
+
+        //temp
+        if (this.token.length > 0)
+            this.hasLogin = true;
     }
     public login = (value: LoginData) => {
         if (value == undefined)
@@ -41,6 +45,10 @@ export class UserData {
 
         this.hasLogin = true;
         this._lib.fillData(value, this);
+
+        //temp
+        this.roles = [UserType.Teacher, UserType.Checker];
+
         this.currentRole = this.roles[0];
         this.save();
     }
@@ -51,19 +59,18 @@ export class UserData {
         this.roles = [];
         this.currentRole = 0;
 
-        this.save(true);
+        //clean
+        this._lib.saveData('user', undefined);
     }
 
-    private save(clean: boolean = false) {
-        let value = undefined;
-        if (!clean)
-            value = {
-                userName: this.userName,
-                userId: this.userId,
-                token: this.token,
-                roles: this.roles,
-                currentRole: this._currentRole,
-            };
+    private save() {
+        const value = {
+            userName: this.userName,
+            userId: this.userId,
+            token: this.token,
+            roles: this.roles,
+            currentRole: this._currentRole,
+        };
 
         this._lib.saveData('user', value);
     }
