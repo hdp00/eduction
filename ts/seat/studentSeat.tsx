@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Button, Icon } from 'antd'
-import { Tool, SendType } from '../data/tool'
+import { Tool, SendType, PaperState } from '../data/tool'
 import { SeatManager } from './seatManager'
 
 interface StudentSeatProps {
@@ -21,7 +21,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
     //作业文本
     private taskText: string;
     //作业状态
-    private taskStatus: number;//PaperState 
+    private taskStatus: PaperState;//PaperState 
     //定时结束时间
     private delayTime: Date;
     //刷新定时器id
@@ -49,13 +49,13 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         if (hasSigned) {
             let color;
             switch (this.taskStatus) {
-                case 0:
+                case PaperState.New:
                     color = 'rgba(0, 0, 255, 0.4)';
                     break;
-                case 2:
+                case PaperState.HasChecked:
                     color = 'rgba(255, 255, 0, 0.4)';
                     break;
-                case 3:
+                case PaperState.HasChecked:
                     color = 'rgba(0, 255, 0, 0.4)';
                     break;
                 default:

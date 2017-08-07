@@ -29,7 +29,7 @@ class ReceiveManager {
         const url = Tool.data.back.getUrl(this.type);
 
         if (netType === NetType.Get)
-            $.get(url, this.sendData, this.receive);
+            $.get(url, data, this.receive);
         else
             $.post(url, data, this.receive);
     }
@@ -70,7 +70,7 @@ class ReceiveManager {
                 //     studentMap[id]['hasSigned'] = false;
                 // }
                 break;
-            case SendType.addCredit:
+            case SendType.AddCredit:
                 // {
                 //     let s = studentMap[this.sendData['id']];
                 //     s['credit'] = s['credit'] + this.sendData['credit'];
@@ -80,7 +80,7 @@ class ReceiveManager {
                 //     };
                 // }
                 break;
-            case SendType.reduceCredit:
+            case SendType.ReduceCredit:
                 // {
                 //     let s = studentMap[this.sendData['id']];
                 //     s['credit'] = s['credit'] - this.sendData['credit'];
@@ -90,12 +90,12 @@ class ReceiveManager {
                 //     };
                 // }
                 break;
-            case SendType.changeHomeworkStatus:
+            case SendType.ChangeHomeworkStatus:
                 // {
                 //     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
                 // }
                 break;
-            case SendType.uploadPapers:
+            case SendType.UploadPapers:
                 {
                     // let f = new FormData();
                     // let papers: object[] = this.sendData['papers'];
@@ -116,7 +116,7 @@ class ReceiveManager {
 
                 }
                 break;
-            case SendType.addGrade:
+            case SendType.AddGrade:
                 {
                     //set{id:string,
                     //grades:{date:Date, grade:{subjectId:string, score:number}[]}}

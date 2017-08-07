@@ -117,8 +117,8 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.sendData(SendType.addCreditItem, {}, this.onReceiveAddCreditItem);
-        Tool.back.sendData(SendType.reduceCreditItem, {}, this.onReceiveReduceCreditItem);
+        Tool.back.sendData(SendType.AddCreditItem, {}, this.onReceiveAddCreditItem);
+        Tool.back.sendData(SendType.ReduceCreditItem, {}, this.onReceiveReduceCreditItem);
     }
     private onReceiveAddCreditItem = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -135,7 +135,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             this.forceUpdate();
         }
         else
-            Tool.back.sendData(SendType.studentDetail, { id: id }, this.receiveDetail)
+            Tool.back.sendData(SendType.StudentDetail, { id: id }, this.receiveDetail)
     }
     private receiveDetail = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -154,7 +154,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             credit: this.addCredit,
             text: this.addText,
         }
-        Tool.back.sendData(SendType.addCredit, {
+        Tool.back.sendData(SendType.AddCredit, {
             id: this.id,
             credit: this.addCreditStatus.credit,
             text: this.addCreditStatus.text,
@@ -181,7 +181,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             credit: this.reduceCredit,
             text: this.reduceText,
         }
-        Tool.back.sendData(SendType.reduceCredit, {
+        Tool.back.sendData(SendType.ReduceCredit, {
             id: this.id,
             credit: this.reduceCreditStatus.credit,
             text: this.reduceCreditStatus.text,

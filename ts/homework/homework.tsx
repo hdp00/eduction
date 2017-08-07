@@ -35,7 +35,7 @@ export class Homework extends React.Component<any, any>{
     }
 
     componentDidMount() {
-        Tool.back.sendData(SendType.students, undefined, this.receiveStudents);
+        Tool.back.sendData(SendType.Students, undefined, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);

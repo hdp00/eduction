@@ -60,78 +60,88 @@ export enum SendType {
 
     //set undefined
     //get {addCreditItems:string[]}
-    addCreditItem,
+    AddCreditItem,
 
     //set undefined
     //get {reduceCreditItems:string[]}
-    reduceCreditItem,
+    ReduceCreditItem,
 
     //set {id:string, credit:number, text:string}
     //get undefined
-    addCredit,
+    AddCredit,
 
     //set {id:string, credit:number, text:string}
     //get undefined
-    reduceCredit,
+    ReduceCredit,
 
     //set{id:string}
     //get{name:string, school:string, class:number, credit:number
     //  addCreditStatus:{credit:number, text:string}
     //  reduceCreditStatus:{credit:number, text:string}
     //}
-    studentDetail,
+    StudentDetail,
 
     //set{homeworkId:string, status:number}
-    changeHomeworkStatus,
+    ChangeHomeworkStatus,
 
     //set{studentId:string}
     //get {homeworks:homeworkData[]}
-    homework,
+    Homework,
 
     //set{homeworkId:string, papers:{name:string, data:base64}[])
-    uploadPapers,
+    UploadPapers,
 
     //set{homeworkId:string}
     //get{homeworkId:string, subject: string, book: string, papers: string[]}
-    homeworkPaper,
+    HomeworkPaper,
 
     //set undefined
     //get {students:{id:string, name:string, school:string, class:number, sex:stirng,
     //grades:{date:Date, grade:{subjectId:string, score:number}[]}}[]}
-    students,
+    Students,
 
     //set{id:string,
     //grade:{date:Date, grade:{subject:string, score:number}[]}}
     //get undefined
-    addGrade,
+    AddGrade,
 
     //set{id:string,
     //grades:{date:Date, grade:{subjectId:string, score:number}[]}[]}
     //get undfined
-    modifyGrade,
+    ModifyGrade,
 
     //homework
 
     //set HomeworkData
     //get undefined
-    modifyHomework,
+    ModifyHomework,
 
     //set{id:string}
     //get undefined
-    deleteHomework,
+    DeleteHomework,
 
     //set undefined
     //get homeworkOptions
-    homeworkOptions,
+    HomeworkOptions,
 
     //check
 
     //set undefined
     //get checkItemList
-    checkItms,
+    CheckItms,
 
     //set undefined
     //get paperList
-    papers,
+    Papers,
 }
+
+//显示的网页页面
+export enum PageType{
+    Classroom, 
+    Student,
+    Homework,
+    Check,
+    StudentSetting,
+    TeacherSetting
+} 
 
