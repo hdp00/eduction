@@ -2,7 +2,7 @@
 //全局工具类
 
 import * as $ from 'jquery'
-import { SendType, NetType, UserType } from './define'
+import { SendType, NetType } from './define'
 import { Lib } from './lib'
 import { EducationData } from './educationData'
 

@@ -136,12 +136,12 @@ export enum SendType {
 }
 
 //显示的网页页面
-export enum PageType{
-    Classroom, 
+export enum PageType {
+    Classroom,
     Student,
     Homework,
     Check,
     StudentSetting,
     TeacherSetting
-} 
+}
 

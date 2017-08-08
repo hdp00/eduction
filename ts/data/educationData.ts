@@ -5,7 +5,7 @@ import { Lib } from './lib'
 import { UserData } from './userData'
 import { BackData } from './backData'
 import { SeatData } from './seatData'
-import { UserType } from './define'
+import { PageType } from './define'
 //import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
 export class EducationData {
@@ -22,15 +22,19 @@ export class EducationData {
         this.user.init(this._lib);
     }
 
-    //获取用户的默认地址
-    public getRoleDefaultUrl = () => {
-        let urls = [];
-        [urls[UserType.Teacher], urls[UserType.Checker]] = [
-            this.router.classroom,
-            this.router.check,
-        ];
-
-        return urls[this.user.currentRole];
+    public defaultUrl = () => {
+        switch (this.user.pages[0]) {
+            case PageType.Classroom:
+                return this.router.classroom;
+            case PageType.Student:
+                return this.router.student;
+            case PageType.Homework:
+                return this.router.homework;
+            case PageType.Check:
+                return this.router.check;
+            default:
+                return this.router.classroom;
+        }
     }
     public isValidData = (data: object) => {
         return (data['code'] == 0);

@@ -2,20 +2,14 @@ import * as  React from 'react';
 import * as  ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import './css/antd.css';
+import './css/education.css'
 
 import { EducationRouter } from './educationRouter';
-
-
 
 
 // import { Title } from './title/title'
 // import { Login } from './login/login'
 // import { Seat } from './seat/seat'
-
-
-
-
-
 
 
 // class Long extends React.Component<any, any>{
@@ -51,6 +45,7 @@ import { EducationRouter } from './educationRouter';
 //     }
 
 // }
+
 
 export class App {
     run() {

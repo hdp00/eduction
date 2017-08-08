@@ -7,7 +7,7 @@ import {
     Route, RouteProps, Link, Redirect,
 } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
-import { Tool, UserType, SendType } from '../data/tool'
+import { Tool, SendType, PageType } from '../data/tool'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -22,67 +22,48 @@ export class Title extends React.Component<any, any>{
     }
 
     render() {
-        //多用户
-        let roleSwitch;
-        let roleItems = [];
-        if (User.roles.length > 1) {
-            let roleComponents = [];
-            roleComponents[UserType.Teacher] = <Menu.Item key='teacher'>教师</Menu.Item>;
-            roleComponents[UserType.Checker] = <Menu.Item key='checker'>批卷老师</Menu.Item>
+        let defaultSelectedKeys = [];
+        let items = [];
+        let pageItems = [];
+        pageItems[PageType.Classroom] = <Item key={PageType[PageType.Classroom]}>
+            <Link to={Tr.seat}><Icon type='team' />座位表</Link>
+        </Item>;
+        pageItems[PageType.Student] = <Item key={PageType[PageType.Student]}>
+            <Link to={Tr.student}><Icon type='bars' />学生统计</Link>
+        </Item>;
+        pageItems[PageType.Homework] = <Item key={PageType[PageType.Homework]}>
+            <Link to={Tr.homework}><Icon type='book' />作业录入</Link>
+        </Item>;
+        pageItems[PageType.Check] = <Item key={PageType[PageType.Check]}>
+            <Link to={Tr.check}><Icon type='check-square-o' />批改</Link>
+        </Item>
 
-            for (let role of User.roles) {
-                roleItems.push(roleComponents[role])
-            }
-
-            roleSwitch = <MenuItemGroup title='用户切换'>
-                {roleItems}
-            </MenuItemGroup>;
+        for (let page of User.pages) {
+            items.push(pageItems[page]);
         }
+
 
         let userMenu;
         if (User.hasLogin) {
             userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
-                {roleSwitch}
                 <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
                 <Item key='logout'><Icon type='poweroff' />退出</Item>
             </SubMenu>;
         }
 
-        let defaultSelectedKeys = [];
-        let items = [];
-
-        switch (User.currentRole) {
-            case UserType.Teacher:
-                items.push(<Item key='seat'>
-                    <Link to={Tr.seat}><Icon type='team' />座位表</Link>
-                </Item>);
-                items.push(<Item key='student'>
-                    <Link to={Tr.student}><Icon type='bars' />学生统计</Link>
-                </Item>);
-                items.push(<Item key='homework'>
-                    <Link to={Tr.homework}><Icon type='book' />作业录入</Link>
-                </Item>);
-
-                defaultSelectedKeys = ['seat'];
-                break;
-            case UserType.Checker:
-                items.push(<Item key='check'>
-                    <Link to={Tr.check}><Icon type='check-square-o' />批改</Link>
-                </Item>);
-                defaultSelectedKeys = ['check'];
-                break;
-            default:
-                break;
-        }
         items.push(userMenu);
 
-        return <div>
-            <label style={{ fontSize: '28px', float: 'left' }}>君德教育</label>
-            <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
-                {items}
-            </Menu>
-            <div style={{ clear: 'both' }} />
-        </div>;
+        defaultSelectedKeys = [PageType[User.pages[0]]];
+
+        return <div style={{ textAlign: 'center' }}>
+            <div className='title-total-div'>
+                <label style={{ fontSize: '28px', float: 'left' }}>君德教育</label>
+                <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
+                    {items}
+                </Menu>
+                <div style={{ clear: 'both' }} />
+            </div>
+        </div >;
     }
 
     private onClick = ({ item, key, keyPath }) => {
@@ -90,11 +71,8 @@ export class Title extends React.Component<any, any>{
             case 'logout':
                 this.logout();
                 break;
-            case 'teacher':
-                this.switchRole(UserType.Teacher);
-                break;
-            case 'checker':
-                this.switchRole(UserType.Teacher);
+            case 'password':
+
                 break;
             default:
                 break;
@@ -112,19 +90,6 @@ export class Title extends React.Component<any, any>{
     private onLogout = (response: any) => {
         User.logout();
         this.props.history.push(Tr.login);
-    }
-    private switchRole = (type: UserType) => {
-        User.currentRole = type;
-
-        switch (type) {
-            case UserType.Teacher:
-                this.props.history.push(Tr.classroom);
-                break;
-            case UserType.Checker:
-                this.props.history.push(Tr.check);
-                break;
-        }
-
     }
 
 
