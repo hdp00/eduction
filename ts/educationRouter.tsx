@@ -11,9 +11,11 @@ import { Tool } from './data/tool'
 import { Title } from './title/title'
 import { Check } from './check/check'
 import { Login } from './login/login'
+import { Password } from './login/password'
 import { Seat } from './seat/seat'
 import { Student } from './student/student'
 import { Homework } from './homework/homework'
+
 
 const Tr = Tool.data.router;
 
@@ -42,8 +44,9 @@ export class EducationRouter extends React.Component<any, any>{
 
                 <Route exact path={Tr.root} render={
                     () => <Redirect to={Tr.login} />} />
-                 <Route path={Tr.login} component={Login} /> 
+                <Route path={Tr.login} component={Login} />
 
+                <PrivateRoute path={Tr.password} component={Password} />
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />
                 <PrivateRoute path={Tr.seat} component={Seat} />

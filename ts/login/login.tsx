@@ -21,7 +21,7 @@ class LoginForm extends React.Component<any, any> {
         const { getFieldDecorator } = this.props.form;
         return (<Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
-                {getFieldDecorator('username', { rules: [{ required: true, message: '请输入用户名' }] })
+                {getFieldDecorator('userName', { rules: [{ required: true, message: '请输入用户名' }] })
                     (<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />)}
             </FormItem>
             <FormItem>
@@ -54,22 +54,27 @@ class LoginForm extends React.Component<any, any> {
         });
     }
 
-    private onLogin = (data: any) => {
-        if (Tool.data.isValidData(data)) {
-            User.login(data['data']);
+    private onLogin = (data: object, code:number) => {
+        if (code === 0) {
+            User.login(data);
             this.props.form.resetFields();
             this.props.history.replace(Tool.data.defaultUrl());
         }
         else {
-            this.comment = data.comment;
+            this.comment = '无效的用户名或密码';
             this.forceUpdate();
         }
     }
 
     //检查是否已登录
     private checkLogin = () => {
-        if (User.hasLogin)
-            this.props.history.push(Tool.data.defaultUrl());
+        //temp
+        User.hasLogin = true;
+        //Tool.back.sendData(SendType.CheckLogin, {}, this.onCheckLogin);
+    }
+    private onCheckLogin = () =>{
+        User.hasLogin = true;
+        this.forceUpdate();
     }
 }
 

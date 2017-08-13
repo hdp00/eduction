@@ -11,6 +11,7 @@ export class BackData {
         this.data[SendType.Login] = { netType: NetType.Post, url: '/auth/login' };
         this.data[SendType.Logout] = { netType: NetType.Post, url: '/auth/logout' };
         this.data[SendType.Password] = { netType: NetType.Post, url: '/auth/change_passwd' };
+        this.data[SendType.CheckLogin] = { netType: NetType.Post, url: '/auth/check' };
         this.data[SendType.StudentContainer] = { netType: NetType.Get, url: '/room/daily' };
     }  
 

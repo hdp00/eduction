@@ -30,15 +30,12 @@ export class UserData {
         if (this.token.length > 0)
             this.hasLogin = true;
     }
-    public login = (value: LoginData) => {
+    public login = (value: object) => {
         if (value == undefined)
             return;
 
         this.hasLogin = true;
         this._lib.fillData(value, this);
-
-        //temp
-        this.pages = [PageType.Classroom, PageType.Student, PageType.Homework, PageType.Check];
 
         this.save();
     }

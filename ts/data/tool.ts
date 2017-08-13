@@ -43,7 +43,7 @@ class ReceiveManager {
             case SendType.Password:
                 break;
             default:
-                if(code !== 0)
+                if (code !== 0)
                     return;
                 break;
         }
@@ -143,35 +143,18 @@ class ReceiveManager {
         const data = value['data'];
         const code = value['code'];
 
-        this.showError(data);
-        switch (this.type) {
-            //     case SendType.StudentSelector:
-            //         return this.getStudentSelector(data);
-            //     case SendType.StudentSeat:
-            //         return this.getStudentSeat(data);
-            //     case SendType.StudentContainer:
-            //         return this.getStudentContainer(data);
-            //     case SendType.addCreditItem:
-            //         return this.getAddCreditItem(data);
-            //     case SendType.reduceCreditItem:
-            //         return this.getReduceCreditItem(data);
-            //     case SendType.studentDetail:
-            //         return this.getStudentDetail(data);
-            //     case SendType.homework:
-            //         return this.getHomework(data);
-            //     case SendType.homeworkPaper:
-            //         return this.getHomeworkPaper(data);
-            //     case SendType.students:
-            //         return this.getStudents(data);
-            //     case SendType.checkItms:
-            //         return this.getCheckItems(data);
-            //     case SendType.papers:
-            //         return this.getPapers(data);
-            //     case SendType.homeworkOptions:
-            //     //return HomeworkOptions;
-            default:
-                break;
+        this.showError(value);
+        if (data != undefined) {
+            switch (this.type) {
+                case SendType.Login:
+                    data['pages'] = data['perms'];
+                    break;
+                default:
+                    break;
+            }
+
         }
+
 
         return [data, code];
     }

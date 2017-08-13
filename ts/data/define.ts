@@ -38,6 +38,10 @@ export enum SendType {
     //get undefined
     Password,
 
+    //set undefined
+    //get undefined
+    CheckLogin,
+
     //seat
 
     //set undefined

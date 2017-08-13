@@ -71,9 +71,6 @@ export class Title extends React.Component<any, any>{
             case 'logout':
                 this.logout();
                 break;
-            case 'password':
-
-                break;
             default:
                 break;
         }

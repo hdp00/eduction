@@ -9,7 +9,7 @@
     font-size: 16px;
 }
 /*顶层div*/
-.seat-total-div,.student-total-div,.title-total-div{
+.total-div,.seat-total-div,.student-total-div,.title-total-div{
     background-color: rgba(0,255,0,0.03);
     width: 1280px;
     margin: auto;
@@ -17,6 +17,6 @@
 .font-title{
     font-size: 28px;
 }
-.menu-background-color{
+.background-color,.menu-background-color{
     background-color: rgba(0,255,0,0.03);
 }
