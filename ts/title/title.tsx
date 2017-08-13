@@ -41,8 +41,7 @@ export class Title extends React.Component<any, any>{
         for (let page of User.pages) {
             items.push(pageItems[page]);
         }
-
-
+        
         let userMenu;
         if (User.hasLogin) {
             userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
@@ -58,7 +57,8 @@ export class Title extends React.Component<any, any>{
         return <div style={{ textAlign: 'center' }}>
             <div className='title-total-div'>
                 <label style={{ fontSize: '28px', float: 'left' }}>君德教育</label>
-                <Menu onClick={this.onClick} mode='horizontal' style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
+                <Menu className='menu-background-color' onClick={this.onClick} mode='horizontal'
+                    style={{ float: 'left' }} defaultSelectedKeys={defaultSelectedKeys} >
                     {items}
                 </Menu>
                 <div style={{ clear: 'both' }} />
@@ -91,10 +91,4 @@ export class Title extends React.Component<any, any>{
         User.logout();
         this.props.history.push(Tr.login);
     }
-
-
 }
-
-
-
-

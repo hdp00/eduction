@@ -8,14 +8,13 @@ import { EducationData } from './educationData'
 
 export * from './define'
 
-
 //数据接收处理类
 class ReceiveManager {
     private type: SendType;
     private sendData: object;
-    private callback: (response: object) => void;
+    private callback: (response: object, code?: number) => void;
 
-    constructor(type: SendType, data?: object, callback?: (response: object) => void) {
+    constructor(type: SendType, data?: object, callback?: (response: object, code?: number) => void) {
         this.type = type;
         this.sendData = data;
         this.callback = callback;
@@ -34,14 +33,22 @@ class ReceiveManager {
             $.post(url, data, this.receive);
     }
     private receive = (response?: string) => {
-        const data = this.convertReceiveData(response);
-
         if (this.callback === undefined)
             return;
-        if (data === undefined)
-            return;
 
-        this.callback(data);
+        const [data, code] = this.convertReceiveData(response);
+
+        switch (this.type) {
+            case SendType.Login:
+            case SendType.Password:
+                break;
+            default:
+                if(code !== 0)
+                    return;
+                break;
+        }
+
+        this.callback(data, code);
     }
     //发送数据格式转换
     private converSendData() {
@@ -126,26 +133,17 @@ class ReceiveManager {
                 break;
         }
 
-        const netType = Tool.data.back.getNetType(this.type);
-        if(netType === NetType.Get)
+        if (Tool.data.back.getNetType(this.type) === NetType.Get)
             return this.sendData;
 
         return JSON.stringify(this.sendData);
     }
     private convertReceiveData(response: string) {
-        let data = JSON.parse(response);
-        this.showMessage(data);
-        //获取实际数据
-        if (this.type !== SendType.Login) {
-            if (Tool.data.isValidData(data)) {
-                data = data['data'];
-                if (data === undefined)
-                    data = {};
-            }
-            else
-                return undefined;
-        }
+        const value = JSON.parse(response);
+        const data = value['data'];
+        const code = value['code'];
 
+        this.showError(data);
         switch (this.type) {
             //     case SendType.StudentSelector:
             //         return this.getStudentSelector(data);
@@ -175,11 +173,11 @@ class ReceiveManager {
                 break;
         }
 
-        return data;
+        return [data, code];
     }
-    private showMessage(value: any) {
+    private showError(value: any) {
         if (!Tool.data.isValidData(value))
-            console.log(value.comment);
+            console.log('Error:' + value.comment);
     }
     private getStudentSelector(value: object) {
         let data = [];
@@ -261,7 +259,7 @@ class ReceiveManager {
 
 //后台数据
 class Back {
-    public sendData = (type: SendType, request?: object, callback?: (response: object) => void) => {
+    public sendData = (type: SendType, request?: object, callback?: (response: object, code?: number) => void) => {
         new ReceiveManager(type, request, callback);
     };
 

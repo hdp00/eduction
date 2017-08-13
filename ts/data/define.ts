@@ -34,6 +34,10 @@ export enum SendType {
     //get undefined
     Logout,
 
+    //set {oldPasswd, newPasswd}
+    //get undefined
+    Password,
+
     //seat
 
     //set undefined

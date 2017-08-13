@@ -16,23 +16,17 @@ class LoginForm extends React.Component<any, any> {
 
     render() {
         if (User.hasLogin)
-            return <Redirect to={Tool.data.getRoleDefaultUrl()} />;
+            return <Redirect to={Tool.data.defaultUrl()} />;
 
         const { getFieldDecorator } = this.props.form;
         return (<Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
-                {getFieldDecorator('username', {
-                    rules: [{ required: true, message: '请输入用户名' }],
-                })(
-                    <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />
-                    )}
+                {getFieldDecorator('username', { rules: [{ required: true, message: '请输入用户名' }] })
+                    (<Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="用户名" />)}
             </FormItem>
             <FormItem>
-                {getFieldDecorator('password', {
-                    rules: [{ required: true, message: '请输入密码' }],
-                })(
-                    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />
-                    )}
+                {getFieldDecorator('password', { rules: [{ required: true, message: '请输入密码' }] })
+                    (<Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="密码" />)}
             </FormItem>
             <FormItem>
                 <label>{this.comment}</label>
@@ -41,7 +35,7 @@ class LoginForm extends React.Component<any, any> {
             <FormItem>
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     登录
-                    </Button>
+                </Button>
             </FormItem>
         </Form>
         );
@@ -64,18 +58,18 @@ class LoginForm extends React.Component<any, any> {
         if (Tool.data.isValidData(data)) {
             User.login(data['data']);
             this.props.form.resetFields();
-            this.props.history.replace(Tool.data.getRoleDefaultUrl());
+            this.props.history.replace(Tool.data.defaultUrl());
         }
-        // else {
-        //     this.comment = data.comment;
-        //     this.forceUpdate();
-        // }
+        else {
+            this.comment = data.comment;
+            this.forceUpdate();
+        }
     }
 
     //检查是否已登录
     private checkLogin = () => {
         if (User.hasLogin)
-            this.props.history.push(Tool.data.getRoleDefaultUrl());
+            this.props.history.push(Tool.data.defaultUrl());
     }
 }
 
