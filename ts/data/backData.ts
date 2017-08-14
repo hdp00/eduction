@@ -13,6 +13,7 @@ export class BackData {
         this.data[SendType.Password] = { netType: NetType.Post, url: '/auth/change_passwd' };
         this.data[SendType.CheckLogin] = { netType: NetType.Post, url: '/auth/check' };
         this.data[SendType.StudentContainer] = { netType: NetType.Get, url: '/room/daily' };
+        this.data[SendType.StudentSelector] = { netType: NetType.Get, url: '/student/list' };
     }  
 
     public getNetType(type: SendType) {

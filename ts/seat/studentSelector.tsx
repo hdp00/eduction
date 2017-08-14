@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Modal, Button, Radio, Checkbox } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -19,7 +19,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
     private visible: boolean = false;
     //调用本组件时的座位号,-1代表全部
     private seatIndex = -1;
-    //{id,name}
+    //{studentId,name}
     private students: object[] = [];
 
     render() {
@@ -29,8 +29,8 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         let index = 0;
         for (let s of students) {
             const checkProps = {
-                value: s['id'],
-                key: s['id'],
+                value: s['studentId'],
+                key: s['studentId'],
                 style: {
                     width: '100px',
                 },
@@ -70,7 +70,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         this.seatIndex = seatIndex;
 
         if (this.visible) {
-            Tool.back.sendData(Type.SendType.StudentSelector, undefined, this.receiveStudent);
+            Tool.back.sendData(SendType.StudentSelector, {}, this.receiveStudent);
             return;
         }
 
@@ -113,7 +113,7 @@ export class StudentSelector extends React.Component<StudentSelectorProps, any>{
         let items = [];
         if (checked) {
             for (let s of this.students)
-                items.push(s['id']);
+                items.push(s['studentId']);
         }
         this.checks = items;
 

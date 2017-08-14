@@ -61,22 +61,16 @@ class ReceiveManager {
         }
 
         switch (this.type) {
-            case SendType.Signin:
-                {
-                    // for (let s of this.sendData) {
-                    //     let id = s['id'];
-                    //     let seatIndex = s['index'];
-                    //     studentMap[id]['hasSigned'] = true;
-                    //     studentMap[id]['seatIndex'] = seatIndex;
-                    // }
-                }
+            case SendType.StudentContainer:
+                this.sendData['roomId'] = '0';
                 break;
-            case SendType.Signout:
-                // {
-                //     let id = this.sendData['id'];
-                //     studentMap[id]['hasSigned'] = false;
-                // }
+            case SendType.StudentSelector:
+                this.sendData['filterSigninStatus'] = 'false';
+                this.sendData['pageIndex'] = 0; 
+                this.sendData['pageSize'] = 100;
+                this.sendData['orderby'] = 'name';
                 break;
+
             case SendType.AddCredit:
                 // {
                 //     let s = studentMap[this.sendData['id']];
@@ -140,14 +134,38 @@ class ReceiveManager {
     }
     private convertReceiveData(response: string) {
         const value = JSON.parse(response);
-        const data = value['data'];
-        const code = value['code'];
+        let data = value['data'];
+        let code = value['code'];
 
         this.showError(value);
         if (data != undefined) {
             switch (this.type) {
                 case SendType.Login:
                     data['pages'] = data['perms'];
+                    break;
+
+                case SendType.StudentContainer:
+                    const row = data['roomInfo']['row'];
+                    const col = data['roomInfo']['column'];
+                    Tool.data.seat.row = row;
+                    Tool.data.seat.col = col;
+
+                    data['row'] = row;
+                    data['col'] = col;
+                    for (let s of data['studentList']) {
+                        s['studentId'] = s['stdId'];
+                        s['index'] = col * s['row'] + s['col'];
+                        s['taskText'] = s['taskDoneCount'] + '/' + s['taskTotalCount'];
+                    }
+                    data['students'] = data['studentList'];
+                    break;
+                case SendType.StudentSelector:
+                    for (let s of data['list']) {
+                        s['studentId'] = s['stdId'];
+                    }
+
+                    data = {students: data['list']};
+                    console.log(data);
                     break;
                 default:
                     break;

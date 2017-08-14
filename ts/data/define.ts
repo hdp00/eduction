@@ -45,7 +45,7 @@ export enum SendType {
     //seat
 
     //set undefined
-    //get {id:string, name:string}[]
+    //get {students:{studentId:string, name:string}[]}
     StudentSelector,
 
     //set{id:string,index:number}[]
