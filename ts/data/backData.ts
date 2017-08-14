@@ -4,7 +4,7 @@
 import { SendType, NetType } from './define'
 
 export class BackData {
-    private data: [] = [];
+    private data = [];
     private baseUrl = 'https://116.62.137.199/jd_app';
 
     constructor() {

@@ -4,11 +4,11 @@
 import * as $ from 'jquery'
 import * as React from 'react'
 import { Button } from 'antd'
-import { PaperState, IPaper, ICheckItem } from '../define'
+import { PaperState } from '../data/define'
 import { PaperView } from './paperView'
 import { CheckItemList } from './checkItemList'
 import { PaperList } from './paperList'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 import '../css/check.css'
 
 

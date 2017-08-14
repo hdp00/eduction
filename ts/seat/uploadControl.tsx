@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Modal, Button } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 interface UploadControlProps {
     homeworkId: string;

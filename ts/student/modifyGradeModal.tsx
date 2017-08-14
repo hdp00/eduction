@@ -5,7 +5,7 @@ import * as React from 'react'
 import * as moment from 'moment'
 import * as $ from 'jquery'
 import { Modal, InputNumber, DatePicker, Button } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 interface ModifyGradeModalProps {
     onModifyGrade: (value: object[]) => void;
@@ -95,7 +95,7 @@ export class ModifyGradeModal extends React.Component<ModifyGradeModalProps, any
     }
 
     private onModifyGrade = () => {
-        Tool.back.sendData(Type.SendType.modifyGrade, { id: this.id, grades: this.grades });
+        Tool.back.sendData(SendType.modifyGrade, { id: this.id, grades: this.grades });
         this.props.onModifyGrade(this.grades);
 
         this.onCancel();
