@@ -98,6 +98,9 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
     componentDidMount() {
         Tool.back.sendData(SendType.StudentContainer, {}, this.receiveStudents);
     }
+    componentDidUpdate(){
+        this.initStudentSeat();
+    }
     private receiveStudents = (value: object) => {
         this.row = value['row'];
         this.col = value['col'];
@@ -113,7 +116,6 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
 
         //生成座位后，填充数据
         this.students = students;
-        this.timerId = setInterval(this.initStudentSeat, 400);
     }
 
     private onBeginSignin = (index: number) => {
@@ -191,15 +193,12 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         this.delayMinute = parseInt(value, 10);
     }
 
-    //签到学生数据，临时保存，使用一次后应置空
+    //签到学生数据，渲染后即可置空
     private students: object[];
-    private timerId: number;
     //初始化座位数据
     private initStudentSeat = () => {
-        if (this.students === undefined || this.row === 0 || this.col === 0) {
-            clearInterval(this.timerId);
-            this.timerId = undefined;
-        }
+        if (this.students === undefined || this.row === 0 || this.col === 0) 
+            return;
         let seat = this.refs['0']
         if (seat === undefined)
             return;
@@ -210,12 +209,9 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             if (seat === undefined)
                 continue;
             delete s['index'];
-            seat.receiveStudent(s);
+            seat.setStudent(s);
         }
 
         this.students = undefined;
-        clearInterval(this.timerId);
-        this.timerId = undefined;
     }
-
 }

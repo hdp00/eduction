@@ -55,7 +55,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
                 case PaperState.HasChecked:
                     color = 'rgba(255, 255, 0, 0.4)';
                     break;
-                case PaperState.HasChecked:
+                case PaperState.Finished:
                     color = 'rgba(0, 255, 0, 0.4)';
                     break;
                 default:
@@ -85,23 +85,18 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         </div>;
     }
 
-    public setId = (id: string) => {
-        this.studentId = id;
-
-        if (this.studentId !== undefined) {
-            Tool.back.sendData(SendType.StudentSeat, { id: this.studentId }, this.receiveStudent);
-            return;
-        } else {
+    //value:{studentId, name, taskText, taskStatus}
+    public setStudent = (value: object) => {
+        if (value === undefined) {
+            this.studentId = undefined;
             this.clearDelay();
+        } else {
+            Tool.lib.fillData(value, this);
+
+            let delayData = {};
+            Tool.lib.loadData('delay_' + this.studentId, delayData);
+            this.setDelayTime(new Date(delayData['date']));
         }
-
-        this.forceUpdate();
-    }
-    public receiveStudent = (value: object) => {
-        Tool.lib.fillData(value, this);
-
-        let d = localStorage[this.studentId + '_delay'];
-        this.setDelayTime(new Date(d));
 
         this.forceUpdate();
     }
@@ -114,10 +109,10 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         this.clearDelay();
 
         this.delayTime = delayTime;
-        localStorage[this.studentId + '_delay'] = delayTime;
+        Tool.lib.saveData('delay_' + this.studentId, { date: delayTime });
 
         if (this.delayInterval())
-            this.timerId = setInterval(this.delayInterval, 1000);
+            this.timerId = window.setInterval(this.delayInterval, 1000);
     }
     private delayInterval = () => {
         const now = new Date().getTime() / 1000;
@@ -149,7 +144,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
         clearInterval(this.timerId);
         this.delayTime = undefined;
         this.timerId = undefined;
-        localStorage.removeItem(this.studentId + '_delay');
+        Tool.lib.saveData('delay_' + this.studentId, undefined);
     }
     private finishDelay = () => {
         this.clearDelay();

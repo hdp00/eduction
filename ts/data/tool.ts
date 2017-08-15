@@ -66,9 +66,24 @@ class ReceiveManager {
                 break;
             case SendType.StudentSelector:
                 this.sendData['filterSigninStatus'] = 'false';
-                this.sendData['pageIndex'] = 0; 
+                this.sendData['pageIndex'] = 0;
                 this.sendData['pageSize'] = 100;
                 this.sendData['orderby'] = 'name';
+                break;
+            case SendType.Signin:
+                const row = Tool.data.seat.row;
+                const col = Tool.data.seat.col;
+
+                for (let s in this.sendData) {
+                    s['stdId'] = s['id'];
+                    s['row'] = Math.floor(s['index'] / col) + 1;
+                    s['col'] = s['index'] % col + 1;
+                }
+
+                this.sendData = {
+                    roomId: 0,
+                    props: this.sendData
+                }
                 break;
 
             case SendType.AddCredit:
@@ -154,7 +169,7 @@ class ReceiveManager {
                     data['col'] = col;
                     for (let s of data['studentList']) {
                         s['studentId'] = s['stdId'];
-                        s['index'] = col * s['row'] + s['col'];
+                        s['index'] = col * (s['row'] - 1) + (s['col'] - 1);
                         s['taskText'] = s['taskDoneCount'] + '/' + s['taskTotalCount'];
                     }
                     data['students'] = data['studentList'];
@@ -164,8 +179,7 @@ class ReceiveManager {
                         s['studentId'] = s['stdId'];
                     }
 
-                    data = {students: data['list']};
-                    console.log(data);
+                    data = { students: data['list'] };
                     break;
                 default:
                     break;
