@@ -48,11 +48,11 @@ export enum SendType {
     //get {students:{studentId:string, name:string}[]}
     StudentSelector,
 
-    //set{id:string,index:number}[]
-    //get undefined
+    //set studnets:{id:string,index:number}[]
+    //get students:{studentId:string,index:number, name:string, taskText:string, taskStatus:PaperState}[]
     Signin,
 
-    //set{id:string}
+    //set{id:string, parentDictId:string}
     //get undefined
     Signout,
 

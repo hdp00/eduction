@@ -111,11 +111,10 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             let index = s['index'];
             this.props.manager.seatIds[index] = s['studentId'];
         }
-
-        this.forceUpdate();
-
         //生成座位后，填充数据
         this.students = students;
+
+        this.forceUpdate();
     }
 
     private onBeginSignin = (index: number) => {
@@ -123,6 +122,8 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         selector.setVisible(true, index);
     }
     private onEndSignin = (index: number, ids: string[]) => {
+        let students = [];
+
         //index为-1时选择全部
         if (index === -1) {
             let seatIndex = 0;
@@ -135,21 +136,28 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 if (seat === undefined)
                     return;
 
-                Tool.back.sendData(SendType.Signin, [{ id: id, index: seatIndex }]);
-                this.props.manager.seatIds[seatIndex] = id;
-                seat.setId(id);
+                students.push({id:id, index:seatIndex});
             }
         } else {
-            const id = ids[0];
-            const seat = this.refs[index] as StudentSeat;
+            students.push({id:ids[0], index:index});
+        }
 
-            Tool.back.sendData(SendType.Signin, [{ id: id, index: index }]);
-            this.props.manager.seatIds[index] = id;
-            seat.setId(id);
+        Tool.back.sendData(SendType.Signin, {students:students}, this.onReceiveSignin);
+    }
+
+    //students:{studentId:string, index:number, name:string, taskText:string, taskStatus:PaperState}[]
+    private onReceiveSignin = (value:object) =>{
+        for(let s of value['students']){
+            let index = s['index'];
+            this.props.manager.seatIds[index] = s['studentId'];
+            
+            const seat = this.refs[index] as StudentSeat;
+            seat.setStudent(s);
         }
 
         this.props.manager.onCurrentStudentChange();
     }
+
     //当前座位发生变化
     private onSelect = (index: number) => {
         let preIndex = this.props.manager.currentIndex;
@@ -175,7 +183,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         Tool.back.sendData(SendType.Signout, { id: id });
         let index = this.props.manager.currentIndex;
         this.props.manager.seatIds[index] = undefined;
-        (this.refs[index] as StudentSeat).setId(undefined);
+        (this.refs[index] as StudentSeat).setStudent(undefined);
 
         this.props.manager.onCurrentStudentChange();
     }
@@ -193,7 +201,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         this.delayMinute = parseInt(value, 10);
     }
 
-    //签到学生数据，渲染后即可置空
+    //签到学生数据，渲染后置空
     private students: object[];
     //初始化座位数据
     private initStudentSeat = () => {

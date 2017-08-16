@@ -55,11 +55,6 @@ class ReceiveManager {
         if (this.sendData === undefined)
             this.sendData = {};
 
-        if (this.type !== SendType.Login) {
-            this.sendData['userId'] = Tool.data.user.userId;
-            this.sendData['token'] = Tool.data.user.token;
-        }
-
         switch (this.type) {
             case SendType.StudentContainer:
                 this.sendData['roomId'] = '0';
@@ -74,7 +69,7 @@ class ReceiveManager {
                 const row = Tool.data.seat.row;
                 const col = Tool.data.seat.col;
 
-                for (let s in this.sendData) {
+                for (let s of this.sendData['students']) {
                     s['stdId'] = s['id'];
                     s['row'] = Math.floor(s['index'] / col) + 1;
                     s['col'] = s['index'] % col + 1;
@@ -82,8 +77,12 @@ class ReceiveManager {
 
                 this.sendData = {
                     roomId: 0,
-                    props: this.sendData
+                    props: this.sendData['students']
                 }
+                break;
+            case SendType.Signin:
+                this.sendData['stdId'] = this.sendData['id'];
+                this.sendData['parentDictId'] = '0';
                 break;
 
             case SendType.AddCredit:
@@ -142,6 +141,11 @@ class ReceiveManager {
                 break;
         }
 
+        if (this.type !== SendType.Login) {
+            this.sendData['userId'] = Tool.data.user.userId;
+            this.sendData['token'] = Tool.data.user.token;
+        }
+
         if (Tool.data.back.getNetType(this.type) === NetType.Get)
             return this.sendData;
 
@@ -160,19 +164,21 @@ class ReceiveManager {
                     break;
 
                 case SendType.StudentContainer:
-                    const row = data['roomInfo']['row'];
-                    const col = data['roomInfo']['column'];
-                    Tool.data.seat.row = row;
-                    Tool.data.seat.col = col;
+                    {
+                        const row = data['roomInfo']['row'];
+                        const col = data['roomInfo']['column'];
+                        Tool.data.seat.row = row;
+                        Tool.data.seat.col = col;
 
-                    data['row'] = row;
-                    data['col'] = col;
-                    for (let s of data['studentList']) {
-                        s['studentId'] = s['stdId'];
-                        s['index'] = col * (s['row'] - 1) + (s['col'] - 1);
-                        s['taskText'] = s['taskDoneCount'] + '/' + s['taskTotalCount'];
+                        data['row'] = row;
+                        data['col'] = col;
+                        for (let s of data['studentList']) {
+                            s['studentId'] = s['stdId'];
+                            s['index'] = col * (s['row'] - 1) + (s['col'] - 1);
+                            s['taskText'] = s['taskDoneCount'] + '/' + s['taskTotalCount'];
+                        }
+                        data['students'] = data['studentList'];
                     }
-                    data['students'] = data['studentList'];
                     break;
                 case SendType.StudentSelector:
                     for (let s of data['list']) {
@@ -180,6 +186,19 @@ class ReceiveManager {
                     }
 
                     data = { students: data['list'] };
+                    break;
+                case SendType.Signin:
+                    {
+                        const col = Tool.data.seat.col;
+
+                        for (let s of data['list']) {
+                            s['studentId'] = s['stdId'];
+                            s['taskText'] = s['taskDoneCount'] + '/' + s['taskTotalCount'];
+                            s['index'] = col * (s['row'] - 1) + (s['col'] - 1);
+                        }
+
+                        data = { students: data['list'] };
+                    }
                     break;
                 default:
                     break;

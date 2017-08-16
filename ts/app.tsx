@@ -46,6 +46,14 @@ import { EducationRouter } from './educationRouter';
 
 // }
 
+//let ddd = {userId: "1", token: "test", roomId: 0, props: [{stdId: 0, col: 1, row: 1}]};
+let ddd = {token: "test", "roomId":0,"props":[{"id":2,"index":1,"stdId":2,"row":1,"col":2}]};
+let data = JSON.stringify(ddd);
+let url = 'https://116.62.137.199/jd_app/student/sign_in';
+$.post(url, data, undefined);
+
+
+
 
 export class App {
     run() {
