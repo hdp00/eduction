@@ -67,6 +67,10 @@ export enum SendType {
     StudentContainer,
 
     //set undefined
+    //get parents:{parentId:string, name:string}
+    ParentData,
+
+    //set undefined
     //get {addCreditItems:string[]}
     AddCreditItem,
 

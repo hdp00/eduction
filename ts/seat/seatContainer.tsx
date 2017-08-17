@@ -2,13 +2,14 @@
 //学生座位管理
 
 import * as React from 'react'
-import { Button, Select } from 'antd'
+import { Button, Select, Radio, Modal } from 'antd'
 import { StudentSeat } from './studentSeat'
 import { StudentSelector } from './studentSelector'
 import { SeatManager } from './seatManager'
 import { Tool, SendType } from '../data/tool'
 
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 
 interface SeatContainerProps {
     manager: SeatManager,
@@ -73,6 +74,18 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
             }
         }
 
+        let parentItems = [];
+        for (let p of this.parents) {
+            parentItems.push(<Radio key={p.parentId} value={p.parentId}>{p.name}</Radio>)
+        }
+
+        let parentModal = <Modal title='家长' visible={this.parentModalVisible}
+            onOk={this.onParentModalOk} onCancel={this.onParentModalCancel}>
+            <RadioGroup onChange={this.onParentChange} value={this.parentId}>
+                {parentItems}
+            </RadioGroup>
+        </Modal>
+
         //rely on css
         let width = (84 + 3 * 2) * col + 'px';
         return <div {...divProps}>
@@ -92,13 +105,18 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 <Button {...buttonBProps} size='large' type='primary' icon='clock-circle-o' onClick={this.onDelay}>计时</Button>
             </div>
             <StudentSelector ref='selector' onSelect={this.onEndSignin} />
+            {parentModal}
         </div>;
     }
 
     componentDidMount() {
         Tool.back.sendData(SendType.StudentContainer, {}, this.receiveStudents);
+        Tool.back.sendData(SendType.ParentData, {}, (value) => {
+            Tool.lib.fillData(value, this);
+            console.log(value);
+        });
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.initStudentSeat();
     }
     private receiveStudents = (value: object) => {
@@ -136,21 +154,21 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 if (seat === undefined)
                     return;
 
-                students.push({id:id, index:seatIndex});
+                students.push({ id: id, index: seatIndex });
             }
         } else {
-            students.push({id:ids[0], index:index});
+            students.push({ id: ids[0], index: index });
         }
 
-        Tool.back.sendData(SendType.Signin, {students:students}, this.onReceiveSignin);
+        Tool.back.sendData(SendType.Signin, { students: students }, this.onReceiveSignin);
     }
 
     //students:{studentId:string, index:number, name:string, taskText:string, taskStatus:PaperState}[]
-    private onReceiveSignin = (value:object) =>{
-        for(let s of value['students']){
+    private onReceiveSignin = (value: object) => {
+        for (let s of value['students']) {
             let index = s['index'];
             this.props.manager.seatIds[index] = s['studentId'];
-            
+
             const seat = this.refs[index] as StudentSeat;
             seat.setStudent(s);
         }
@@ -180,12 +198,8 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         if (id === undefined)
             return;
 
-        Tool.back.sendData(SendType.Signout, { id: id });
-        let index = this.props.manager.currentIndex;
-        this.props.manager.seatIds[index] = undefined;
-        (this.refs[index] as StudentSeat).setStudent(undefined);
-
-        this.props.manager.onCurrentStudentChange();
+        this.parentModalVisible = true;
+        this.forceUpdate();
     }
     private onDelay = () => {
         const index = this.props.manager.currentIndex;
@@ -205,7 +219,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
     private students: object[];
     //初始化座位数据
     private initStudentSeat = () => {
-        if (this.students === undefined || this.row === 0 || this.col === 0) 
+        if (this.students === undefined || this.row === 0 || this.col === 0)
             return;
         let seat = this.refs['0']
         if (seat === undefined)
@@ -222,4 +236,32 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
 
         this.students = undefined;
     }
+
+    //家长接送
+    private parents = [];
+    private parentId: string;
+    private parentModalVisible = false;
+
+    private onParentChange = (e) => {
+        this.parentId = e.target.value;
+        this.forceUpdate();
+    }
+    private onParentModalOk = () => {
+        const id = this.props.manager.getCurrentId();
+
+        Tool.back.sendData(SendType.Signout, { id: id, parentId: this.parentId });
+        let index = this.props.manager.currentIndex;
+        this.props.manager.seatIds[index] = undefined;
+        (this.refs[index] as StudentSeat).setStudent(undefined);
+
+        this.props.manager.onCurrentStudentChange();
+
+        this.parentModalVisible = false;
+        this.forceUpdate();
+    }
+    private onParentModalCancel = () => {
+        this.parentModalVisible = false;
+        this.forceUpdate();
+    }
+
 }

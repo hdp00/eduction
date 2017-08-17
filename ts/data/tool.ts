@@ -80,9 +80,12 @@ class ReceiveManager {
                     props: this.sendData['students']
                 }
                 break;
-            case SendType.Signin:
+            case SendType.Signout:
                 this.sendData['stdId'] = this.sendData['id'];
-                this.sendData['parentDictId'] = '0';
+                this.sendData['parentDictId'] = this.sendData['parentId'];
+                break;
+            case SendType.ParentData:
+                this.sendData['category'] = 'family_relation';
                 break;
 
             case SendType.AddCredit:
@@ -199,6 +202,13 @@ class ReceiveManager {
 
                         data = { students: data['list'] };
                     }
+                    break;
+                case SendType.ParentData:
+                    for (let p of data['family_relation']) {
+                        p['parentId'] = p['dictId'];
+                    }
+
+                    data = { parents: data['family_relation'] };
                     break;
                 default:
                     break;
