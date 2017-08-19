@@ -113,7 +113,6 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         Tool.back.sendData(SendType.StudentContainer, {}, this.receiveStudents);
         Tool.back.sendData(SendType.ParentData, {}, (value) => {
             Tool.lib.fillData(value, this);
-            console.log(value);
         });
     }
     componentDidUpdate() {
@@ -145,16 +144,17 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         //index为-1时选择全部
         if (index === -1) {
             let seatIndex = 0;
+            const count = this.row * this.col;
             for (let id of ids) {
                 while (this.props.manager.seatIds[seatIndex] !== undefined) {
                     seatIndex++;
                 }
 
-                const seat = this.refs[seatIndex] as StudentSeat;
-                if (seat === undefined)
-                    return;
+                if(seatIndex >= count)
+                    break;
 
                 students.push({ id: id, index: seatIndex });
+                seatIndex++;
             }
         } else {
             students.push({ id: ids[0], index: index });

@@ -1,6 +1,5 @@
 //by hdp 2017.06.12
 //学生信息
-
 import * as React from 'react'
 import { Button, Rate, Select, Modal } from 'antd'
 import { SeatManager } from './seatManager'
@@ -18,8 +17,8 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
     private school: string;
     private class: string;
     private credit: number;
-    private addCreditStatus: { credit: number, text: string };
-    private reduceCreditStatus: { credit: number, text: string };
+    private addCreditStatus: { credit: number, text: string } = {credit:0, text:''};
+    private reduceCreditStatus: { credit: number, text: string } = {credit:0, text:''};
 
     private addCreditItems: string[] = [];
     private reduceCreditItems: string[] = [];
@@ -31,7 +30,6 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         let reduceCredit;
 
         if (this.id !== undefined) {
-
             detail = <div style={{ marginBottom: '10px' }}>
                 <label className='font-title'>{this.name}</label><br />
                 <label style={{ fontSize: '18px' }}>{this.school}</label><br />
@@ -105,10 +103,6 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             </Modal>;
         }
 
-        const divProps = {
-
-        };
-
         return <div className='seat-student-detail-div'>
             {detail}
             {credit}
@@ -117,8 +111,8 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         </div>;
     }
     componentDidMount() {
-        Tool.back.sendData(SendType.AddCreditItem, {}, this.onReceiveAddCreditItem);
-        Tool.back.sendData(SendType.ReduceCreditItem, {}, this.onReceiveReduceCreditItem);
+        //Tool.back.sendData(SendType.AddCreditItem, {}, this.onReceiveAddCreditItem);
+        //Tool.back.sendData(SendType.ReduceCreditItem, {}, this.onReceiveReduceCreditItem);
     }
     private onReceiveAddCreditItem = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -135,7 +129,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             this.forceUpdate();
         }
         else
-            Tool.back.sendData(SendType.StudentDetail, { id: id }, this.receiveDetail)
+            Tool.back.sendData(SendType.StudentDetail, { studentId: id }, this.receiveDetail)
     }
     private receiveDetail = (value: object) => {
         Tool.lib.fillData(value, this);

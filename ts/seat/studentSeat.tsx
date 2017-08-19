@@ -84,6 +84,11 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
             {item}
         </div>;
     }
+    componentWillUnmount(){
+        //销毁后停止延时器
+        clearInterval(this.timerId);
+        this.delayTime = undefined;
+    }
 
     //value:{studentId, name, taskText, taskStatus}
     public setStudent = (value: object) => {

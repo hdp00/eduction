@@ -19,6 +19,7 @@ export class BackData {
         this.data[SendType.Signin] = { netType: NetType.Post, url: '/student/sign_in' };
         this.data[SendType.Signout] = { netType: NetType.Post, url: '/student/sign_out' };
         this.data[SendType.ParentData] = { netType: NetType.Get, url: '/dict/options_items' };
+        this.data[SendType.StudentDetail] = { netType: NetType.Get, url: '/student/detail' };
     }  
 
     public getNetType(type: SendType) {

@@ -86,11 +86,8 @@ export enum SendType {
     //get undefined
     ReduceCredit,
 
-    //set{id:string}
-    //get{name:string, school:string, class:number, credit:number
-    //  addCreditStatus:{credit:number, text:string}
-    //  reduceCreditStatus:{credit:number, text:string}
-    //}
+    //set{studentId:string}
+    //get{name:string, school:string, class:string}
     StudentDetail,
 
     //set{homeworkId:string, status:number}

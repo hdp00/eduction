@@ -10,8 +10,8 @@
 }
 /*所有座位*/
 .seat-student-contain-div{
-    width: 800px;
-    height: 800px;
+    width: 990px;
+    height: 900px;
     float: left;
     text-align: center;
     margin: 2px;
@@ -19,8 +19,8 @@
 }
 /*学生信息*/
 .seat-single-student-div{
-    width: 220px;
-    height: 800px;
+    width: 280px;
+    height: 900px;
     float: left;
 }
 /*学生细节*/

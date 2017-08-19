@@ -87,6 +87,9 @@ class ReceiveManager {
             case SendType.ParentData:
                 this.sendData['category'] = 'family_relation';
                 break;
+            case SendType.StudentDetail:
+                this.sendData['stdId'] = this.sendData['studentId'];
+                break;
 
             case SendType.AddCredit:
                 // {
@@ -209,6 +212,9 @@ class ReceiveManager {
                     }
 
                     data = { parents: data['family_relation'] };
+                    break;
+                case SendType.StudentDetail:
+                    data['class'] = data['clas'];
                     break;
                 default:
                     break;
