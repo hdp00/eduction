@@ -90,6 +90,9 @@ class ReceiveManager {
             case SendType.StudentDetail:
                 this.sendData['stdId'] = this.sendData['studentId'];
                 break;
+            case SendType.Homework:
+                this.sendData['stdId'] = this.sendData['studentId'];
+                break;
 
             case SendType.AddCredit:
                 // {

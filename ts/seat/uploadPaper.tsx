@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { Modal } from 'antd'
 import { UploadControl } from './uploadControl'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 export class UploadPaper extends React.Component<any, any>{
     homeworkId: string;
@@ -79,7 +79,7 @@ export class UploadPaper extends React.Component<any, any>{
         if(this.video === undefined)
             this.forceUpdate();
         else
-            Tool.back.sendData(Type.SendType.homeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
+            Tool.back.sendData(SendType.HomeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
     }
     private receiveHomeworkPaper = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -140,6 +140,6 @@ export class UploadPaper extends React.Component<any, any>{
         }, (value) => { console.log(value) });
 
         this.control = (this.refs['control'] as UploadControl);
-        Tool.back.sendData(Type.SendType.homeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
+        Tool.back.sendData(SendType.HomeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
     }
 }

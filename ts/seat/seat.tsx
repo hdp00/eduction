@@ -35,7 +35,7 @@ export class Seat extends React.Component<any, any>{
                 <SeatContainer {...SeatProps} />
                 <div className='seat-single-student-div'>
                     <StudentDetail {...studentProps} />
-                    {/* <HomeworkContainer {...homeworkProps} /> */}
+                    <HomeworkContainer {...homeworkProps} />
                 </div>
                 <div style={{ clear: 'both' }} />
             </div>
@@ -44,6 +44,6 @@ export class Seat extends React.Component<any, any>{
 
     private onCurrentStudentChange = () => {
         (this.refs['student'] as StudentDetail).update();
-        //(this.refs['homework'] as HomeworkContainer).update();
+        (this.refs['homework'] as HomeworkContainer).update();
     };
 }

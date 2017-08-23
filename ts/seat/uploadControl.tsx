@@ -99,7 +99,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         }
         const datas = { homeworkId: this.props.homeworkId, papers: sendPapers };
 
-        Tool.back.sendData(Type.SendType.uploadPapers, datas, this.uploadFinished);
+        Tool.back.sendData(SendType.UploadPapers, datas, this.uploadFinished);
         this.isUploading = true;
         this.forceUpdate();
     }
