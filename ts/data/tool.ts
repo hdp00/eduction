@@ -219,10 +219,24 @@ class ReceiveManager {
                 case SendType.StudentDetail:
                     data['class'] = data['clas'];
                     break;
+                case SendType.Homework:
+                    for (let h of data['list']) {
+                        h['homeworkId'] = h['taskId'];
+                        h['subjectId'] = h['sbjtId'];
+                        h['bookId'] = h['txtbkId'];
+                        h['childItemId'] = h['subItemId'];
+
+                        h['book'] = h['textbook'];
+                        h['childItem'] = h['subItem'];
+                        h['range'] = h['scope'];
+                        h['desc'] = h['des'];
+                    }
+
+                    data = { homeworks: data['list'] };
+                    break;
                 default:
                     break;
             }
-
         }
 
 

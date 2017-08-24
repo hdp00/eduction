@@ -67,7 +67,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                 marginLeft: '20px',
             }
         }
-        const buttonBProps = {
+        const buttonProps = {
             style: {
                 float: 'right',
                 marginLeft: '20px',
@@ -102,7 +102,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
                     <Option value="20">20</Option>
                     <Option value="30">30</Option>
                 </Select>
-                <Button {...buttonBProps} size='large' type='primary' icon='clock-circle-o' onClick={this.onDelay}>计时</Button>
+                <Button {...buttonProps} size='large' type='primary' icon='clock-circle-o' onClick={this.onDelay}>计时</Button>
             </div>
             <StudentSelector ref='selector' onSelect={this.onEndSignin} />
             {parentModal}
@@ -113,6 +113,7 @@ export class SeatContainer extends React.Component<SeatContainerProps, any>{
         Tool.back.sendData(SendType.StudentContainer, {}, this.receiveStudents);
         Tool.back.sendData(SendType.ParentData, {}, (value) => {
             Tool.lib.fillData(value, this);
+            this.parentId = value['parents'][0].parentId;
         });
     }
     componentDidUpdate() {

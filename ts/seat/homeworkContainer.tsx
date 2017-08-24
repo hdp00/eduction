@@ -7,24 +7,14 @@ import { HomeworkDetail } from './homeworkDetail'
 import { Tool, SendType } from '../data/tool'
 import { SeatManager } from './seatManager'
 import { UploadPaper } from './uploadPaper'
+import { HomeworkData } from '../data/homeworkData'
 
 interface HomeworkContainerProps {
     manager: SeatManager,
 }
 
 export class HomeworkContainer extends React.Component<HomeworkContainerProps, any>{
-    private homeworks: object[];
-    //   { id: string,
-    //     status: number,
-    //     subject: string,
-    //     item: string,
-    //     childItem: string,
-    //     book: string,
-    //     range: string,
-    //     times: string,
-    //     desc: string,
-    //     remark: string,
-    //     isNeedSign: boolean,}
+    private homeworks: HomeworkData[];
 
     render() {
         const exist = (this.homeworks !== undefined);
@@ -55,7 +45,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
                 <Button style={{ margin: '10px' }} type='primary' onClick={this.onUploadPaper}>上传作业</Button>
                 <Button style={{ margin: '10px' }} type='primary' onClick={this.onViewPaper}>查看作业</Button>
             </div>
-            <UploadPaper ref='upload'/>
+            <UploadPaper ref='upload' />
         </div>;
     }
 
@@ -84,14 +74,14 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
         homework.forceUpdate();
     }
     private onUploadPaper = () => {
-        if(this.homeworks === undefined)
+        if (this.homeworks === undefined)
             return;
-        const h:object = this.homeworks[this.props.manager.currentHomeworkIndex];
-        if(h === undefined)
+        const h: HomeworkData = this.homeworks[this.props.manager.currentHomeworkIndex];
+        if (h === undefined)
             return;
-            
+
         const upload = (this.refs['upload'] as UploadPaper);
-        upload.setVisible(true, h['id']);
+        upload.setVisible(true, h.homeworkId);
     }
     private onViewPaper = () => {
 

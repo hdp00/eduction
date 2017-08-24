@@ -1,11 +1,16 @@
 //by hdp 2017.06.07
 //作业数据
 
-import { IPaper, PaperState } from '../define'
+import { PaperState } from './define'
 
 export class HomeworkData {
-    public id: string = '作业';
-    public status: PaperState = PaperState.New;
+    public homeworkId: string;
+    public statusId: PaperState = PaperState.New;
+    public subjectId:string;
+    public itemId:string;
+    public childItemId:string;
+    public bookId:string;
+
     public subject: string = '语文';
     public item: string = '复习';
     public childItem: string = '阅读';
@@ -17,3 +22,4 @@ export class HomeworkData {
     public isNeedSign: boolean = true;
     public studentIds: string[] = [];
 }
+
