@@ -8,16 +8,15 @@ import { StudentCard } from './studentCard'
 import { StudentManager } from './studentManager'
 import { AddGradeModal } from './addGradeModal'
 import { ModifyGradeModal } from './modifyGradeModal'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
+import { StudentData } from '../data/studentData'
 import '../css/gradeTable.css'
 
 export class Student extends React.Component<any, any>{
     private addModalVisible: boolean = false;
     private modifyModalVisible: boolean = false;
     private gradeVisible: boolean = false;
-    private students: object[] = [];
-    //{id:string, name:string, school:string, class:number, sex:stirng,
-    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}[]
+    private students: StudentData[] = [];
     private manager: StudentManager = new StudentManager();
 
     render() {
@@ -69,7 +68,7 @@ export class Student extends React.Component<any, any>{
                 <Switch {...switchProps} />
                 <Button type='primary' {...modifyButtonProps}>成绩修改</Button>
                 <Button type='primary' {...addButtonProps}>成绩输入</Button>
-                <div style={{ clear: 'both'}}>
+                <div style={{ clear: 'both' }}>
                     {items}
                     <div style={{ clear: 'both' }} />
                 </div>
@@ -80,7 +79,7 @@ export class Student extends React.Component<any, any>{
     }
 
     componentDidMount() {
-        Tool.back.sendData(Type.SendType.students, undefined, this.receiveStudents);
+        Tool.back.sendData(SendType.Students, {}, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -91,7 +90,7 @@ export class Student extends React.Component<any, any>{
         const index = this.manager.currentIndex;
         if (index >= this.students.length)
             return;
-        const id = this.students[index]['id'];
+        const id = this.students[index]['studentId'];
 
         (this.refs['addModal'] as AddGradeModal).setVisible(true, id);
     }
@@ -99,7 +98,7 @@ export class Student extends React.Component<any, any>{
         const index = this.manager.currentIndex;
         if (index >= this.students.length)
             return;
-        const id = this.students[index]['id'];
+        const id = this.students[index]['studentId'];
         const student = this.students[index];
 
         (this.refs['modifyModal'] as ModifyGradeModal).setVisible(true, id, student['grades']);

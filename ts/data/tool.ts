@@ -63,7 +63,7 @@ class ReceiveManager {
                 this.sendData['filterSigninStatus'] = 'false';
                 this.sendData['pageIndex'] = 0;
                 this.sendData['pageSize'] = 100;
-                this.sendData['orderby'] = 'name';
+                this.sendData['orderby'] = 'stdNo';
                 break;
             case SendType.Signin:
                 const row = Tool.data.seat.row;
@@ -92,6 +92,13 @@ class ReceiveManager {
                 break;
             case SendType.Homework:
                 this.sendData['stdId'] = this.sendData['studentId'];
+                break;
+
+            case SendType.Students:
+                this.sendData['filterSigninStatus'] = 'true';
+                this.sendData['pageIndex'] = 0;
+                this.sendData['pageSize'] = 100;
+                this.sendData['orderby'] = 'stdNo';
                 break;
 
             case SendType.AddCredit:
@@ -234,6 +241,17 @@ class ReceiveManager {
 
                     data = { homeworks: data['list'] };
                     break;
+
+                case SendType.Students:
+                    for (let s of data['list']) {
+                        s.studentId = s.stdId;
+                        s.studnetNo = s.stdNo;
+                        s.class = s.clas;
+                    }
+
+                    data = { students: data['list'] };
+                    break;
+
                 default:
                     break;
             }

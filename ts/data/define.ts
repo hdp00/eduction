@@ -105,8 +105,7 @@ export enum SendType {
     HomeworkPaper,
 
     //set undefined
-    //get {students:{id:string, name:string, school:string, class:number, sex:stirng,
-    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}[]}
+    //get {students:studentData[]}
     Students,
 
     //set{id:string,

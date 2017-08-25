@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import { Modal, InputNumber } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
 
 interface AddGradeModalProps {
     onAddGrade: (value: object) => void;
@@ -75,7 +75,7 @@ export class AddGradeModal extends React.Component<AddGradeModalProps, any>{
             grade: this.newGrade,
         };
 
-        Tool.back.sendData(Type.SendType.addGrade, { id: this.id, grade: grade });
+        Tool.back.sendData(SendType.AddGrade, { id: this.id, grade: grade });
         this.props.onAddGrade(grade);
 
         this.onCancel();

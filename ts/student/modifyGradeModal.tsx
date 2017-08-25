@@ -95,7 +95,7 @@ export class ModifyGradeModal extends React.Component<ModifyGradeModalProps, any
     }
 
     private onModifyGrade = () => {
-        Tool.back.sendData(SendType.modifyGrade, { id: this.id, grades: this.grades });
+        Tool.back.sendData(SendType.ModifyGrade, { id: this.id, grades: this.grades });
         this.props.onModifyGrade(this.grades);
 
         this.onCancel();
@@ -112,7 +112,7 @@ export class ModifyGradeModal extends React.Component<ModifyGradeModalProps, any
     //预防有些科目成绩不存在
     private initGrades = () => {
         for (let g of this.grades) {
-            while(g.grade.length < 5)
+            while (g.grade.length < 5)
                 g.grade.push({ score: 0 })
         }
     }

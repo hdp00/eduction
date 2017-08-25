@@ -2,16 +2,10 @@
 //学生卡
 
 import * as React from 'react'
+import { StudentData } from '../data/studentData'
 
 interface StudentCardProps {
-    student: object;
-    /*id: string;
-    name: string;
-    school: string;
-    class: string;
-    sex: string;
-    grades:{date:Date, grade:{subjectId:string, score:number}[]}[]
-    */
+    student: StudentData;
     manager: object;/*currentIndex:number */
     index: number;
     gradeVisible: boolean;
