@@ -4,14 +4,14 @@
 import * as React from 'react'
 import * as $ from 'jquery'
 import { Modal, Button, Checkbox, Input, Cascader } from 'antd'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
+import { HomeworkData } from '../data/homeworkData'
 
 const CheckboxGroup = Checkbox.Group;
 
 interface ModifyHomeworkModalProps {
     homeworkOptions: object;//homeworkOptions
-    //{id,name}
-    students: object[];
+    students: object[];//{studentId,name}
     onUpdate: () => void;
 }
 
@@ -19,7 +19,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     private visible = false;
     private studentId: string;
     private homeworkId: string;
-    private homeworkData: object = {};//homeworkData
+    private data: HomeworkData = new HomeworkData();
 
     render() {
         const isAdd = (this.homeworkId === undefined);
@@ -35,7 +35,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         const options = this.props.homeworkOptions['subjects'];
         const cascaderProps = {
             options: options,
-            value: [this.homeworkData['subject'], this.homeworkData['item'], this.homeworkData['childItem']],
+            value: [this.data['subject'], this.data['item'], this.data['childItem']],
             onChange: this.onSelectItem,
         };
 
@@ -54,51 +54,50 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
         const groupProps = {
-            value: this.homeworkData['studentIds'],
+            value: this.data['studentIds'],
             onChange: this.onStudentCheckChange,
         };
 
         return <Modal {...modalProps}>
-            <div style={{ float: 'left', margin:'5px' }}>
-                <label>项目</label><br/>
+            <div style={{ float: 'left', margin: '5px' }}>
+                <label>项目</label><br />
                 <Cascader expandTrigger='hover' {...cascaderProps} /><br />
                 <label>课本</label>
-                <Input value={this.homeworkData['book']} onChange={(event) => this.onTextChange(event, 'book')} /><br />
+                <Input value={this.data['book']} onChange={(event) => this.onTextChange(event, 'book')} /><br />
                 <label>范围</label>
-                <Input value={this.homeworkData['range']} onChange={(event) => this.onTextChange(event, 'range')} /><br />
+                <Input value={this.data['range']} onChange={(event) => this.onTextChange(event, 'range')} /><br />
                 <label>次数</label>
-                <Input value={this.homeworkData['times']} onChange={(event) => this.onTextChange(event, 'times')} /><br />
+                <Input value={this.data['times']} onChange={(event) => this.onTextChange(event, 'times')} /><br />
                 <label>描述</label>
-                <Input value={this.homeworkData['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
+                <Input value={this.data['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
                 <label>备注</label>
-                <Input value={this.homeworkData['remark']} onChange={(event) => this.onTextChange(event, 'remark')} /><br />
-                <Checkbox checked={this.homeworkData['isNeedSign']} onChange={this.onCheckChange}>签名</Checkbox>
+                <Input value={this.data['remark']} onChange={(event) => this.onTextChange(event, 'remark')} /><br />
+                <Checkbox checked={this.data['isNeedSign']} onChange={this.onCheckChange}>签名</Checkbox>
             </div>
-            <div style={{ float: 'left',width:'400px', margin:'5px' }}>
+            <div style={{ float: 'left', width: '400px', margin: '5px' }}>
                 <CheckboxGroup {...groupProps}>
                     {items}
                 </CheckboxGroup>
             </div>
-            <div style={{clear:'both'}} />
+            <div style={{ clear: 'both' }} />
         </Modal>;
     }
 
     public setVisible = (value: boolean, studentId: string, homeworkData: object = {}) => {
         this.visible = value;
         this.studentId = studentId;
-        this.homeworkData = $.extend(true, {}, homeworkData);
-        if (this.homeworkData['studentIds'] === undefined)
-            this.homeworkData['studentIds'] = [studentId];
+        this.data = $.extend(true, {}, homeworkData);
+        if (this.data['studentIds'] === undefined)
+            this.data['studentIds'] = [studentId];
 
         console.log(homeworkData['isNeedSign']);
-        console.log(this.homeworkData['isNeedSign']);
-
+        console.log(this.data['isNeedSign']);
 
         this.forceUpdate();
     }
 
     private onModifyHomework = () => {
-        Tool.back.sendData(Type.SendType.modifyHomework, this.homeworkData, this.props.onUpdate);
+        Tool.back.sendData(SendType.ModifyHomework, this.data, this.props.onUpdate);
         this.onCancel();
     }
     private onCancel = () => {
@@ -106,23 +105,23 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.forceUpdate();
     }
     private onSelectItem = (value) => {
-        this.homeworkData['subject'] = value[0];
-        this.homeworkData['item'] = value[1];
-        this.homeworkData['childItem'] = value[2];
+        this.data['subject'] = value[0];
+        this.data['item'] = value[1];
+        this.data['childItem'] = value[2];
 
         this.forceUpdate();
     }
     private onTextChange = (event, type: string) => {
-        this.homeworkData[type] = event.currentTarget.value;
+        this.data[type] = event.currentTarget.value;
         this.forceUpdate();
     }
     private onCheckChange = (event) => {
-        this.homeworkData['isNeedSign'] = event.target.checked;
+        this.data['isNeedSign'] = event.target.checked;
         this.forceUpdate();
     }
 
     private onStudentCheckChange = (checkeds) => {
-        this.homeworkData['studentIds'] = checkeds;
+        this.data['studentIds'] = checkeds;
         this.forceUpdate();
     }
 }

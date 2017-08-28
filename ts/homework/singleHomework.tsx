@@ -4,12 +4,13 @@
 import * as React from 'react'
 import { Button, Icon } from 'antd'
 import { HomeworkManager } from './homeworkManager'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
+import { HomeworkData } from '../data/homeworkData'
 
 interface SingleHomeworkProps {
-    homework: object;//homeworkData
+    homework: HomeworkData;
     onUpdate: () => void;
-    onEdit: (homework:object) => void;
+    onEdit: (homework: object) => void;
 }
 
 export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
@@ -23,9 +24,9 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         const divProps = {
             style: {
                 margin: '5px',
-                width:'200px',
-                border:'1px solid black',
-                float:'left',
+                width: '200px',
+                border: '1px solid black',
+                float: 'left',
             }
         };
 
@@ -45,7 +46,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         this.props.onEdit(this.props.homework);
     }
     private onDelete = () => {
-        Tool.back.sendData(Type.SendType.deleteHomework,
-            { id: this.props.homework['id'] }, this.props.onUpdate);
+        Tool.back.sendData(SendType.DeleteHomework,
+            { id: this.props.homework['studentId'] }, this.props.onUpdate);
     }
 }

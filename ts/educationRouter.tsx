@@ -50,8 +50,8 @@ export class EducationRouter extends React.Component<any, any>{
                 <PrivateRoute exact path={Tr.classroom} render={
                     () => <Redirect to={Tr.seat} />} />
                 <PrivateRoute path={Tr.seat} component={Seat} />
-                {/* <PrivateRoute path={Tr.student} component={Student} />
-                <PrivateRoute path={Tr.homework} component={Homework} /> */}
+                <PrivateRoute path={Tr.student} component={Student} />
+                <PrivateRoute path={Tr.homework} component={Homework} />
 
                 {/* <PrivateRoute path={Tr.check} component={Check} /> */}
             </div>

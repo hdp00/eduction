@@ -7,15 +7,9 @@ import { HomeworkManager } from './homeworkManager'
 import { StudentList } from './studentList'
 import { HomeowrkOperator } from './homeworkOperator'
 
-interface StudentListProps {
-    students: { id: string, name: string }[],
-    manager: HomeworkManager,
-    onSelect: (index: number) => void;
-}
-
 export class Homework extends React.Component<any, any>{
     private manager: HomeworkManager = new HomeworkManager();
-    private students: { id: string, name: string }[] = [];
+    private students: { studentId: string, name: string }[] = [];
 
     render() {
         const studentProps = {
@@ -30,12 +24,12 @@ export class Homework extends React.Component<any, any>{
 
         return <div>
             <StudentList {...studentProps} />
-            <HomeowrkOperator {...homeworkProps} />
+            {/* <HomeowrkOperator {...homeworkProps} /> */}
         </div>;
     }
 
     componentDidMount() {
-        Tool.back.sendData(SendType.Students, undefined, this.receiveStudents);
+        Tool.back.sendData(SendType.Students, {}, this.receiveStudents);
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -43,7 +37,7 @@ export class Homework extends React.Component<any, any>{
     }
 
     private onSelect = (index: number) => {
-        const student = this.students[index].id;
-        (this.refs['homework'] as HomeowrkOperator).update(student);
+        const id = this.students[index].studentId;
+        (this.refs['homework'] as HomeowrkOperator).update(id);
     }
 }

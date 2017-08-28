@@ -6,14 +6,15 @@ import { Button } from 'antd'
 import { HomeworkManager } from './homeworkManager'
 import { SingleHomework } from './singleHomework'
 import { ModifyHomeworkModal } from './modifyHomeworkModal'
-import { Tool, Type.SendType } from '../data/tool'
+import { Tool, SendType } from '../data/tool'
+import { HomeworkData } from '../data/HomeworkData'
 
 interface HomeowrkOperatorProps {
-    students: object[];//{id,name}
+    students: object[];//{studnetId,name}
 }
 
 export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any>{
-    private homeworks: object[] = [];//homeworkData[]
+    private homeworks: HomeworkData[] = [];
     private homeworkOptions: object = {};//HomeworkOptions 
     private studentId: string;
 
@@ -25,7 +26,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
                 homework: h,
                 onUpdate: this.onUpdate,
                 onEdit: this.onEdit,
-                key:i++,
+                key: i++,
             };
 
             items.push(<SingleHomework {...itemProps} />);
@@ -35,7 +36,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
             homeworkOptions: this.homeworkOptions,
             students: this.props.students,
             onUpdate: this.onUpdate,
-            ref:'modal',
+            ref: 'modal',
         };
 
         const divProps = {
@@ -53,7 +54,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
                 width: '200px',
                 height: '100px',
                 border: '1px solid black',
-                float:'left',
+                float: 'left',
             }
         };
 
@@ -69,7 +70,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
 
 
     componentDidMount() {
-        Tool.back.sendData(Type.SendType.homeworkOptions, undefined, this.receiveHomeworkOptions);
+        Tool.back.sendData(SendType.HomeworkOptions, undefined, this.receiveHomeworkOptions);
     }
     private receiveHomeworkOptions = (value: object) => {
         this.homeworkOptions = value;
@@ -80,7 +81,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         if (studentId === this.studentId)
             return;
         this.studentId = studentId;
-        Tool.back.sendData(Type.SendType.homework, { studentId: this.studentId }, this.rectiveHomeworks);
+        Tool.back.sendData(SendType.Homework, { studentId: this.studentId }, this.rectiveHomeworks);
     }
     private rectiveHomeworks = (value: object) => {
         Tool.lib.fillData(value, this);
@@ -93,7 +94,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
     private onAdd = () => {
         (this.refs['modal'] as ModifyHomeworkModal).setVisible(true, this.studentId);
     }
-    private onUpdate = () =>{
+    private onUpdate = () => {
         this.forceUpdate();
     }
 

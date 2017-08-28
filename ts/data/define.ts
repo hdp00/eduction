@@ -108,6 +108,10 @@ export enum SendType {
     //get {students:studentData[]}
     Students,
 
+    //set{studentids:string[]}
+    //get {grades:gradeData[]}
+    StudentGrades,
+
     //set{id:string,
     //grade:{date:Date, grade:{subject:string, score:number}[]}}
     //get undefined

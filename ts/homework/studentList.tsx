@@ -5,7 +5,7 @@ import * as React from 'react'
 import { HomeworkManager } from './homeworkManager'
 
 interface StudentListProps {
-    students: { id: string, name: string }[],
+    students: { studentId: string, name: string }[],
     manager: HomeworkManager,
     onSelect: (index: number) => void;
 }
