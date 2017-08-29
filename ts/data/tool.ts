@@ -29,7 +29,7 @@ class ReceiveManager {
 
         if (netType === NetType.Get)
             $.get(url, data, this.receive);
-        else
+        else 
             $.post(url, data, this.receive);
     }
     private receive = (response?: string) => {
@@ -60,7 +60,7 @@ class ReceiveManager {
                 this.sendData['roomId'] = '0';
                 break;
             case SendType.StudentSelector:
-                this.sendData['filterSigninStatus'] = 'false';
+                this.sendData['filterSigninStatus'] = 2;
                 this.sendData['pageIndex'] = 0;
                 this.sendData['pageSize'] = 100;
                 this.sendData['orderby'] = 'stdNo';
@@ -95,7 +95,7 @@ class ReceiveManager {
                 break;
 
             case SendType.Students:
-                this.sendData['filterSigninStatus'] = 'true';
+                this.sendData['filterSigninStatus'] = 0;
                 this.sendData['pageIndex'] = 0;
                 this.sendData['pageSize'] = 100;
                 this.sendData['orderby'] = 'stdNo';
