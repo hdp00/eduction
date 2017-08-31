@@ -68,8 +68,7 @@ class LoginForm extends React.Component<any, any> {
 
     //检查是否已登录
     private checkLogin = () => {
-        //temp
-        //Tool.back.sendData(SendType.CheckLogin, {}, this.onCheckLogin);
+        Tool.back.sendData(SendType.CheckLogin, {}, this.onCheckLogin);
     }
     private onCheckLogin = () =>{
         User.hasLogin = true;

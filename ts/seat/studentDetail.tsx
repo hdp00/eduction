@@ -16,12 +16,12 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
     private name: string;
     private school: string;
     private class: string;
-    private credit: number;
-    private addCreditStatus: { credit: number, text: string } = {credit:0, text:''};
-    private reduceCreditStatus: { credit: number, text: string } = {credit:0, text:''};
+    private creditData: object = {};//{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
+    private addCreditStatus: { credit: number, text: string } = { credit: 0, text: '' };
+    private reduceCreditStatus: { credit: number, text: string } = { credit: 0, text: '' };
 
-    private addCreditItems: string[] = [];
-    private reduceCreditItems: string[] = [];
+    private addCreditItems: { creditId: string, name: string, score: number }[] = [];
+    private reduceCreditItems: { creditId: string, name: string, score: number }[] = [];
 
     render() {
         let detail;
@@ -37,20 +37,20 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             </div>;
 
             credit = <div>
-                <label style={{ fontSize: '18px' }}>积分：{this.credit}</label><br />
+                <label style={{ fontSize: '18px' }}>积分：{this.creditData['availableCredit']}</label><br />
                 <div>
-                    <label>纪律加分</label>
-                    <Rate disabled value={this.addCreditStatus.credit} /><br />
-                    <label>纪律减分</label>
-                    <Rate disabled value={this.reduceCreditStatus.credit} /><br />
+                    <label>加分:{this.getCreditCount(true)}</label>
+                    <label>减分:{this.getCreditCount(false)}</label>
                     <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginAddCredit}>加分</Button>
+                    <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginAddCredit}>撤销加分</Button>
                     <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginReduceCredit}>减分</Button>
+                    <Button style={{ margin: '10px' }} type='primary' onClick={this.onBeginReduceCredit}>撤销减分</Button>
                 </div>
             </div>;
 
             let addItems = [];
             for (let item of this.addCreditItems) {
-                addItems.push(<Option key={item}>{item}</Option>);
+                addItems.push(<Option key={item.creditId}>{item.name}</Option>);
             }
             const addCreditProps = {
                 title: '纪律加分',
@@ -60,13 +60,13 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             };
 
             addCredit = <Modal width='260px' {...addCreditProps}>
-                <label style={{marginRight:'10px'}}>分数</label>
+                <label style={{ marginRight: '10px' }}>分数</label>
                 <Rate defaultValue={this.addCreditStatus.credit}
                     onChange={
                         (value: number) => { this.addCredit = value; }
                     } />
                 <br />
-                <label style={{marginRight:'10px'}}>选项</label>
+                <label style={{ marginRight: '10px' }}>选项</label>
                 <Select defaultValue={this.addCreditStatus.text} style={{ width: 120 }}
                     onChange={
                         (value: string) => { this.addText = value; }
@@ -77,7 +77,7 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
 
             let reduceItems = [];
             for (let item of this.reduceCreditItems) {
-                reduceItems.push(<Option key={item}>{item}</Option>);
+                reduceItems.push(<Option key={item.creditId}>{item.name}</Option>);
             }
             const reduceCreditProps = {
                 title: '纪律减分',
@@ -87,13 +87,13 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
             };
 
             reduceCredit = <Modal width='260px' {...reduceCreditProps}>
-                <label style={{marginRight:'10px'}}>分数</label>
+                <label style={{ marginRight: '10px' }}>分数</label>
                 <Rate defaultValue={this.reduceCreditStatus.credit}
                     onChange={
                         (value: number) => { this.reduceCredit = value; }
                     } />
                 <br />
-                <label style={{marginRight:'10px'}}>选项</label>
+                <label style={{ marginRight: '10px' }}>选项</label>
                 <Select defaultValue={this.reduceCreditStatus.text} style={{ width: 120 }}
                     onChange={
                         (value: string) => { this.reduceText = value; }
@@ -111,13 +111,10 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         </div>;
     }
     componentDidMount() {
-        //Tool.back.sendData(SendType.AddCreditItem, {}, this.onReceiveAddCreditItem);
-        //Tool.back.sendData(SendType.ReduceCreditItem, {}, this.onReceiveReduceCreditItem);
+        Tool.back.sendData(SendType.AddCreditItem, {}, this.onReceiveCreditItem);
+        Tool.back.sendData(SendType.ReduceCreditItem, {}, this.onReceiveCreditItem);
     }
-    private onReceiveAddCreditItem = (value: object) => {
-        Tool.lib.fillData(value, this);
-    }
-    private onReceiveReduceCreditItem = (value: object) => {
+    private onReceiveCreditItem = (value: object) => {
         Tool.lib.fillData(value, this);
     }
 
@@ -128,14 +125,20 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
         if (this.id === undefined) {
             this.forceUpdate();
         }
-        else
-            Tool.back.sendData(SendType.StudentDetail, { studentId: id }, this.receiveDetail)
+        else {
+            Tool.back.sendData(SendType.StudentDetail, { studentId: id }, this.receiveDetail);
+            Tool.back.sendData(SendType.Credit, { studentId: id }, this.receiveCredit);
+        }
+
     }
     private receiveDetail = (value: object) => {
         Tool.lib.fillData(value, this);
+    }
+    private receiveCredit = (value: object) => {
+        Tool.lib.fillData(value, this);
         this.forceUpdate();
     }
-
+    
     //modal
     private onBeginAddCredit = () => {
         this.addVisible = true;
@@ -198,4 +201,15 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
     private reduceText: string;
     private reduceCredit: number;
     private reduceVisible = false;
+
+    private getCreditCount(isAdd: boolean) {
+        let count = 0;
+        for (let c of this.creditData['credits'])
+            if (isAdd && c.score > 0)
+                count += c.score;
+            else if (!isAdd && c.score < 0)
+                count += c.score;
+
+        return Math.abs(count);
+    }
 }

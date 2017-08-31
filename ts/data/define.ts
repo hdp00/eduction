@@ -71,12 +71,16 @@ export enum SendType {
     ParentData,
 
     //set undefined
-    //get {addCreditItems:string[]}
+    //get addCreditItems:{creditId:string, name:string, score:number}[]
     AddCreditItem,
 
     //set undefined
-    //get {reduceCreditItems:string[]}
+    //get reduceCreditItems:{creditId:string, name:string, score:number}[]
     ReduceCreditItem,
+
+    //set {studentId:string}
+    //get creditData:{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
+    Credit,
 
     //set {id:string, credit:number, text:string}
     //get undefined

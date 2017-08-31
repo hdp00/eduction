@@ -29,7 +29,7 @@ class ReceiveManager {
 
         if (netType === NetType.Get)
             $.get(url, data, this.receive);
-        else 
+        else
             $.post(url, data, this.receive);
     }
     private receive = (response?: string) => {
@@ -99,6 +99,12 @@ class ReceiveManager {
                 this.sendData['pageIndex'] = 0;
                 this.sendData['pageSize'] = 100;
                 this.sendData['orderby'] = 'stdNo';
+                break;
+            case SendType.AddCreditItem:
+                this.sendData['filterType'] = 1;
+                break;
+            case SendType.AddCreditItem:
+                this.sendData['filterType'] = 2;
                 break;
 
             case SendType.AddCredit:
@@ -241,6 +247,26 @@ class ReceiveManager {
 
                     data = { homeworks: data['list'] };
                     break;
+                case SendType.AddCreditItem:
+                    for (let c of data['list']) {
+                        c['creditId'] = c['disciplineId'];
+                    }
+                    data = { addCreditItems: data['list'] };
+                    break;
+                case SendType.ReduceCreditItem:
+                    for (let c of data['list']) {
+                        c['creditId'] = c['disciplineId'];
+                    }
+                    data = { reduceCreditItems: data['list'] };
+                    break;
+                case SendType.Credit:
+                    for (let c of data['list']) {
+                        c['creditId'] = c['logId'];
+                        c['name'] = c['reason'];
+                    }
+                    data['credits'] = data['list'];
+                    data = { creditData: data };
+                    break;
 
                 case SendType.Students:
                     for (let s of data['list']) {
@@ -251,6 +277,7 @@ class ReceiveManager {
 
                     data = { students: data['list'] };
                     break;
+
 
                 default:
                     break;

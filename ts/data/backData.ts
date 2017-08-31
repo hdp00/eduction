@@ -21,6 +21,13 @@ export class BackData {
         this.data[SendType.ParentData] = { netType: NetType.Get, url: '/dict/options_items' };
         this.data[SendType.StudentDetail] = { netType: NetType.Get, url: '/student/detail' };
         this.data[SendType.Homework] = { netType: NetType.Get, url: '/student_task/list' };
+        this.data[SendType.AddCreditItem] = { netType: NetType.Get, url: '/student_credit/options' };
+        this.data[SendType.ReduceCreditItem] = { netType: NetType.Get, url: '/student_credit/options' };
+        this.data[SendType.Credit] = { netType: NetType.Get, url: '/student_credit/detail' };
+
+
+        
+        
         //student
         this.data[SendType.Students] = { netType: NetType.Get, url: '/student/list' };
     } 
