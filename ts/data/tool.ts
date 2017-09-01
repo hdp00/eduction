@@ -103,9 +103,11 @@ class ReceiveManager {
             case SendType.AddCreditItem:
                 this.sendData['filterType'] = 1;
                 break;
-            case SendType.AddCreditItem:
+            case SendType.ReduceCreditItem:
                 this.sendData['filterType'] = 2;
                 break;
+            case SendType.Credit:
+                this.sendData['stdId'] = this.sendData['studentId'];
 
             case SendType.AddCredit:
                 // {
