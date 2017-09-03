@@ -106,28 +106,13 @@ class ReceiveManager {
             case SendType.ReduceCreditItem:
                 this.sendData['filterType'] = 2;
                 break;
-            case SendType.Credit:
-                this.sendData['stdId'] = this.sendData['studentId'];
-
             case SendType.AddCredit:
-                // {
-                //     let s = studentMap[this.sendData['id']];
-                //     s['credit'] = s['credit'] + this.sendData['credit'];
-                //     s['addCreditStatus'] = {
-                //         credit: this.sendData['credit'],
-                //         text: this.sendData['text'],
-                //     };
-                // }
+                this.sendData['stdId'] = this.sendData['studentId'];
+                this.sendData['disciplineId'] = this.sendData['creditId'];
+                this.sendData['text'] = this.sendData['name'];
                 break;
-            case SendType.ReduceCredit:
-                // {
-                //     let s = studentMap[this.sendData['id']];
-                //     s['credit'] = s['credit'] - this.sendData['credit'];
-                //     s['reduceCreditStatus'] = {
-                //         credit: this.sendData['credit'],
-                //         text: this.sendData['text'],
-                //     };
-                // }
+            case SendType.CancelCredit:
+                this.sendData['logId'] = this.sendData['creditId'];
                 break;
             case SendType.ChangeHomeworkStatus:
                 // {
@@ -250,18 +235,14 @@ class ReceiveManager {
                     data = { homeworks: data['list'] };
                     break;
                 case SendType.AddCreditItem:
-                    for (let c of data['list']) {
-                        c['creditId'] = c['disciplineId'];
-                    }
-                    data = { addCreditItems: data['list'] };
-                    break;
                 case SendType.ReduceCreditItem:
                     for (let c of data['list']) {
                         c['creditId'] = c['disciplineId'];
                     }
                     data = { reduceCreditItems: data['list'] };
                     break;
-                case SendType.Credit:
+                case SendType.AddCredit:
+                case SendType.CancelCredit:
                     for (let c of data['list']) {
                         c['creditId'] = c['logId'];
                         c['name'] = c['reason'];

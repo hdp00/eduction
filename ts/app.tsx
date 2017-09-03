@@ -46,12 +46,19 @@ import { EducationRouter } from './educationRouter';
 
 // }
 
+import { Button, Rate, Select, Modal, Input, InputNumber } from 'antd'
+let value = 'abc';
+let v = 5;
+
 
 export class App {
     run() {
         ReactDOM.render(<div>
+            <Input id='aaa' value={value} onChange={(e) => console.log(e.currentTarget.value) } />
+            <InputNumber defaultValue={v} />
+            <Button onClick={() => console.log($('#aaa').val('aaa')) } >aaa</Button>
             <EducationRouter />
-        </div>,
+        </div >,
             document.getElementById('root'));
     }
 }

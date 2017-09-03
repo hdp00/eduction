@@ -78,17 +78,13 @@ export enum SendType {
     //get reduceCreditItems:{creditId:string, name:string, score:number}[]
     ReduceCreditItem,
 
-    //set {studentId:string}
+    //set {studentId:string, creditId:string, name:string, score:string}
     //get creditData:{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
-    Credit,
-
-    //set {id:string, credit:number, text:string}
-    //get undefined
     AddCredit,
 
-    //set {id:string, credit:number, text:string}
-    //get undefined
-    ReduceCredit,
+    //set {creditId:string, score:number, name:string}
+    //get creditData:{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
+    CancelCredit,
 
     //set{studentId:string}
     //get{name:string, school:string, class:string}
