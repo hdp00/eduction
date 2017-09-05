@@ -25,6 +25,9 @@ export class BackData {
         this.data[SendType.ReduceCreditItem] = { netType: NetType.Get, url: '/student_credit/options' };
         this.data[SendType.AddCredit] = { netType: NetType.Post, url: '/student_credit/new' };
         this.data[SendType.CancelCredit] = { netType: NetType.Post, url: '/student_credit/backout' };
+        this.data[SendType.Credit] = { netType: NetType.Get, url: '/student_credit/detail' };
+        this.data[SendType.BeginRead] = { netType: NetType.Post, url: '/student_daily/start_reading' };
+        this.data[SendType.EndRead] = { netType: NetType.Post, url: '/student_daily/end_reading' };
         
         //student
         this.data[SendType.Students] = { netType: NetType.Get, url: '/student/list' };

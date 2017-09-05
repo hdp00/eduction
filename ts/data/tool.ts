@@ -235,6 +235,11 @@ class ReceiveManager {
                     data = { homeworks: data['list'] };
                     break;
                 case SendType.AddCreditItem:
+                    for (let c of data['list']) {
+                        c['creditId'] = c['disciplineId'];
+                    }
+                    data = { addCreditItems: data['list'] };
+                    break;
                 case SendType.ReduceCreditItem:
                     for (let c of data['list']) {
                         c['creditId'] = c['disciplineId'];
@@ -243,6 +248,7 @@ class ReceiveManager {
                     break;
                 case SendType.AddCredit:
                 case SendType.CancelCredit:
+                case SendType.Credit:
                     for (let c of data['list']) {
                         c['creditId'] = c['logId'];
                         c['name'] = c['reason'];
@@ -274,64 +280,8 @@ class ReceiveManager {
         if (!Tool.data.isValidData(value))
             console.log('Error:' + value.comment);
     }
-    private getStudentSelector(value: object) {
-        let data = [];
-        // for (let s of students) {
-        //     if (!s.hasSigned)
-        //         data.push({
-        //             id: s.id,
-        //             name: s.name,
-        //         });
-        // }
 
-        return { students: data };
-    }
-    private getStudentSeat(value: object) {
-        // let id = this.sendData['id'];
-        // let s = studentMap[id];
-        // return {
-        //     name: s.name,
-        //     taskText: getHomeworkText(s),
-        //     taskStatus: getHomeworkStatus(s),
-        // };
-    }
-    private getStudentContainer(value: object) {
-        // let data = [];
-        // for (let s of students) {
-        //     if (s.hasSigned)
-        //         data.push({
-        //             id: s.id,
-        //             name: s.name,
-        //             index: s.seatIndex,
-        //             taskText: getHomeworkText(s),
-        //             taskStatus: getHomeworkStatus(s),
-        //         });
-        // }
 
-        // return {
-        //     row: row,
-        //     col: col,
-        //     students: data,
-        // }
-    }
-    private getAddCreditItem(value: object) {
-        //return { addCreditItems: addItems };
-    }
-    private getReduceCreditItem(value: object) {
-        //return { reduceCreditItems: reduceItems };
-    }
-    private getStudentDetail(value: object) {
-        // let id = this.sendData['id'];
-        // let s = studentMap[id];
-        // return {
-        //     name: s.name,
-        //     school: s.school,
-        //     class: s.class,
-        //     credit: s.credit,
-        //     addCreditStatus: s.addCreditStatus,
-        //     reduceCreditStatus: s.reduceCreditStatus,
-        // };
-    }
     private getHomework(value: object) {
         // let id = this.sendData['studentId'];
         // let s: StudentData = studentMap[id];

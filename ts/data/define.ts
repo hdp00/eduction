@@ -86,6 +86,15 @@ export enum SendType {
     //get creditData:{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
     CancelCredit,
 
+    //set{stdId}
+    //get creditData:{availableCredit:number, credits:{creditId:string, name:string, score:number}[]}
+    Credit,
+
+    //set{stdId}
+    //get{undefine}
+    BeginRead,
+    EndRead,
+
     //set{studentId:string}
     //get{name:string, school:string, class:string}
     StudentDetail,
