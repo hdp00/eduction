@@ -220,6 +220,7 @@ class ReceiveManager {
                     data['class'] = data['clas'];
                     break;
                 case SendType.Homework:
+                case SendType.HomeworkConfig:
                     for (let h of data['list']) {
                         h['homeworkId'] = h['taskId'];
                         h['subjectId'] = h['sbjtId'];
@@ -230,6 +231,13 @@ class ReceiveManager {
                         h['childItem'] = h['subItem'];
                         h['range'] = h['scope'];
                         h['desc'] = h['des'];
+
+                        if (h.stdList !== undefined) {
+                            for (let s of h.stdList) {
+                                s.studentId = s.stdId;
+                            }
+                            h.students = h.stdList;
+                        }
                     }
 
                     data = { homeworks: data['list'] };
@@ -267,7 +275,22 @@ class ReceiveManager {
                     data = { students: data['list'] };
                     break;
 
+                case SendType.HomeworkOptions:
+                    for (let subject of data['list']) {
+                        subject.value = subject.sbjtId
+                        subject.label = subject.name;
+                        for (let item of subject.items) {
+                            item.value = item.itemId;
+                            item.label = item.name;
+                            for (let subItem of item.subItems) {
+                                subItem.value = subItem.itemId;
+                                subItem.label = subItem.name;
+                            }
+                        }
+                    }
 
+                    data = { homeworkOptions: data['list'] };
+                    break;
                 default:
                     break;
             }
@@ -282,17 +305,8 @@ class ReceiveManager {
     }
 
 
-    private getHomework(value: object) {
-        // let id = this.sendData['studentId'];
-        // let s: StudentData = studentMap[id];
-
-        // return { homeworks: s.homeworks };
-    }
     private getHomeworkPaper(value: object) {
         //return homeworkPaper;
-    }
-    private getStudents(value: object) {
-        //return { students: students };
     }
     private getCheckItems(value: object) {
         //return checkItemList;

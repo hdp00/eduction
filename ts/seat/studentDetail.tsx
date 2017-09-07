@@ -138,7 +138,6 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
                 <label>{readText}</label>
                 {readButton}
             </div>;
-            console.log(this.readStatus);
         }
 
         return <div className='seat-student-detail-div'>

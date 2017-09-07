@@ -24,7 +24,7 @@ export class Homework extends React.Component<any, any>{
 
         return <div>
             <StudentList {...studentProps} />
-            {/* <HomeowrkOperator {...homeworkProps} /> */}
+            <HomeowrkOperator {...homeworkProps} />
         </div>;
     }
 

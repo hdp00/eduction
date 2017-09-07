@@ -54,7 +54,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
         const groupProps = {
-            value: this.data['studentIds'],
+            value: this.data['students'],
             onChange: this.onStudentCheckChange,
         };
 
@@ -87,8 +87,8 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.visible = value;
         this.studentId = studentId;
         this.data = $.extend(true, {}, homeworkData);
-        if (this.data['studentIds'] === undefined)
-            this.data['studentIds'] = [studentId];
+        if (this.data['students'] === undefined)
+            this.data['students'] = [studentId];
 
         console.log(homeworkData['isNeedSign']);
         console.log(this.data['isNeedSign']);
@@ -121,7 +121,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     }
 
     private onStudentCheckChange = (checkeds) => {
-        this.data['studentIds'] = checkeds;
+        this.data['students'] = checkeds;
         this.forceUpdate();
     }
 }

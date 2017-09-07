@@ -70,11 +70,10 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
 
 
     componentDidMount() {
-        Tool.back.sendData(SendType.HomeworkOptions, undefined, this.receiveHomeworkOptions);
+        Tool.back.sendData(SendType.HomeworkOptions, {}, this.receiveHomeworkOptions);
     }
     private receiveHomeworkOptions = (value: object) => {
-        this.homeworkOptions = value;
-        this.forceUpdate();
+        Tool.lib.fillData(value, this);
     }
 
     public update = (studentId: string) => {

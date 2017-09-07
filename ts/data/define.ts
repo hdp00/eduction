@@ -135,15 +135,23 @@ export enum SendType {
 
     //set HomeworkData
     //get undefined
+    AddHomework,
+
+    //set HomeworkData
+    //get undefined
     ModifyHomework,
 
-    //set{id:string}
+    //set{homeworkId}
     //get undefined
     DeleteHomework,
 
     //set undefined
-    //get homeworkOptions
+    //get {homeworkOptions: {value, lable, children}[]}
     HomeworkOptions,
+
+    //set{studentId}
+    //get{homeworks:homeworkData[]}
+    HomeworkConfig,
 
     //check
 
