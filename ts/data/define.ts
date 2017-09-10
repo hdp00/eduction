@@ -39,7 +39,7 @@ export enum SendType {
     Password,
 
     //set undefined
-    //get undefined
+    //get {hasLogin:boolean}
     CheckLogin,
 
     //seat

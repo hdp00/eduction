@@ -41,6 +41,7 @@ class ReceiveManager {
         switch (this.type) {
             case SendType.Login:
             case SendType.Password:
+            case SendType.CheckLogin:
                 break;
             default:
                 if (code !== 0)
@@ -114,6 +115,10 @@ class ReceiveManager {
             case SendType.CancelCredit:
                 this.sendData['logId'] = this.sendData['creditId'];
                 break;
+
+            case SendType.DeleteHomework:
+                this.sendData['detailId'] = [this.sendData['homeworkId']];
+            
             case SendType.ChangeHomeworkStatus:
                 // {
                 //     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);

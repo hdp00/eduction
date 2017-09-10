@@ -54,7 +54,7 @@ class LoginForm extends React.Component<any, any> {
         });
     }
 
-    private onLogin = (data: object, code:number) => {
+    private onLogin = (data: object, code: number) => {
         if (code === 0) {
             User.login(data);
             this.props.form.resetFields();
@@ -68,10 +68,16 @@ class LoginForm extends React.Component<any, any> {
 
     //检查是否已登录
     private checkLogin = () => {
+        if (Tool.data.user.token === '') {
+            this.onCheckLogin({}, -1);
+            return;
+        }
+
         Tool.back.sendData(SendType.CheckLogin, {}, this.onCheckLogin);
     }
-    private onCheckLogin = () =>{
-        User.hasLogin = true;
+    //{hasLogin:boolean}
+    private onCheckLogin = (value: object, code:number) => {    
+        User.hasLogin = (code === 0);
         this.forceUpdate();
     }
 }

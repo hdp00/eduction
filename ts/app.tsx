@@ -46,27 +46,10 @@ import { EducationRouter } from './educationRouter';
 
 // }
 
-import { Button, Rate, Select, Modal, Input, InputNumber } from 'antd'
-let value = 'abc';
-let v = 5;
-
-let aaa = { aaa: 1 };
-if(aaa['test'] !== undefined){
-    for (let a of aaa['test']) {
-        console.log('abc');
-    }
-}
-
-aaa['bbb'] = aaa['test'];
-console.log(aaa);
-
 
 export class App {
     run() {
         ReactDOM.render(<div>
-            <Input id='aaa' value={value} onChange={(e) => console.log(e.currentTarget.value)} />
-            <InputNumber defaultValue={v} />
-            <Button onClick={() => console.log($('#aaa').val('aaa'))} >aaa</Button>
             <EducationRouter />
         </div >,
             document.getElementById('root'));

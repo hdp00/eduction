@@ -31,7 +31,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         };
 
         return <div {...divProps}>
-            <div style={{ fontSize: '18px' }}>{this.props.homework['subject']} {this.props.homework['item']} {this.props.homework['childItem']}</div>
+            <div style={{ fontSize: '18px' }}>{this.props.homework['subject']} {this.props.homework['item']}</div>
             <div>{this.props.homework['book']} {this.props.homework['range']} {this.props.homework['times']}</div>
             <div>{this.props.homework['desc']} {this.props.homework['remark']}</div>
             <div>{needSign} {hasPaper}</div>
@@ -47,6 +47,6 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
     }
     private onDelete = () => {
         Tool.back.sendData(SendType.DeleteHomework,
-            { id: this.props.homework['studentId'] }, this.props.onUpdate);
+            { studentId: this.props.homework['studentId'] }, this.props.onUpdate);
     }
 }

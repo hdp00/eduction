@@ -2,7 +2,7 @@
 //作业容器
 
 import * as React from 'react'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import { HomeworkManager } from './homeworkManager'
 import { SingleHomework } from './singleHomework'
 import { ModifyHomeworkModal } from './modifyHomeworkModal'
@@ -65,6 +65,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
                 <Button onClick={this.onAdd}>添加作业</Button>
             </div>
             <ModifyHomeworkModal {...modalProps} />
+            <Modal></Modal>
         </div>;
     }
 
@@ -94,7 +95,13 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         (this.refs['modal'] as ModifyHomeworkModal).setVisible(true, this.studentId);
     }
     private onUpdate = () => {
-        this.forceUpdate();
+        Tool.back.sendData(SendType.Homework, { studentId: this.studentId }, this.rectiveHomeworks);
+    }
+
+    ///delete
+    private delteModalVisible = false;
+    private onDelete = (students:object) =>{
+
     }
 
 }
