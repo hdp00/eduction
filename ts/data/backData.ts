@@ -36,7 +36,7 @@ export class BackData {
         this.data[SendType.HomeworkOptions] = { netType: NetType.Get, url: '/subject/items' };
         this.data[SendType.HomeworkConfig] = { netType: NetType.Get, url: '/student_task/outline_list' };
         this.data[SendType.DeleteHomework] = { netType: NetType.Get, url: '/student_task/delete' };
-
+        this.data[SendType.Book] = { netType: NetType.Get, url: '/textbook/list' };        
     }
 
     public getNetType(type: SendType) {

@@ -46,7 +46,6 @@ import { EducationRouter } from './educationRouter';
 
 // }
 
-
 export class App {
     run() {
         ReactDOM.render(<div>

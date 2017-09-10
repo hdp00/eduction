@@ -38,12 +38,12 @@ export class Title extends React.Component<any, any>{
             <Link to={Tr.check}><Icon type='check-square-o' />批改</Link>
         </Item>
 
-        for (let page of User.pages) {
-            items.push(pageItems[page]);
-        }
-        
         let userMenu;
         if (User.hasLogin) {
+            for (let page of User.pages) {
+                items.push(pageItems[page]);
+            }
+
             userMenu = <SubMenu key='user' title={<span><Icon type='user' />用户</span>}>
                 <Item key='password'><Link to={Tr.password}><Icon type='setting' />修改密码</Link></Item>
                 <Item key='logout'><Icon type='poweroff' />退出</Item>

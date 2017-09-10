@@ -154,8 +154,6 @@ export class StudentDetail extends React.Component<StudentDetailProps, any>{
     }
     private onReceiveCreditItem = (value: object) => {
         Tool.lib.fillData(value, this);
-
-        console.log(value);
     }
 
     public update = () => {

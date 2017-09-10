@@ -58,7 +58,7 @@ export class UploadPaper extends React.Component<any, any>{
             visible: this.visible,
             footer: null,
             width: '1500px',
-            maskClosable:false,
+            maskClosable: false,
             onCancel: this.onExit,
         };
 
@@ -76,7 +76,7 @@ export class UploadPaper extends React.Component<any, any>{
         this.visible = visible;
         this.homeworkId = homeworkId;
 
-        if(this.video === undefined)
+        if (this.video === undefined)
             this.forceUpdate();
         else
             Tool.back.sendData(SendType.HomeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
@@ -93,13 +93,11 @@ export class UploadPaper extends React.Component<any, any>{
     }
 
     private onTakePicture = (paper: object) => {
-        //this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         this.ctx.drawImage(this.video, 0, 0);
-        //this.ctx.fillText(paper['name'], 100, 100);
         paper['data'] = this.canvas.toDataURL();
     }
     private onSelectPaper = (paper: object) => {
-        if(paper === undefined)
+        if (paper === undefined)
             return;
 
         this.showCanvas(paper);
@@ -109,7 +107,7 @@ export class UploadPaper extends React.Component<any, any>{
         this.forceUpdate();
 
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-        if(this.video.readyState !== 0)
+        if (this.video.readyState !== 0)
             this.video.pause();
     }
 

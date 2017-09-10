@@ -118,7 +118,12 @@ class ReceiveManager {
 
             case SendType.DeleteHomework:
                 this.sendData['detailId'] = [this.sendData['homeworkId']];
-            
+                break;
+            case SendType.Book:
+                this.sendData['sbjtId'] = this.sendData['subjectId'];
+                break;
+
+
             case SendType.ChangeHomeworkStatus:
                 // {
                 //     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
@@ -296,6 +301,17 @@ class ReceiveManager {
 
                     data = { homeworkOptions: data['list'] };
                     break;
+                case SendType.Book:
+                    let books = [];
+                    for (let b of data.list) {
+                        let newBook = {
+                            bookId: b['textbkId'],
+                            book: b['name'],
+                        };
+                        books.push(newBook);
+                    }
+                    data = { books: books };
+                    break;
                 default:
                     break;
             }
@@ -304,7 +320,7 @@ class ReceiveManager {
 
         return [data, code];
     }
-    private showError(value: any, type:SendType) {
+    private showError(value: any, type: SendType) {
         if (!Tool.data.isValidData(value))
             console.log('Error:' + value.comment + '  ' + type);
     }

@@ -45,7 +45,6 @@ export class StudentList extends React.Component<StudentListProps, any>{
         }
 
         return <div {...divProps}>
-            <div>学生</div>
             {items}
         </div>;
     }

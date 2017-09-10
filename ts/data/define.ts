@@ -153,6 +153,10 @@ export enum SendType {
     //get{homeworks:homeworkData[]}
     HomeworkConfig,
 
+    //set{subjectId}
+    //get{books:{bookId, book}[]}
+    Book,
+
     //check
 
     //set undefined

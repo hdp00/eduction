@@ -3,14 +3,15 @@
 
 import * as React from 'react'
 import * as $ from 'jquery'
-import { Modal, Button, Checkbox, Input, Cascader } from 'antd'
+import { Modal, Button, Checkbox, Input, Cascader, Select } from 'antd'
 import { Tool, SendType } from '../data/tool'
 import { HomeworkData } from '../data/homeworkData'
 
 const CheckboxGroup = Checkbox.Group;
+const Option = Select.Option;
 
 interface ModifyHomeworkModalProps {
-    homeworkOptions: object;//homeworkOptions
+    homeworkOptions: { value: string, label: string }[];//homeworkOptions
     students: object[];//{studentId,name}
     onUpdate: () => void;
 }
@@ -18,11 +19,12 @@ interface ModifyHomeworkModalProps {
 export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProps, any>{
     private visible = false;
     private studentId: string;
-    private homeworkId: string;
-    private data: HomeworkData = new HomeworkData();
+    private selectStudents: string[] = [];
+    private homeworkData: HomeworkData = new HomeworkData();
+    private books: { bookId: string, book: string }[] = [];
 
     render() {
-        const isAdd = (this.homeworkId === undefined);
+        const isAdd = (this.homeworkData.homeworkId === undefined);
 
         const modalProps = {
             visible: this.visible,
@@ -32,10 +34,8 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             onOk: this.onModifyHomework,
             onCancel: this.onCancel,
         };
-        const options = this.props.homeworkOptions['subjects'];
         const cascaderProps = {
-            options: options,
-            value: [this.data['subject'], this.data['item'], this.data['childItem']],
+            options: this.props.homeworkOptions,
             onChange: this.onSelectItem,
         };
 
@@ -43,9 +43,9 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         let items = [];
         for (let s of students) {
             const checkProps = {
-                value: s['id'],
-                key: s['id'],
-                disabled: (this.studentId === s['id']) ? true : false,
+                value: s['studentId'],
+                key: s['studentId'],
+                disabled: (this.studentId === s['studentId']) ? true : false,
                 style: {
                     width: '100px',
                 },
@@ -54,25 +54,35 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
         const groupProps = {
-            value: this.data['students'],
+            value: this.selectStudents,
             onChange: this.onStudentCheckChange,
         };
+
+        let bookOptions = [];
+        for (let b of this.books) {
+            bookOptions.push(
+                <Option value={b.bookId} key={b.bookId}>{b.book}</Option>
+            );
+        }
+        let books = <Select value={this.homeworkData.bookId} onChange={this.onBookChange}>
+            {bookOptions}
+        </Select>;
 
         return <Modal {...modalProps}>
             <div style={{ float: 'left', margin: '5px' }}>
                 <label>项目</label><br />
-                <Cascader expandTrigger='hover' {...cascaderProps} /><br />
+                <Cascader expandTrigger={'hover'} {...cascaderProps} /><br />
                 <label>课本</label>
-                <Input value={this.data['book']} onChange={(event) => this.onTextChange(event, 'book')} /><br />
+                {books}<br />
                 <label>范围</label>
-                <Input value={this.data['range']} onChange={(event) => this.onTextChange(event, 'range')} /><br />
+                <Input value={this.homeworkData['range']} onChange={(event) => this.onTextChange(event, 'range')} /><br />
                 <label>次数</label>
-                <Input value={this.data['times']} onChange={(event) => this.onTextChange(event, 'times')} /><br />
+                <Input value={this.homeworkData['times']} onChange={(event) => this.onTextChange(event, 'times')} /><br />
                 <label>描述</label>
-                <Input value={this.data['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
+                <Input value={this.homeworkData['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
                 <label>备注</label>
-                <Input value={this.data['remark']} onChange={(event) => this.onTextChange(event, 'remark')} /><br />
-                <Checkbox checked={this.data['isNeedSign']} onChange={this.onCheckChange}>签名</Checkbox>
+                <Input value={this.homeworkData['remark']} onChange={(event) => this.onTextChange(event, 'remark')} /><br />
+                <Checkbox checked={this.homeworkData['isNeedSign']} onChange={this.onCheckChange}>需要签名</Checkbox>
             </div>
             <div style={{ float: 'left', width: '400px', margin: '5px' }}>
                 <CheckboxGroup {...groupProps}>
@@ -86,42 +96,57 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     public setVisible = (value: boolean, studentId: string, homeworkData: object = {}) => {
         this.visible = value;
         this.studentId = studentId;
-        this.data = $.extend(true, {}, homeworkData);
-        if (this.data['students'] === undefined)
-            this.data['students'] = [studentId];
+        this.selectStudents = [studentId];
+        this.homeworkData = $.extend(true, {}, homeworkData);
 
-        console.log(homeworkData['isNeedSign']);
-        console.log(this.data['isNeedSign']);
+        if (this.homeworkData.subjectId !== undefined)
+            Tool.back.sendData(SendType.Book, { subjectId: this.homeworkData.subjectId }, this.onReceiveBooks);
 
         this.forceUpdate();
     }
 
     private onModifyHomework = () => {
-        Tool.back.sendData(SendType.ModifyHomework, this.data, this.props.onUpdate);
+        Tool.back.sendData(SendType.ModifyHomework, this.homeworkData, this.props.onUpdate);
         this.onCancel();
     }
     private onCancel = () => {
         this.visible = false;
+        this.studentId = undefined;
+        this.selectStudents = [];
+        this.homeworkData = new HomeworkData();
+        this.books = [];
+        
         this.forceUpdate();
     }
     private onSelectItem = (value) => {
-        this.data['subject'] = value[0];
-        this.data['item'] = value[1];
-        this.data['childItem'] = value[2];
+        this.homeworkData['subject'] = value[0];
+        this.homeworkData['item'] = value[1];
+        this.homeworkData['childItem'] = value[2];
+
+        Tool.back.sendData(SendType.Book, { subjectId: this.homeworkData.subjectId }, this.onReceiveBooks);
 
         this.forceUpdate();
     }
     private onTextChange = (event, type: string) => {
-        this.data[type] = event.currentTarget.value;
+        this.homeworkData[type] = event.currentTarget.value;
         this.forceUpdate();
     }
     private onCheckChange = (event) => {
-        this.data['isNeedSign'] = event.target.checked;
+        this.homeworkData['isNeedSign'] = event.target.checked;
         this.forceUpdate();
     }
 
     private onStudentCheckChange = (checkeds) => {
-        this.data['students'] = checkeds;
+        this.selectStudents = checkeds;
         this.forceUpdate();
+    }
+
+    //book
+    private onReceiveBooks = (value: object) => {
+        Tool.lib.fillData(this, value);
+        this.forceUpdate();
+    }
+    private onBookChange = (value: string) => {
+        this.homeworkData.bookId = value;
     }
 }
