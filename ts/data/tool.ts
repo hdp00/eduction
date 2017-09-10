@@ -170,7 +170,7 @@ class ReceiveManager {
         let data = value['data'];
         let code = value['code'];
 
-        this.showError(value);
+        this.showError(value, this.type);
         if (data != undefined) {
             switch (this.type) {
                 case SendType.Login:
@@ -304,9 +304,9 @@ class ReceiveManager {
 
         return [data, code];
     }
-    private showError(value: any) {
+    private showError(value: any, type:SendType) {
         if (!Tool.data.isValidData(value))
-            console.log('Error:' + value.comment);
+            console.log('Error:' + value.comment + '  ' + type);
     }
 
 
