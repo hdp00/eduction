@@ -15,7 +15,7 @@ interface HomeowrkOperatorProps {
 
 export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any>{
     private homeworks: HomeworkData[] = [];
-    private homeworkOptions: object[] = [];//HomeworkOptions 
+    private homeworkOptions: { value: string, label: string }[] = [];//HomeworkOptions 
     private studentId: string;
 
     render() {
@@ -58,11 +58,10 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
             }
         };
 
-
         return <div {...divProps}>
             {items}
             <div {...addProps}>
-                <Button onClick={this.onAdd}>添加作业</Button>
+                <Button type='primary' onClick={this.onAdd}>添加作业</Button>
             </div>
             <ModifyHomeworkModal {...modalProps} />
         </div>;
@@ -80,7 +79,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         if (studentId === this.studentId)
             return;
         this.studentId = studentId;
-        Tool.back.sendData(SendType.Homework, { studentId: this.studentId }, this.rectiveHomeworks);
+        Tool.back.sendData(SendType.HomeworkConfig, { studentId: this.studentId }, this.rectiveHomeworks);
     }
     private rectiveHomeworks = (value: object) => {
         Tool.lib.fillData(value, this);

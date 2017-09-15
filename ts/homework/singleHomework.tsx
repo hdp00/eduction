@@ -18,8 +18,6 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
         let needSign;
         if (this.props.homework['isNeedSign'])
             needSign = <span><Icon type='check-square' />签字</span>;
-        let hasPaper;
-        hasPaper = <span><Icon type='book' />作业</span>
 
         const divProps = {
             style: {
@@ -34,7 +32,6 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
             <div style={{ fontSize: '18px' }}>{this.props.homework['subject']} {this.props.homework['item']}</div>
             <div>{this.props.homework['book']} {this.props.homework['range']} {this.props.homework['times']}</div>
             <div>{this.props.homework['desc']} {this.props.homework['remark']}</div>
-            <div>{needSign} {hasPaper}</div>
             <div>
                 <Button onClick={this.onEdit}>编辑作业</Button>
                 <Button onClick={this.onDelete}>删除作业</Button>
@@ -47,6 +44,6 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
     }
     private onDelete = () => {
         Tool.back.sendData(SendType.DeleteHomework,
-            { studentId: this.props.homework['studentId'] }, this.props.onUpdate);
+            { homeworkId: this.props.homework['homeworkId'] }, this.props.onUpdate);
     }
 }

@@ -6,20 +6,20 @@ import { PaperState } from './define'
 export class HomeworkData {
     public homeworkId: string;
     public statusId: PaperState = PaperState.New;
-    public subjectId: string;
-    public itemId: string;
-    public childItemId: string;
-    public bookId: string;
+    public subjectId: string = '';
+    public itemId: string = '';
+    public childItemId: string = '';
+    public bookId: string = '';
 
-    public subject: string = '语文';
-    public item: string = '复习';
-    public childItem: string = '阅读';
-    public book: string = '一课一练';
-    public range: string = '10-15页';
-    public times: string = '5遍';
-    public desc: string = '具体描述';
-    public remark: string = '备注';
-    public isNeedSign: boolean = true;
-    public students: { studentId: string, name: string }[] = [];
+    public subject: string = '';
+    public item: string = '';
+    public childItem: string = '';
+    public book: string = '';
+    public range: string = '';
+    public times: string = '';
+    public desc: string = '';
+    public remark: string = '';
+    public isNeedSign: boolean = false;
+    public students: string[] = [];
 }
 

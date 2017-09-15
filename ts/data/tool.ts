@@ -92,6 +92,7 @@ class ReceiveManager {
                 this.sendData['stdId'] = this.sendData['studentId'];
                 break;
             case SendType.Homework:
+            case SendType.HomeworkConfig:
                 this.sendData['stdId'] = this.sendData['studentId'];
                 break;
 
@@ -117,12 +118,26 @@ class ReceiveManager {
                 break;
 
             case SendType.DeleteHomework:
-                this.sendData['detailId'] = [this.sendData['homeworkId']];
+                this.sendData['detailIds'] = [this.sendData['homeworkId']];
+                console.log(this.sendData);
                 break;
             case SendType.Book:
                 this.sendData['sbjtId'] = this.sendData['subjectId'];
+                this.sendData['pageIndex'] = 0;
+                this.sendData['pageSize'] = 100;
                 break;
+            case SendType.ModifyHomework:
+                this.sendData['detailId'] = this.sendData['homeworkId'];
+                this.sendData['sbjtId'] = this.sendData['subjectId'];
+                this.sendData['txtbkId'] = this.sendData['bookId'];
+                this.sendData['scope'] = this.sendData['range'];
+                this.sendData['des'] = this.sendData['desc'];
 
+                this.sendData = { props: [this.sendData], stdIds: this.sendData['students'] };
+
+                this.sendData = { "props": [{ "sbjtId": 0, "txtbkId": 3, "itemId": 4, "scope": "第一段", "isNeedSign": true, "destination": "书本", "times": 2, "des": "测试测试", "property": "xx" }], "stdIds": [2] };
+
+                break;
 
             case SendType.ChangeHomeworkStatus:
                 // {
@@ -230,9 +245,30 @@ class ReceiveManager {
                     data['class'] = data['clas'];
                     break;
                 case SendType.Homework:
-                case SendType.HomeworkConfig:
                     for (let h of data['list']) {
                         h['homeworkId'] = h['taskId'];
+                        h['subjectId'] = h['sbjtId'];
+                        h['bookId'] = h['txtbkId'];
+                        h['childItemId'] = h['subItemId'];
+
+                        h['book'] = h['textbook'];
+                        h['childItem'] = h['subItem'];
+                        h['range'] = h['scope'];
+                        h['desc'] = h['des'];
+
+                        if (h.stdList !== undefined) {
+                            for (let s of h.stdList) {
+                                s.studentId = s.stdId;
+                            }
+                            h.students = h.stdList;
+                        }
+                    }
+
+                    data = { homeworks: data['list'] };
+                    break;
+                case SendType.HomeworkConfig:
+                    for (let h of data['list']) {
+                        h['homeworkId'] = h['detailId'];
                         h['subjectId'] = h['sbjtId'];
                         h['bookId'] = h['txtbkId'];
                         h['childItemId'] = h['subItemId'];
@@ -289,9 +325,11 @@ class ReceiveManager {
                     for (let subject of data['list']) {
                         subject.value = subject.sbjtId
                         subject.label = subject.name;
+                        subject.children = subject.items;
                         for (let item of subject.items) {
                             item.value = item.itemId;
                             item.label = item.name;
+                            item.childItemId = item.subItems;
                             for (let subItem of item.subItems) {
                                 subItem.value = subItem.itemId;
                                 subItem.label = subItem.name;
@@ -300,12 +338,13 @@ class ReceiveManager {
                     }
 
                     data = { homeworkOptions: data['list'] };
+                    console.log(data);
                     break;
                 case SendType.Book:
                     let books = [];
-                    for (let b of data.list) {
+                    for (let b of data) {
                         let newBook = {
-                            bookId: b['textbkId'],
+                            bookId: b['txtbkId'].toString(),
                             book: b['name'],
                         };
                         books.push(newBook);
@@ -322,7 +361,7 @@ class ReceiveManager {
     }
     private showError(value: any, type: SendType) {
         if (!Tool.data.isValidData(value))
-            console.log('Error:' + value.comment + '  ' + type);
+            console.log('Error:' + value.comment + '  ' + SendType[type]);
     }
 
 

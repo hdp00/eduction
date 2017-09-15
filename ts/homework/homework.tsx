@@ -33,6 +33,7 @@ export class Homework extends React.Component<any, any>{
     }
     private receiveStudents = (value: object) => {
         Tool.lib.fillData(value, this);
+        this.onSelect(0);
         this.forceUpdate();
     }
 

@@ -135,10 +135,6 @@ export enum SendType {
 
     //set HomeworkData
     //get undefined
-    AddHomework,
-
-    //set HomeworkData
-    //get undefined
     ModifyHomework,
 
     //set{homeworkId}
