@@ -119,7 +119,6 @@ class ReceiveManager {
 
             case SendType.DeleteHomework:
                 this.sendData['detailIds'] = [this.sendData['homeworkId']];
-                console.log(this.sendData);
                 break;
             case SendType.Book:
                 this.sendData['sbjtId'] = this.sendData['subjectId'];
@@ -135,7 +134,20 @@ class ReceiveManager {
 
                 this.sendData = { props: [this.sendData], stdIds: this.sendData['students'] };
 
-                this.sendData = { "props": [{ "sbjtId": 0, "txtbkId": 3, "itemId": 4, "scope": "第一段", "isNeedSign": true, "destination": "书本", "times": 2, "des": "测试测试", "property": "xx" }], "stdIds": [2] };
+                this.sendData = {
+                    "props": [{
+                        "sbjtId": 1,
+                        "txtbkId": 3,
+                        "itemId": 1,
+                        "scope": "第一段",
+                        "isNeedSign": true,
+                        "destination": "书本",
+                        "times": 2,
+                        "des": "测试测试",
+                        "property": "xx"
+                    }],
+                    "stdIds": [2]
+                };
 
                 break;
 
@@ -248,7 +260,7 @@ class ReceiveManager {
                     for (let h of data['list']) {
                         h['homeworkId'] = h['taskId'];
                         h['subjectId'] = h['sbjtId'];
-                        h['bookId'] = h['txtbkId'];
+                        h['bookId'] = h['txtbkId'].toString();
                         h['childItemId'] = h['subItemId'];
 
                         h['book'] = h['textbook'];
@@ -270,7 +282,7 @@ class ReceiveManager {
                     for (let h of data['list']) {
                         h['homeworkId'] = h['detailId'];
                         h['subjectId'] = h['sbjtId'];
-                        h['bookId'] = h['txtbkId'];
+                        h['bookId'] = h['txtbkId'].toString();
                         h['childItemId'] = h['subItemId'];
 
                         h['book'] = h['textbook'];
@@ -278,11 +290,12 @@ class ReceiveManager {
                         h['range'] = h['scope'];
                         h['desc'] = h['des'];
 
+                        let students = [];
                         if (h.stdList !== undefined) {
                             for (let s of h.stdList) {
-                                s.studentId = s.stdId;
+                                students.push(s.stdId);
                             }
-                            h.students = h.stdList;
+                            h.students = students;
                         }
                     }
 

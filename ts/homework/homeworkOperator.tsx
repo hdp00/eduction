@@ -93,6 +93,6 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         (this.refs['modal'] as ModifyHomeworkModal).setVisible(true, this.studentId);
     }
     private onUpdate = () => {
-        Tool.back.sendData(SendType.Homework, { studentId: this.studentId }, this.rectiveHomeworks);
+        Tool.back.sendData(SendType.HomeworkConfig, { studentId: this.studentId }, this.rectiveHomeworks);
     }
 }

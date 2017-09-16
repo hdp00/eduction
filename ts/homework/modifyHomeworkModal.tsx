@@ -36,7 +36,11 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         const cascaderProps = {
             options: this.props.homeworkOptions,
             onChange: this.onSelectItem,
-            ref:'cascader',
+            value: [this.homeworkData['subjectId'],
+            this.homeworkData['itemId'],
+            this.homeworkData['subItemId']
+            ],
+            ref: 'cascader',
             style: {
                 width: 190,
             },
@@ -53,13 +57,14 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
 
             items.push(<Checkbox {...checkProps}>{s['name']}</Checkbox>);
         }
+
         const groupProps = {
             value: this.homeworkData.students,
             onChange: this.onStudentCheckChange,
         };
 
         let booksProps = {
-            value: this.homeworkData.bookId,
+            value: (this.books.length > 0) ? this.homeworkData.bookId : undefined,
             onSelect: this.onBookChange,
             style: {
                 width: 190,
@@ -101,19 +106,16 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     }
 
     public setVisible = (value: boolean, studentId: string, homeworkData: object = {}) => {
-        const isAdd = (this.homeworkData.homeworkId === undefined);
         this.visible = value;
         this.studentId = studentId;
         this.homeworkData = $.extend(true, {}, homeworkData);
+        const isAdd = (this.homeworkData.homeworkId === undefined);
 
         if (isAdd)
             this.homeworkData.students = [studentId];
-        else
+        else {
             Tool.back.sendData(SendType.Book, { subjectId: this.homeworkData.subjectId }, this.onReceiveBooks);
-
-        let c = this.refs['cascader'] as Cascader;
-        if(c !== undefined)
-            c.setValue([]);
+        }
 
         this.forceUpdate();
     }
@@ -134,12 +136,20 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
         this.books = [];
     }
     private onSelectItem = (value) => {
+        if (this.homeworkData['subjectId'] === value[0]
+            && this.homeworkData['itemId'] === value[1]
+            && this.homeworkData['childItemId'] === value[2])
+            return;
+
         this.homeworkData['subjectId'] = value[0];
         this.homeworkData['itemId'] = value[1];
         this.homeworkData['childItemId'] = value[2];
 
-        if(this.homeworkData.subjectId !== undefined)
+        if (this.homeworkData.subjectId !== undefined) {
+            this.homeworkData.bookId = undefined;
             Tool.back.sendData(SendType.Book, { subjectId: this.homeworkData.subjectId }, this.onReceiveBooks);
+        }
+
 
         this.forceUpdate();
     }
@@ -160,9 +170,8 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     //book
     private onReceiveBooks = (value: object) => {
         Tool.lib.fillData(value, this);
-        if (this.books.length > 0)
+        if (this.homeworkData.bookId === undefined && this.books.length > 0)
             this.homeworkData.bookId = this.books[0].bookId;
-
         this.forceUpdate();
     }
     private onBookChange = (value: string) => {
