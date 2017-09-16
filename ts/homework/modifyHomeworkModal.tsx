@@ -150,7 +150,6 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             Tool.back.sendData(SendType.Book, { subjectId: this.homeworkData.subjectId }, this.onReceiveBooks);
         }
 
-
         this.forceUpdate();
     }
     private onTextChange = (event, type: string) => {

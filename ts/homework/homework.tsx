@@ -6,6 +6,7 @@ import { Tool, SendType } from '../data/tool'
 import { HomeworkManager } from './homeworkManager'
 import { StudentList } from './studentList'
 import { HomeowrkOperator } from './homeworkOperator'
+import '../css/homework.css'
 
 export class Homework extends React.Component<any, any>{
     private manager: HomeworkManager = new HomeworkManager();
@@ -22,9 +23,12 @@ export class Homework extends React.Component<any, any>{
             ref: 'homework',
         }
 
-        return <div>
-            <StudentList {...studentProps} />
-            <HomeowrkOperator {...homeworkProps} />
+        return <div style={{ textAlign: 'center' }} >
+            <div className='homework-total-div'>
+                <StudentList {...studentProps} />
+                <HomeowrkOperator {...homeworkProps} />
+                <div style={{ clear: 'both' }} />
+            </div>
         </div>;
     }
 

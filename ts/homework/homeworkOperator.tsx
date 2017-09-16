@@ -39,34 +39,24 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
             ref: 'modal',
         };
 
-        const divProps = {
-            style: {
-                float: 'left',
-                width: '800px',
-                height: '800px',
-                border: '1px solid black',
-            }
-        };
-
         const addProps = {
             style: {
                 margin: '5px',
                 width: '200px',
-                height: '100px',
+                height: '200px',
                 border: '1px solid black',
                 float: 'left',
             }
         };
 
-        return <div {...divProps}>
+        return <div className='homework-container-div' style={{ border: '1px solid black' }}>
             {items}
             <div {...addProps}>
-                <Button type='primary' onClick={this.onAdd}>添加作业</Button>
+                <Button type='primary' onClick={this.onAdd} style={{ margin: 'auto' }}>添加作业</Button>
             </div>
             <ModifyHomeworkModal {...modalProps} />
         </div>;
     }
-
 
     componentDidMount() {
         Tool.back.sendData(SendType.HomeworkOptions, {}, this.receiveHomeworkOptions);

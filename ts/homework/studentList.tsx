@@ -33,18 +33,7 @@ export class StudentList extends React.Component<StudentListProps, any>{
             i++;
         }
 
-        const divProps = {
-
-            style: {
-                width: '200px',
-                height: '800px',
-                border: '1px solid black',
-                float: 'left',
-                overflow: overflow,
-            }
-        }
-
-        return <div {...divProps}>
+        return <div className='homework-student-div' style={{border:'1px solid black'}}>
             {items}
         </div>;
     }
