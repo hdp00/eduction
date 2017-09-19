@@ -131,22 +131,23 @@ class ReceiveManager {
                 this.sendData['txtbkId'] = this.sendData['bookId'];
                 this.sendData['scope'] = this.sendData['range'];
                 this.sendData['des'] = this.sendData['desc'];
-
-                this.sendData = { props: [this.sendData], stdIds: this.sendData['students'] };
+                if (this.sendData['childItemId'] !== undefined)
+                    this.sendData['itemId'] = this.sendData['childItemId'];
 
                 this.sendData = {
-                    "props": [{
-                        "sbjtId": 1,
-                        "txtbkId": 3,
-                        "itemId": 1,
-                        "scope": "第一段",
-                        "isNeedSign": true,
-                        "destination": "书本",
-                        "times": 2,
-                        "des": "测试测试",
-                        "property": "xx"
+                    props: [{
+                        detailId: this.sendData['detailId'],
+                        sbjtId: this.sendData['sbjtId'],
+                        itemId: this.sendData['itemId'],
+                        txtbkId: this.sendData['txtbkId'],
+
+                        remark: this.sendData['remark'],
+                        des: this.sendData['des'],
+                        isNeedSign: this.sendData['isNeedSign'],
+                        times: this.sendData['times'],
+                        scope: this.sendData['scope']
                     }],
-                    "stdIds": [2]
+                    stdIds: this.sendData['students']
                 };
 
                 break;

@@ -23,6 +23,7 @@ export class SingleHomework extends React.Component<SingleHomeworkProps, any>{
             style: {
                 margin: '5px',
                 width: '200px',
+                height: '150px',
                 border: '1px solid black',
                 float: 'left',
             }

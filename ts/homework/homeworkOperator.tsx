@@ -43,8 +43,8 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
             style: {
                 margin: '5px',
                 width: '200px',
-                height: '200px',
-                border: '1px solid black',
+                height: '150px',
+                //border: '1px solid black',
                 float: 'left',
             }
         };
@@ -52,7 +52,7 @@ export class HomeowrkOperator extends React.Component<HomeowrkOperatorProps, any
         return <div className='homework-container-div' style={{ border: '1px solid black' }}>
             {items}
             <div {...addProps}>
-                <Button type='primary' onClick={this.onAdd} style={{ margin: 'auto' }}>添加作业</Button>
+                <Button type='primary' size='large' onClick={this.onAdd} style={{ margin: 'auto', marginTop:'50px' }}>添加作业</Button>
             </div>
             <ModifyHomeworkModal {...modalProps} />
         </div>;
