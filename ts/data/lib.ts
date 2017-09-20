@@ -1,4 +1,5 @@
 //by hdp 2017.08.01
+import { PaperState } from './define'
 
 //工具库
 export class Lib {
@@ -25,5 +26,21 @@ export class Lib {
 
         data = JSON.parse(data);
         this.fillData(data, container);
+    }
+    getHomeworkStateColor = (state: PaperState) => {
+        let color;
+        switch (state) {
+            case PaperState.HasChecked:
+                color = 'rgba(255, 255, 0, 0.4)';
+                break;
+            case PaperState.Finished:
+                color = 'rgba(0, 255, 0, 0.4)';
+                break;
+            default:
+                color = 'rgba(0, 0, 255, 0.4)';
+                break;
+        }
+
+        return color;
     }
 }

@@ -4,6 +4,8 @@
 //试卷批改状态
 export enum PaperState {
     New,          //新建
+    Waste1,
+    Waste2,
     HasChecked,   //已批改
     ReCheck,      //需要重新批改
     Finished,     //已完成
@@ -99,7 +101,7 @@ export enum SendType {
     //get{name:string, school:string, class:string}
     StudentDetail,
 
-    //set{homeworkId:string, status:number}
+    //set{homeworkId:string, statusId:number}
     ChangeHomeworkStatus,
 
     //set{studentId:string}

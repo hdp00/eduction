@@ -47,24 +47,8 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
         let item;
         if (hasSigned) {
-            let color;
-            switch (this.taskStatus) {
-                case PaperState.New:
-                    color = 'rgba(0, 0, 255, 0.4)';
-                    break;
-                case PaperState.HasChecked:
-                    color = 'rgba(255, 255, 0, 0.4)';
-                    break;
-                case PaperState.Finished:
-                    color = 'rgba(0, 255, 0, 0.4)';
-                    break;
-                default:
-                    color = 'rgba(0, 0, 255, 0.4)';
-                    break;
-            }
-
             item = <div style={{ paddingTop: '7px' }}>
-                <div style={{ backgroundColor: color }}>{this.taskText}</div>
+                <div style={{ backgroundColor: Tool.lib.getHomeworkStateColor(this.taskStatus) }}>{this.taskText}</div>
                 <label style={{ fontSize: '16px' }}>{this.name}</label>
                 <br />
                 {timer}
@@ -84,7 +68,7 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
             {item}
         </div>;
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         //销毁后停止延时器
         clearInterval(this.timerId);
         this.delayTime = undefined;
@@ -92,6 +76,8 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
     //value:{studentId, name, taskText, taskStatus}
     public setStudent = (value: object) => {
+        console.log(value);
+
         if (value === undefined) {
             this.studentId = undefined;
             this.clearDelay();

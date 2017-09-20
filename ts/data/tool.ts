@@ -153,9 +153,7 @@ class ReceiveManager {
                 break;
 
             case SendType.ChangeHomeworkStatus:
-                // {
-                //     setHomeworStatus(this.sendData['homeworkId'], this.sendData['status']);
-                // }
+                this.sendData['taskId'] = this.sendData['homeworkId'];
                 break;
             case SendType.UploadPapers:
                 {
