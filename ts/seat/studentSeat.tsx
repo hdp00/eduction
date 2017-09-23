@@ -76,8 +76,6 @@ export class StudentSeat extends React.Component<StudentSeatProps, any>{
 
     //value:{studentId, name, taskText, taskStatus}
     public setStudent = (value: object) => {
-        console.log(value);
-
         if (value === undefined) {
             this.studentId = undefined;
             this.clearDelay();

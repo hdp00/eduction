@@ -8,7 +8,7 @@ import { Tool, SendType } from '../data/tool'
 interface UploadControlProps {
     homeworkId: string;
     subject: string;
-    book: string;
+    item: string;
 
     onTakePicture: (paper: object) => void;
     onSelectPaper: (paper: object) => void;
@@ -66,7 +66,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                     {items}
                 </div>
             </div>
-            <Button type='primary' style={{ margin: '5px 55px' }}   onClick={this.onExit}>退出</Button>
+            <Button type='primary' style={{ margin: '5px 55px' }} onClick={this.onExit}>退出</Button>
         </div>;
     }
     public setPapers(papers: object[]) {
@@ -104,7 +104,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onMoveUp = () => {
-        if(this.isUploading)
+        if (this.isUploading)
             return;
 
         const index = this.index;
@@ -117,7 +117,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onMoveDown = () => {
-        if(this.isUploading)
+        if (this.isUploading)
             return;
 
         const index = this.index;
@@ -130,7 +130,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.forceUpdate();
     }
     private onDelete = () => {
-        if(this.isUploading)
+        if (this.isUploading)
             return;
 
         const index = this.index;
@@ -157,7 +157,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         });
     }
     private onExit = () => {
-        if(this.isUploading)
+        if (this.isUploading)
             return;
 
         this.props.onExit();

@@ -56,6 +56,9 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
         this.props.onSelect(this.props.index);
     }
     private onFinish = () => {
+        if (!window.confirm('确认完成作业？'))
+            return;
+
         Tool.back.sendData(SendType.ChangeHomeworkStatus,
             { homeworkId: this.props.homework.homeworkId, statusId: PaperState.Finished });
     }

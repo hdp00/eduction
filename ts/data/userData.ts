@@ -25,10 +25,6 @@ export class UserData {
     public init(lib: Lib) {
         this._lib = lib;
         this.load();
-
-        //temp
-        if (this.token.length > 0)
-            this.hasLogin = true;
     }
     public login = (value: object) => {
         if (value == undefined)

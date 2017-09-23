@@ -38,7 +38,7 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             onChange: this.onSelectItem,
             value: [this.homeworkData['subjectId'],
             this.homeworkData['itemId'],
-            this.homeworkData['subItemId']
+            this.homeworkData['childItemId'],
             ],
             ref: 'cascader',
             style: {

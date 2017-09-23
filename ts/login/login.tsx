@@ -76,7 +76,7 @@ class LoginForm extends React.Component<any, any> {
         Tool.back.sendData(SendType.CheckLogin, {}, this.onCheckLogin);
     }
     //{hasLogin:boolean}
-    private onCheckLogin = (value: object, code:number) => {    
+    private onCheckLogin = (value: object, code:number) => { 
         User.hasLogin = (code === 0);
         this.forceUpdate();
     }

@@ -176,12 +176,6 @@ class ReceiveManager {
 
                 }
                 break;
-            case SendType.AddGrade:
-                {
-                    //set{id:string,
-                    //grades:{date:Date, grade:{subjectId:string, score:number}[]}}
-                }
-                break;
             default:
                 break;
         }
@@ -341,7 +335,7 @@ class ReceiveManager {
                         for (let item of subject.items) {
                             item.value = item.itemId;
                             item.label = item.name;
-                            item.childItemId = item.subItems;
+                            item.children = item.subItems;
                             for (let subItem of item.subItems) {
                                 subItem.value = subItem.itemId;
                                 subItem.label = subItem.name;
@@ -350,11 +344,10 @@ class ReceiveManager {
                     }
 
                     data = { homeworkOptions: data['list'] };
-                    console.log(data);
                     break;
                 case SendType.Book:
                     let books = [];
-                    for (let b of data) {
+                    for (let b of data['list']) {
                         let newBook = {
                             bookId: b['txtbkId'].toString(),
                             book: b['name'],
