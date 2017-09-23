@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 import * as $ from 'jquery'
-import { Modal, Button, Checkbox, Input, Cascader, Select } from 'antd'
+import { Modal, Button, Checkbox, Input, Cascader, Select, InputNumber } from 'antd'
 import { Tool, SendType } from '../data/tool'
 import { HomeworkData } from '../data/homeworkData'
 
@@ -80,6 +80,17 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
             {bookOptions}
         </Select>;
 
+        let times = parseInt(this.homeworkData['times']);
+        let timesProps = {
+            min: 0,
+            max: 100,
+            value: isNaN(times) ? 0 : times,
+            onChange: this.onNumberChange,
+            style: {
+                width: 190,
+            },
+        };
+
         return <Modal {...modalProps}>
             <div style={{ float: 'left', margin: '5px' }}>
                 <label>项目</label><br />
@@ -88,8 +99,8 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
                 {books}<br />
                 <label>范围</label>
                 <Input value={this.homeworkData['range']} onChange={(event) => this.onTextChange(event, 'range')} /><br />
-                <label>次数</label>
-                <Input value={this.homeworkData['times']} onChange={(event) => this.onTextChange(event, 'times')} /><br />
+                <label>次数</label><br />
+                <InputNumber {...timesProps} /><br />
                 <label>描述</label>
                 <Input value={this.homeworkData['desc']} onChange={(event) => this.onTextChange(event, 'desc')} /><br />
                 <label>备注</label>
@@ -158,6 +169,10 @@ export class ModifyHomeworkModal extends React.Component<ModifyHomeworkModalProp
     }
     private onCheckChange = (event) => {
         this.homeworkData['isNeedSign'] = event.target.checked;
+        this.forceUpdate();
+    }
+    private onNumberChange = (value) => {
+        this.homeworkData['times'] = value;
         this.forceUpdate();
     }
 

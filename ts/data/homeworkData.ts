@@ -16,7 +16,7 @@ export class HomeworkData {
     public childItem: string = '';
     public book: string = '';
     public range: string = '';
-    public times: string = '';
+    public times: string = '0';
     public desc: string = '';
     public remark: string = '';
     public isNeedSign: boolean = false;
