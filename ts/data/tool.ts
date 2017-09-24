@@ -157,7 +157,17 @@ class ReceiveManager {
                 break;
             case SendType.UploadPapers:
                 {
+                    // userId: 'xxx',
+                    // token: 'xxx',
+                    // stdId: 'xxx', //学生ID
+                    // files: {} // 前端走multipart/form-data，input控件使用type=file上传图片
+
+                    // //set{homeworkId:string, papers:PaperData[])
+
+
                     // let f = new FormData();
+                    // f.append('userId')
+
                     // let papers: object[] = this.sendData['papers'];
                     // for (let i = 0; i < papers.length; i++) {
                     //     f.append('paper' + i, papers[i]['data'], papers[i]['name']);
@@ -175,6 +185,9 @@ class ReceiveManager {
                     // });
 
                 }
+                break;
+            case SendType.DeletePapers:
+
                 break;
             default:
                 break;

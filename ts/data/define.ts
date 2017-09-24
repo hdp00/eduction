@@ -104,12 +104,15 @@ export enum SendType {
     //set{homeworkId:string, statusId:number}
     ChangeHomeworkStatus,
 
+    //set{homeworkId:string, papers:PaperData[])
+    UploadPapers,
+
+    //set{paperIds:number[]}
+    DeletePapers,
+
     //set{studentId:string}
     //get {homeworks:homeworkData[]}
     Homework,
-
-    //set{homeworkId:string, papers:{name:string, data:base64}[])
-    UploadPapers,
 
     //set{homeworkId:string}
     //get{homeworkId:string, subject: string, book: string, papers: string[]}

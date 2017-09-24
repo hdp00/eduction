@@ -3,6 +3,14 @@
 
 import { PaperState } from './define'
 
+export class PaperData {
+    public paperId: number;
+    public path: string;
+    public data: string;
+    public hasUpload: boolean = false;
+    public name: string;
+}
+
 export class HomeworkData {
     public homeworkId: string;
     public statusId: PaperState = PaperState.New;
@@ -21,5 +29,6 @@ export class HomeworkData {
     public remark: string = '';
     public isNeedSign: boolean = false;
     public students: string[] = [];
+    public uploadPath: PaperData[] = [];
 }
 

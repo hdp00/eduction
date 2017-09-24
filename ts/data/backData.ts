@@ -29,6 +29,8 @@ export class BackData {
         this.data[SendType.BeginRead] = { netType: NetType.Post, url: '/student_daily/start_reading' };
         this.data[SendType.EndRead] = { netType: NetType.Post, url: '/student_daily/end_reading' };
         this.data[SendType.ChangeHomeworkStatus] = { netType: NetType.Post, url: '/student_task/change_status' };
+        this.data[SendType.UploadPapers] = { netType: NetType.Post, url: '/image_task/upload' };
+        this.data[SendType.DeletePapers] = { netType: NetType.Post, url: '/image_task/delete' };
 
         //student
         this.data[SendType.Students] = { netType: NetType.Get, url: '/student/list' };

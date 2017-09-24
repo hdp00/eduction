@@ -81,7 +81,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
             return;
 
         const upload = (this.refs['upload'] as UploadPaper);
-        upload.setVisible(true, h.homeworkId);
+        upload.setVisible(true, h.homeworkId, h.uploadPath);
     }
     private onViewPaper = () => {
 

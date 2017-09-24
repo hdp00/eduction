@@ -58,8 +58,8 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                 <Button type='primary' icon='camera' {...buttonProps} onClick={this.onTakePicture}>拍摄</Button>
                 <Button type='primary' icon='upload' {...buttonProps} onClick={this.onUpload} loading={this.isUploading}>上传</Button>
                 <div>
-                    <Button type='primary' icon='up' {...buttonProps} onClick={this.onMoveUp} />
-                    <Button type='primary' icon='down' {...buttonProps} onClick={this.onMoveDown} />
+                    {/* <Button type='primary' icon='up' {...buttonProps} onClick={this.onMoveUp} />
+                    <Button type='primary' icon='down' {...buttonProps} onClick={this.onMoveDown} /> */}
                     <Button type='primary' icon='close' {...buttonProps} onClick={this.onDelete} />
                 </div>
                 <div style={{ overflow: 'auto', height: '363px' }}>
@@ -103,32 +103,32 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
         this.isUploading = true;
         this.forceUpdate();
     }
-    private onMoveUp = () => {
-        if (this.isUploading)
-            return;
+    // private onMoveUp = () => {
+    //     if (this.isUploading)
+    //         return;
 
-        const index = this.index;
-        if (index <= 0 || index > (this.papers.length - 1))
-            return;
+    //     const index = this.index;
+    //     if (index <= 0 || index > (this.papers.length - 1))
+    //         return;
 
-        [this.papers[index - 1], this.papers[index]] = [this.papers[index], this.papers[index - 1]];
+    //     [this.papers[index - 1], this.papers[index]] = [this.papers[index], this.papers[index - 1]];
 
-        this.index--;
-        this.forceUpdate();
-    }
-    private onMoveDown = () => {
-        if (this.isUploading)
-            return;
+    //     this.index--;
+    //     this.forceUpdate();
+    // }
+    // private onMoveDown = () => {
+    //     if (this.isUploading)
+    //         return;
 
-        const index = this.index;
-        if (index < 0 || index >= (this.papers.length - 1))
-            return;
+    //     const index = this.index;
+    //     if (index < 0 || index >= (this.papers.length - 1))
+    //         return;
 
-        [this.papers[index + 1], this.papers[index]] = [this.papers[index], this.papers[index + 1]];
+    //     [this.papers[index + 1], this.papers[index]] = [this.papers[index], this.papers[index + 1]];
 
-        this.index++;
-        this.forceUpdate();
-    }
+    //     this.index++;
+    //     this.forceUpdate();
+    // }
     private onDelete = () => {
         if (this.isUploading)
             return;

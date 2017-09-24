@@ -9,10 +9,9 @@ import { Tool, SendType } from '../data/tool'
 export class UploadPaper extends React.Component<any, any>{
     homeworkId: string;
     subject: string;
-    book: string;
-    defaultPapers: string[];
+    item: string;
 
-    papers: object[] = [];//{name:string, data:base64, hasUpload}
+    papers: object[] = [];//{data:base64, hasUpload, paperId, path}
     visible: boolean = false;
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -46,7 +45,7 @@ export class UploadPaper extends React.Component<any, any>{
 
             homeworkId: this.homeworkId,
             subject: this.subject,
-            book: this.book,
+            item: this.item,
 
             onTakePicture: this.onTakePicture,
             onSelectPaper: this.onSelectPaper,
@@ -72,24 +71,28 @@ export class UploadPaper extends React.Component<any, any>{
     componentDidUpdate() {
         this.initComponent();
     }
-    public setVisible = (visible: boolean, homeworkId: string) => {
+    public setVisible = (visible: boolean, homeworkId: string, papers: { picId: number; path: string }[]) => {
         this.visible = visible;
         this.homeworkId = homeworkId;
 
         if (this.video === undefined)
             this.forceUpdate();
-        else
-            Tool.back.sendData(SendType.HomeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
-    }
-    private receiveHomeworkPaper = (value: object) => {
-        Tool.lib.fillData(value, this);
+        else {
+            this.papers = [];
+            for (let p of papers) {
+                let factPaper = {
+                    path: p.path,
+                    picId: p.picId,
+                    hasUpload: true
+                }
+                this.papers.push(factPaper);
+            }
 
-        this.papers = [];
-        this.control.setPapers(this.papers);
+            this.control.setPapers(this.papers);
 
-        this.video.play();
-
-        this.forceUpdate();
+            this.video.play();
+            this.forceUpdate();
+        }
     }
 
     private onTakePicture = (paper: object) => {
@@ -112,9 +115,8 @@ export class UploadPaper extends React.Component<any, any>{
     }
 
     private showCanvas = (paper: object) => {
-        this.image.src = paper['data'];
+        this.image.src = (paper['data'] === undefined) ? paper['path'] : paper['data']
         this.image.onload = () => {
-            //this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
             this.ctx.drawImage(this.image, 0, 0, this.canvasWidth, this.canvasHeight);
         }
     }
@@ -138,6 +140,5 @@ export class UploadPaper extends React.Component<any, any>{
         }, (value) => { console.log(value) });
 
         this.control = (this.refs['control'] as UploadControl);
-        Tool.back.sendData(SendType.HomeworkPaper, { homeworkId: this.homeworkId }, this.receiveHomeworkPaper);
     }
 }
