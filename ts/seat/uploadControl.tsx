@@ -4,20 +4,21 @@
 import * as React from 'react'
 import { Modal, Button } from 'antd'
 import { Tool, SendType } from '../data/tool'
+import { PaperData } from '../data/homeworkData'
 
 interface UploadControlProps {
     homeworkId: string;
     subject: string;
     item: string;
 
-    onTakePicture: (paper: object) => void;
-    onSelectPaper: (paper: object) => void;
+    onTakePicture: (paper: PaperData) => void;
+    onSelectPaper: (paper: PaperData) => void;
     onExit: () => void;
 }
 
 export class UploadControl extends React.Component<UploadControlProps, any>{
     index: number = -1;
-    papers: object[] = [];//{name:string, data:base64, hasUpload}
+    papers: PaperData[] = [];
     isUploading: boolean = false;
 
     render() {
@@ -50,17 +51,16 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             style: {
                 margin: '5px',
             },
-
         }
 
         return <div {...controlProps}>
             <div >
                 <Button type='primary' icon='camera' {...buttonProps} onClick={this.onTakePicture}>拍摄</Button>
-                <Button type='primary' icon='upload' {...buttonProps} onClick={this.onUpload} loading={this.isUploading}>上传</Button>
+                <Button type='primary' icon='upload' {...buttonProps} onClick={this.onUpload} loading={this.isUploading}>上传</Button><br />
+                <Button type='primary' icon='close' {...buttonProps} onClick={this.onDelete}>删除</Button>
                 <div>
                     {/* <Button type='primary' icon='up' {...buttonProps} onClick={this.onMoveUp} />
                     <Button type='primary' icon='down' {...buttonProps} onClick={this.onMoveDown} /> */}
-                    <Button type='primary' icon='close' {...buttonProps} onClick={this.onDelete} />
                 </div>
                 <div style={{ overflow: 'auto', height: '363px' }}>
                     {items}
@@ -69,7 +69,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             <Button type='primary' style={{ margin: '5px 55px' }} onClick={this.onExit}>退出</Button>
         </div>;
     }
-    public setPapers(papers: object[]) {
+    public setPapers = (papers: PaperData[]) => {
         this.isUploading = false;
         this.index = -1;
         this.papers = papers;
@@ -81,7 +81,9 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             return;
 
         const name = this.props.homeworkId + '_' + (new Date().getTime());
-        let paper = { name: name, data: undefined, hasUpload: false };
+        let paper = new PaperData();
+        paper.name = name;
+        paper.hasUpload = false;
         this.papers.push(paper);
         this.index = this.papers.length - 1;
 
@@ -94,8 +96,12 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
 
         let sendPapers = [];
         for (let p of this.papers) {
-            let data = p['hasUpload'] ? undefined : p['data'];
-            sendPapers.push({ name: p['name'], data: data });
+            if (!p['hasUpload']) {
+                let sendPaper = new PaperData();
+                sendPaper.data = p.data;
+                sendPaper.name = p.name;
+                sendPapers.push(sendPaper);
+            }
         }
         const datas = { homeworkId: this.props.homeworkId, papers: sendPapers };
 
@@ -132,7 +138,6 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
     private onDelete = () => {
         if (this.isUploading)
             return;
-
         const index = this.index;
         if (index < 0 || index > (this.papers.length - 1))
             return;
@@ -141,6 +146,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
             content: '删除试卷？',
             onOk: () => {
                 let papers = [];
+                const id = this.papers[index].paperId;
                 for (let i = 0; i < this.papers.length; i++) {
                     if (i == index)
                         continue;
@@ -152,6 +158,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                     this.index = this.papers.length - 1;
 
                 this.props.onSelectPaper(this.papers[this.index]);
+                Tool.back.sendData(SendType.DeletePapers, { paperIds: [id] });
                 this.forceUpdate();
             }
         });

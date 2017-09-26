@@ -4,11 +4,11 @@
 import { PaperState } from './define'
 
 export class PaperData {
-    public paperId: number;
-    public path: string;
-    public data: string;
-    public hasUpload: boolean = false;
-    public name: string;
+    public paperId?: number;
+    public path?: string;
+    public data?: string;
+    public hasUpload?: boolean = false;
+    public name?: string;
 }
 
 export class HomeworkData {

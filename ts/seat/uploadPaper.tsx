@@ -5,13 +5,14 @@ import * as React from 'react'
 import { Modal } from 'antd'
 import { UploadControl } from './uploadControl'
 import { Tool, SendType } from '../data/tool'
+import { PaperData } from '../data/homeworkData'
 
 export class UploadPaper extends React.Component<any, any>{
     homeworkId: string;
     subject: string;
     item: string;
 
-    papers: object[] = [];//{data:base64, hasUpload, paperId, path}
+    papers: PaperData[] = [];
     visible: boolean = false;
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -58,6 +59,7 @@ export class UploadPaper extends React.Component<any, any>{
             footer: null,
             width: '1500px',
             maskClosable: false,
+            closable: false,
             onCancel: this.onExit,
         };
 
@@ -69,37 +71,36 @@ export class UploadPaper extends React.Component<any, any>{
         </Modal>;
     }
     componentDidUpdate() {
+        console.log('aaa');
         this.initComponent();
     }
-    public setVisible = (visible: boolean, homeworkId: string, papers: { picId: number; path: string }[]) => {
+    public setVisible = (visible: boolean, homeworkId: string, papers: PaperData[]) => {
         this.visible = visible;
         this.homeworkId = homeworkId;
 
-        if (this.video === undefined)
-            this.forceUpdate();
-        else {
-            this.papers = [];
-            for (let p of papers) {
-                let factPaper = {
-                    path: p.path,
-                    picId: p.picId,
-                    hasUpload: true
-                }
-                this.papers.push(factPaper);
-            }
-
-            this.control.setPapers(this.papers);
-
-            this.video.play();
-            this.forceUpdate();
+        this.papers = [];
+        for (let p of papers) {
+            let factPaper = {
+                path: p.path,
+                paperId: p.paperId,
+                hasUpload: true,
+            };
+            this.generatePaperName(factPaper);
+            this.papers.push(factPaper);
         }
+
+        if (this.video !== undefined)
+            this.video.play();
+
+        this.forceUpdate();
     }
 
-    private onTakePicture = (paper: object) => {
-        this.ctx.drawImage(this.video, 0, 0);
-        paper['data'] = this.canvas.toDataURL();
+    private onTakePicture = (paper: PaperData) => {
+        //this.ctx.drawImage(this.video, 0, 0);
+        this.ctx.drawImage(this.refs['image'] as HTMLImageElement, 0, 0);
+        paper.data = this.canvas.toDataURL();
     }
-    private onSelectPaper = (paper: object) => {
+    private onSelectPaper = (paper: PaperData) => {
         if (paper === undefined)
             return;
 
@@ -114,8 +115,8 @@ export class UploadPaper extends React.Component<any, any>{
             this.video.pause();
     }
 
-    private showCanvas = (paper: object) => {
-        this.image.src = (paper['data'] === undefined) ? paper['path'] : paper['data']
+    private showCanvas = (paper: PaperData) => {
+        this.image.src = (paper.data === undefined) ? paper.path : paper.data;
         this.image.onload = () => {
             this.ctx.drawImage(this.image, 0, 0, this.canvasWidth, this.canvasHeight);
         }
@@ -140,5 +141,13 @@ export class UploadPaper extends React.Component<any, any>{
         }, (value) => { console.log(value) });
 
         this.control = (this.refs['control'] as UploadControl);
+        if (this.visible)
+            this.control.setPapers(this.papers);
+    }
+
+    private generatePaperName = (value: PaperData) => {
+        const index = value.path.lastIndexOf('/');
+        if (index != -1)
+            value.name = value.path.slice(index + 1);
     }
 }

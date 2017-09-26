@@ -22,7 +22,8 @@ export class HomeworkDetail extends React.Component<HomeworkDetailProps, any>{
         if (this.props.homework.isNeedSign)
             needSign = <span><Icon type='check-square' />需要签字</span>;
         let hasPaper;
-        hasPaper = <span><Icon type='book' />作业</span>;
+        if(this.props.homework.uploadPath.length > 0)
+            hasPaper = <span><Icon type='book' />作业</span>;
         let finishButton;
         if (this.props.homework.statusId !== PaperState.Finished)
             finishButton = <Button style={{ margin: '5px' }}

@@ -113,77 +113,7 @@ class routerData {
 //     students.push(s);
 //     studentMap[s.id] = s;
 // }
-// students[4].hasSigned = true;
-// students[5].hasSigned = true;
-// students[6].hasSigned = true;
-// students[4].seatIndex = 12;
-// students[5].seatIndex = 15;
-// students[6].seatIndex = 16;
-// students[0].homeworks[0].id = '作业A';
-// students[0].homeworks[1].id = '作业B';
-// students[0].homeworks[2].id = '作业C';
-// students[0].homeworks[3].id = '作业D';
-// let row = 6;
-// let col = 8;
 
-// const homeworkPaper = {
-//     homeworkId: '作业A',
-//     subject: '语文',
-//     book: '一课一练',
-//     defaultPapers: [],
-// }
-
-// function getHomeworkText(s: StudentData) {
-//     let count = s.homeworks.length;
-//     let fininshedCount = 0;
-//     for (let t of s.homeworks) {
-//         if (t.status === PaperState.Finished)
-//             fininshedCount++;
-//     }
-
-//     return fininshedCount + '/' + count;
-// }
-// function getHomeworkStatus(s: StudentData) {
-//     return PaperState.New;
-// }
-// function setHomeworStatus(id: string, status: number) {
-//     let s = students[0];
-//     for (let homework of s.homeworks) {
-//         if (homework.id === id) {
-//             homework.status = status;
-//             return;
-//         }
-//     }
-// }
-
-// const addItems = ['纪律好A', '纪律好B', '纪律好C'];
-// const reduceItems = ['纪律差A', '纪律差B', '纪律差C'];
-
-// const checkItemList = [{
-//     image: 0,
-//     text: 'a',
-//     score: 1,
-// },
-// {
-//     image: 0,
-//     text: 'b',
-//     score: 1,
-// },
-// {
-//     image: 0,
-//     text: 'c',
-//     score: 1,
-// },
-// {
-//     image: 1,
-//     text: 'd',
-//     score: 1,
-// },
-// {
-//     image: 1,
-//     text: 'e',
-//     score: 1,
-// }];
 
 // const paperList = [{
 //     id: '0',

@@ -27,10 +27,24 @@ class ReceiveManager {
         const netType = Tool.data.back.getNetType(this.type);
         const url = Tool.data.back.getUrl(this.type);
 
-        if (netType === NetType.Get)
-            $.get(url, data, this.receive);
-        else
-            $.post(url, data, this.receive);
+        if (this.type !== SendType.UploadPapers) {
+            if (netType === NetType.Get)
+                $.get(url, data, this.receive);
+            else
+                $.post(url, data, this.receive);
+
+        } else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: () => { this.receive },
+            });
+        }
+
     }
     private receive = (response?: string) => {
         if (this.callback === undefined)
@@ -157,37 +171,22 @@ class ReceiveManager {
                 break;
             case SendType.UploadPapers:
                 {
-                    // userId: 'xxx',
-                    // token: 'xxx',
-                    // stdId: 'xxx', //学生ID
-                    // files: {} // 前端走multipart/form-data，input控件使用type=file上传图片
+                    let f = new FormData();
+                    let papers: object[] = this.sendData['papers'];
+                    for (let p of papers) {
+                        f.append('aaa', p['data']);
+                    }
 
-                    // //set{homeworkId:string, papers:PaperData[])
+                    this.sendData = {
+                        taskId: this.sendData['homeworkId'],
+                        //file: f,
+                    };
 
-
-                    // let f = new FormData();
-                    // f.append('userId')
-
-                    // let papers: object[] = this.sendData['papers'];
-                    // for (let i = 0; i < papers.length; i++) {
-                    //     f.append('paper' + i, papers[i]['data'], papers[i]['name']);
-                    // }
-
-                    // $.ajax({
-                    //     url: '/api/upload',
-                    //     type: 'POST',
-                    //     data: data,
-                    //     cache: false,
-                    //     processData: false,
-                    //     contentType: false,
-                    //     success: () => { console.log('ok') },
-                    //     error: () => { console.log('error') },
-                    // });
-
+                    //console.log(this.sendData['file']['aaa']);
                 }
                 break;
             case SendType.DeletePapers:
-
+                this.sendData = {props:this.sendData['paperIds']};
                 break;
             default:
                 break;
@@ -380,17 +379,6 @@ class ReceiveManager {
     private showError(value: any, type: SendType) {
         if (!Tool.data.isValidData(value))
             console.log('Error:' + value.comment + '  ' + SendType[type]);
-    }
-
-
-    private getHomeworkPaper(value: object) {
-        //return homeworkPaper;
-    }
-    private getCheckItems(value: object) {
-        //return checkItemList;
-    }
-    private getPapers(value: object) {
-        //return paperList;
     }
 }
 
