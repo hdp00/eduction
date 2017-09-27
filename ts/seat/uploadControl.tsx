@@ -158,7 +158,8 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                     this.index = this.papers.length - 1;
 
                 this.props.onSelectPaper(this.papers[this.index]);
-                Tool.back.sendData(SendType.DeletePapers, { paperIds: [id] });
+                if (id !== undefined)
+                    Tool.back.sendData(SendType.DeletePapers, { paperIds: [id] });
                 this.forceUpdate();
             }
         });

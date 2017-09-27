@@ -71,7 +71,6 @@ export class UploadPaper extends React.Component<any, any>{
         </Modal>;
     }
     componentDidUpdate() {
-        console.log('aaa');
         this.initComponent();
     }
     public setVisible = (visible: boolean, homeworkId: string, papers: PaperData[]) => {
@@ -97,7 +96,9 @@ export class UploadPaper extends React.Component<any, any>{
 
     private onTakePicture = (paper: PaperData) => {
         //this.ctx.drawImage(this.video, 0, 0);
-        this.ctx.drawImage(this.refs['image'] as HTMLImageElement, 0, 0);
+        console.log(this.refs['video'])
+
+        this.ctx.drawImage(this.refs['video'] as HTMLImageElement, 0, 0);
         paper.data = this.canvas.toDataURL();
     }
     private onSelectPaper = (paper: PaperData) => {
