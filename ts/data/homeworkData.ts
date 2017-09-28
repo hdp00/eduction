@@ -3,6 +3,7 @@
 
 import { PaperState } from './define'
 
+
 export class PaperData {
     public paperId?: number;
     public path?: string;

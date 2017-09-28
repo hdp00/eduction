@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { Button, Icon } from 'antd';
-import { PaperState, IPaper, ICorrectData, ICheckItem } from '../define';
+import { PaperState, IPaper, ICorrectData, ICheckItem } from '../data/checkData';
 import { Tool } from '../data/tool';
 
 //批改管理

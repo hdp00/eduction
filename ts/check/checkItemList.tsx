@@ -3,16 +3,21 @@
 
 import * as React from 'react';
 import { Table } from 'antd';
-import { ICheckItem } from '../define';
-import {Tool} from '../data/tool';
+import { CheckItemData } from '../data/checkData';
+import { CheckManager } from './checkManager'
+import { Tool } from '../data/tool';
+import { imageTrue, imageFalse, imageQuestion, image0, image2, image3 } from '../image'
 
+interface CheckItemListProps {
+    manager: CheckManager,
+}
 
 interface CheckItemListState {
     select: string[];
 }
 
-export class CheckItemList extends React.Component<any, CheckItemListState>{
-    items:ICheckItem[] = [];
+export class CheckItemList extends React.Component<CheckItemListProps, CheckItemListState>{
+    items: CheckItemData[] = [];
 
     public state: CheckItemListState = {
         select: ['0']
@@ -32,7 +37,7 @@ export class CheckItemList extends React.Component<any, CheckItemListState>{
 
         let datas = [];
         for (let i = 0; i < this.items.length; i++) {
-            let item: ICheckItem = this.items[i];
+            let item: CheckItemData = this.items[i];
             datas.push({
                 key: i.toString(),
                 image: item.image,
@@ -40,12 +45,12 @@ export class CheckItemList extends React.Component<any, CheckItemListState>{
             });
         }
 
-        const type:'checkbox' | 'radio' = 'radio';
-        const size:'default' | 'middle' | 'small' = 'small';
+        const type: 'checkbox' | 'radio' = 'radio';
+        const size: 'default' | 'middle' | 'small' = 'small';
         const props = {
             pagination: false,
             showHeader: false,
-            size:size,
+            size: size,
             rowSelection: {
                 type: type,
                 selectedRowKeys: this.state.select,
@@ -54,7 +59,7 @@ export class CheckItemList extends React.Component<any, CheckItemListState>{
             columns: columns,
             dataSource: datas,
             style: {
-                width:'100%',
+                width: '100%',
             },
             onRowClick: this.onRowClick,
         }
@@ -62,26 +67,26 @@ export class CheckItemList extends React.Component<any, CheckItemListState>{
         return <Table {...props} />;
     }
 
-    public update = (data:ICheckItem[]) =>{
+    public update = (data: CheckItemData[]) => {
         this.items = data;
         this.forceUpdate();
     }
 
     private imageRender = (text: string): JSX.Element => {
-        const index:number = parseInt(text);
-        return <img src={Tool.check.imageItem[index].src} />;
+        const index: number = parseInt(text);
+        return <img src={imageFalse} />;
     }
     private onRowClick = (record, index) => {
         this.onRadioChange(index);
     }
     private onRadioClick = (selectedRowKeys, selectedRows) => {
-        if(selectedRowKeys.length === 0)
+        if (selectedRowKeys.length === 0)
             return;
         this.onRadioChange(parseInt(selectedRowKeys[0]));
     }
     private onRadioChange = (index: number) => {
-        this.setState({ select: [index.toString()]});
-        Tool.check.currentIndex = index;
+        this.setState({ select: [index.toString()] });
+        this.props.manager.checkItemIndex = index;
     }
 }
 

@@ -4,7 +4,8 @@
 import * as React from 'react';
 import * as $ from 'jquery';
 import { Table, Badge } from 'antd';
-import { PaperState, IPaper } from '../define';
+import { PaperState } from '../data/define';
+import { CheckHomeworkData } from '../data/checkData'
 
 interface PaperListProps {
     onChange: (index: number) => void;
@@ -12,7 +13,7 @@ interface PaperListProps {
 
 export class PaperList extends React.Component<PaperListProps, any>{
     //试卷列表
-    private items: IPaper[] = [];
+    private items: CheckHomeworkData[] = [];
     //选中项
     private selectKeys: string[] = [];
 
@@ -29,31 +30,25 @@ export class PaperList extends React.Component<PaperListProps, any>{
         }];
 
         let datas = [];
-        let newCount = 0;
         let hasCheckedCount = 0;
-        let reCheckCount = 0;
+        let noCheckedCount = 0;
         for (let i = 0; i < this.items.length; i++) {
             let paper = this.items[i];
             datas.push({
                 key: i.toString(),
                 state: paper.state,
-                text: paper.text,
+                text: paper.studentName + '  ' + paper.subject + ' ' + paper.item,
             });
 
             switch (paper.state) {
-                case PaperState.New:
-                    newCount++;
-                    break;
                 case PaperState.HasChecked:
                     hasCheckedCount++;
-                    break;
-                case PaperState.ReCheck:
-                    reCheckCount++;
                     break;
                 default:
                     break;
             }
         }
+        noCheckedCount = this.items.length - hasCheckedCount;
 
         const type: 'checkbox' | 'radio' = 'radio';
         const size: 'default' | 'middle' | 'small' = 'small';
@@ -77,16 +72,14 @@ export class PaperList extends React.Component<PaperListProps, any>{
 
         return <div>
             <div style={{ textAlign: 'right' }}>
-                <Badge count={newCount} style={{ backgroundColor: 'blue', margin: '5px' }} />
-                <Badge count={hasCheckedCount} style={{ backgroundColor: 'green', margin: '5px' }} />
-                <Badge count={reCheckCount} style={{ margin: '5px' }} />
+                <Badge count={noCheckedCount} style={{ backgroundColor: 'blue', margin: '5px' }} />
             </div>
             <Table {...props} />
         </div>;
     }
 
     //数据更新
-    public update = (data: IPaper[]) => {
+    public update = (data: CheckHomeworkData[]) => {
         this.items = data;
         this.forceUpdate();
     }
@@ -97,8 +90,7 @@ export class PaperList extends React.Component<PaperListProps, any>{
 
     //根据状态显示
     private stateRender = (text, record, index): JSX.Element => {
-        const colors = ['blue', 'green', 'red'];
-        const color = colors[text];
+        const color = (PaperState.HasChecked === parseInt(text)) ? 'green' : 'blue';
         const props = {
             style: {
                 width: '15px',
