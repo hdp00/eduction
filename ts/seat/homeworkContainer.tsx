@@ -45,7 +45,7 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
                 <Button style={{ margin: '10px' }} type='primary' onClick={this.onUploadPaper}>上传作业</Button>
                 <Button style={{ margin: '10px' }} type='primary' onClick={this.onViewPaper}>查看作业</Button>
             </div>
-            <UploadPaper ref='upload' />
+            <UploadPaper ref='upload' onFinish={this.onFinishUpload} />
         </div>;
     }
 
@@ -85,6 +85,10 @@ export class HomeworkContainer extends React.Component<HomeworkContainerProps, a
     }
     private onViewPaper = () => {
 
+    }
+
+    private onFinishUpload = () => {
+        this.update();
     }
 }
 

@@ -7,7 +7,11 @@ import { UploadControl } from './uploadControl'
 import { Tool, SendType } from '../data/tool'
 import { PaperData } from '../data/homeworkData'
 
-export class UploadPaper extends React.Component<any, any>{
+interface UploadPaperProps {
+    onFinish: () => void;
+}
+
+export class UploadPaper extends React.Component<UploadPaperProps, any>{
     homeworkId: string;
     subject: string;
     item: string;
@@ -88,18 +92,20 @@ export class UploadPaper extends React.Component<any, any>{
             this.papers.push(factPaper);
         }
 
-        if (this.video !== undefined)
+        if (this.video !== undefined) {
             this.video.play();
+            this.control.setPapers(this.papers);
+        }
 
         this.forceUpdate();
     }
 
     private onTakePicture = (paper: PaperData) => {
         //this.ctx.drawImage(this.video, 0, 0);
-        console.log(this.refs['video'])
-
         this.ctx.drawImage(this.refs['video'] as HTMLImageElement, 0, 0);
-        paper.data = this.canvas.toDataURL();
+        try {
+            paper.data = this.canvas.toDataURL();
+        } catch (e) { }
     }
     private onSelectPaper = (paper: PaperData) => {
         if (paper === undefined)
@@ -114,12 +120,18 @@ export class UploadPaper extends React.Component<any, any>{
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         if (this.video.readyState !== 0)
             this.video.pause();
+        this.props.onFinish();
     }
 
     private showCanvas = (paper: PaperData) => {
-        this.image.src = (paper.data === undefined) ? paper.path : paper.data;
+        this.image.src = (paper.data === undefined) ? this.getFactPath(paper) : paper.data;
         this.image.onload = () => {
             this.ctx.drawImage(this.image, 0, 0, this.canvasWidth, this.canvasHeight);
+            try {
+                if (paper.data === undefined)
+                    paper.data = this.canvas.toDataURL();
+            }
+            catch (e) { }
         }
     }
     private initComponent = () => {
@@ -150,5 +162,8 @@ export class UploadPaper extends React.Component<any, any>{
         const index = value.path.lastIndexOf('/');
         if (index != -1)
             value.name = value.path.slice(index + 1);
+    }
+    private getFactPath = (paper: PaperData) => {
+        return 'https://116.62.137.199/images/' + paper.path;
     }
 }

@@ -27,23 +27,10 @@ class ReceiveManager {
         const netType = Tool.data.back.getNetType(this.type);
         const url = Tool.data.back.getUrl(this.type);
 
-        if (this.type !== SendType.UploadPapers) {
-            if (netType === NetType.Get)
-                $.get(url, data, this.receive);
-            else
-                $.post(url, data, this.receive);
-
-        } else {
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: () => { this.receive },
-            });
-        }
+        if (netType === NetType.Get)
+            $.get(url, data, this.receive);
+        else
+            $.post(url, data, this.receive);
 
     }
     private receive = (response?: string) => {
@@ -171,22 +158,20 @@ class ReceiveManager {
                 break;
             case SendType.UploadPapers:
                 {
-                    let f = new FormData();
+                    let files = [];
                     let papers: object[] = this.sendData['papers'];
                     for (let p of papers) {
-                        f.append('aaa', p['data']);
+                        files.push(p['data']);
                     }
 
                     this.sendData = {
                         taskId: this.sendData['homeworkId'],
-                        //file: f,
+                        files: files,
                     };
-
-                    //console.log(this.sendData['file']['aaa']);
                 }
                 break;
             case SendType.DeletePapers:
-                this.sendData = {props:this.sendData['paperIds']};
+                this.sendData = { props: this.sendData['paperIds'] };
                 break;
             default:
                 break;
@@ -278,6 +263,10 @@ class ReceiveManager {
                                 s.studentId = s.stdId;
                             }
                             h.students = h.stdList;
+                        }
+
+                        for(let p of h['uploadPath']){
+                            p['paperId'] = p['picId'];
                         }
                     }
 

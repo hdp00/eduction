@@ -27,6 +27,7 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                 border: '1px solid gray',
                 float: 'left',
                 margin: '2px',
+                width:'180px',
             }
         };
 
@@ -101,12 +102,15 @@ export class UploadControl extends React.Component<UploadControlProps, any>{
                 sendPaper.data = p.data;
                 sendPaper.name = p.name;
                 sendPapers.push(sendPaper);
+                this.isUploading = true;
             }
         }
+        if(!this.isUploading)
+            return;
+
         const datas = { homeworkId: this.props.homeworkId, papers: sendPapers };
 
         Tool.back.sendData(SendType.UploadPapers, datas, this.uploadFinished);
-        this.isUploading = true;
         this.forceUpdate();
     }
     // private onMoveUp = () => {
